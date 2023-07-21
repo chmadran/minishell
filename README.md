@@ -62,3 +62,24 @@ The readline() function can cause memory leaks. We don’t have to fix them.
 
 A prompt appears, now enter a command to be executed
 
+<h3>Makefile</h3>
+
+Some specificities about the makefile : 
+
+```SRC_FILES	:= $(wildcard $(SRC_DIR)/*.c $(SRC_DIR)/**/*.c)```
+
+SRC_FILES is a variable that will store a list of source file paths. It uses the wildcard function to expand patterns and find all the .c files within the SRC_DIR directory and its subdirectories. The ** notation is used to match files in subdirectories recursively. So, $(SRC_DIR)/**/*.c matches all .c files in SRC_DIR and its subdirectories.
+
+```OBJ_FILES	:= $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRC_FILES))```
+OBJ_FILES is another variable that will store a list of object file paths. It uses the patsubst function to transform the source file paths (SRC_FILES) into corresponding object file paths within the BUILD_DIR directory. The patsubst function replaces the directory prefix $(SRC_DIR) with $(BUILD_DIR) and the file extension .c with .o for each file in SRC_FILES.
+
+```DEP_FILES	:= $(OBJ_FILES:.o=.d)```
+
+DEP_FILES is a variable that will store a list of dependency file paths. It takes the OBJ_FILES list and replaces the file extension .o with .d. Dependency files (.d files) are used to track the dependencies between source files and headers to ensure that changes in headers trigger recompilation of dependent source files.
+
+The use of .d files is common in C/C++ projects with Makefiles because they allow Make to automatically rebuild only the necessary parts of the project when a header file changes, saving compilation time.
+
+```TO THINK ABOUT```
+
+- add dependencies 
+- add build folder 
