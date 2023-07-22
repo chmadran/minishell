@@ -67,22 +67,19 @@ A prompt appears, now enter a command to be executed
 Some specificities about the makefile : 
 
 ```SRC_FILES	:= $(wildcard $(SRC_DIR)/*.c $(SRC_DIR)/**/*.c)```
-
 SRC_FILES is a variable that will store a list of source file paths. It uses the wildcard function to expand patterns and find all the .c files within the SRC_DIR directory and its subdirectories. The ** notation is used to match files in subdirectories recursively. So, $(SRC_DIR)/**/*.c matches all .c files in SRC_DIR and its subdirectories.
+
+```BUILD_DIR := ./build``` 
+Defines the variable BUILD_DIR as the path to the build directory where all the objects will be stored (see below). The ./build path represents a directory named "build" in the current directory.
 
 ```OBJ_FILES	:= $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRC_FILES))```
 OBJ_FILES is another variable that will store a list of object file paths. It uses the patsubst function to transform the source file paths (SRC_FILES) into corresponding object file paths within the BUILD_DIR directory. The patsubst function replaces the directory prefix $(SRC_DIR) with $(BUILD_DIR) and the file extension .c with .o for each file in SRC_FILES.
 
-```DEP_FILES	:= $(OBJ_FILES:.o=.d)```
 
-DEP_FILES is a variable that will store a list of dependency file paths. It takes the OBJ_FILES list and replaces the file extension .o with .d. Dependency files (.d files) are used to track the dependencies between source files and headers to ensure that changes in headers trigger recompilation of dependent source files.
-
-The use of .d files is common in C/C++ projects with Makefiles because they allow Make to automatically rebuild only the necessary parts of the project when a header file changes, saving compilation time.
 
 ```TO THINK ABOUT```
 
-- add dependencies 
-- add build folder 
+- add dependencies to gain in efficiency (only compile the parts of the project that have changed)
 
 <details>
 <summary><h3>Some rules we could implement</h3></summary>
@@ -98,10 +95,6 @@ The use of .d files is common in C/C++ projects with Makefiles because they allo
 
 <details>
 <summary><h3>Part 0: THE ENVIRONMENT</h3></summary>
-
-
-
- <summary> <h3>PART 0 : ENVIRONMENT</h3></summary>
 
 Sometimes it is useful to communicate with a program in a semi-permanent way, so that you do not need to specify a command-line option every time you type the command to execute the program. One way to do this is to generate a configuration file, in which you can store data that will be used by the program every time it is run. This approach is typically useful if you have a large amount of data that you want to pass to a program every time it runs, or if you want the program itself to be able to change the data.
 
@@ -138,7 +131,7 @@ We need to get access and therefore store the environement variables in minishel
 
 - [ ] ```manage_environment``` is launched and calls the extern char **environ that is passed to a function that will fill a structure with its content
 - [ ] in minishell.h file, you'll find the structure for the environment that has three values : char *name, char *value and a pointer to the next node s_env *next, this structure is itself accessible through the global master structure
-- [ ] in env.c, the function ```manage_environment``` browses through the char **environ and sends each char * to a node creator function ```create_add_env_node```
+- [ ] in env.c, the function ```manage_environment``` browses through the char **environ and sends each char * (e.g "USER=chmadran") to a node creator function ```create_add_env_node``` that takes name (USER) and value (chmadran) and the env_list we're filling as parameters.
 - [ ] if the environment is empty when the program is launched, ```manage_empty_environment``` fills the shell level, working directory (PWD) and _ as these would be set automatically even if you tried to run bash without env variables e.g with ```env -i``` see https://unix.stackexchange.com/questions/48994/how-to-run-a-program-in-a-clean-environment-in-bash
 
 
@@ -153,6 +146,10 @@ Source : https://github.com/mavileo/minishell-42
 * we use the library erno.h to be able to use error codes
 
 Using errno.h error codes provides a standardized and consistent way to represent and handle various errors that might occur during program execution. The errno.h header defines a set of macros that represent different error codes, and each code corresponds to a specific error condition. These error codes are typically returned by various library functions and system calls to indicate the nature of the error that occurred. For example, ENOMEM is an error code in Unix-based systems that indicates a failure to allocate memory (insufficient memory). It is defined in the <errno.h> header.
+
+* the other strategy could be to use perror
+
+Using perror provides a convenient and user-friendly way to handle and report errors in C programs. The perror function is part of the standard C library (stdio.h) and is used to print descriptive error messages to the standard error stream (stderr) based on the value of the global errno variable. For exmaple, the above code could be ```ft_error_exit("malloc (create_add_env_node)", ENOMEM)``` or more simply ```perror("malloc (create_add_env_node)")``` as the correct erno variable would be automatically found.
 
 
 </details> 
