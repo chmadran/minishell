@@ -6,7 +6,7 @@
 #    By: chmadran <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/21 15:11:11 by chmadran          #+#    #+#              #
-#    Updated: 2023/07/22 15:02:40 by chmadran         ###   ########.fr        #
+#    Updated: 2023/07/22 17:21:27 by chmadran         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ INCLUDES	:= -I$(INCLUDE_DIR) -I$(LIBFT_DIR)/include
 
 # Linker flags
 LDFLAGS		:= -L$(LIBFT_DIR)
-LDLIBS		:= -lft
+LDLIBS		:= -lft -lreadline
 
 # Colors
 GREEN	=	\033[1;32m
