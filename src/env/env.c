@@ -6,31 +6,29 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:27:12 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/22 16:04:02 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/22 16:34:46 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
 #include "minishell.h"
 #include "env.h"
 #include "exit.h"
 #include "libft.h"
 
-void	free_environment_list(t_env *env)
+static char	*update_shlvl(char *value, char *name)
 {
-	t_env	*current;
-	t_env	*next;
+	int	new_value;
 
-	current = env;
-	while (current)
+	new_value = ft_atoi(value);
+	free(value);
+	new_value++;
+	value = ft_itoa(new_value);
+	if (!value)
 	{
-		next = current->next;
-		free(current->name);
-		free(current->value);
-		free(current);
-		current = next;
+		free(name);
+		ft_error_exit("ft_itoa (update_shlvl)", ENOMEM);
 	}
+	return (value);
 }
 
 static void	create_add_env_node(char *name, char *value, t_env **env_list)
@@ -42,7 +40,7 @@ static void	create_add_env_node(char *name, char *value, t_env **env_list)
 	{
 		free(name);
 		free(value);
-		ft_error_exit("malloc (create_add_env_node)", 0);
+		ft_error_exit("malloc (create_add_env_node)", ENOMEM);
 		return ;
 	}
 	new_node->name = name;
