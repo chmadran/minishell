@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   exit.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/21 15:32:48 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/22 14:44:51 by chmadran         ###   ########.fr       */
+/*   Created: 2023/07/21 16:48:12 by chmadran          #+#    #+#             */
+/*   Updated: 2023/07/22 14:34:24 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "minishell.h"
-#include "env.h"
+#ifndef EXIT_H
+# define EXIT_H
 
-t_master	g_master;
+# include "minishell.h"
 
+extern t_master	g_master;
 
-int	main(void)
-{
-	manage_environment(&g_master.env_list);
-	//print_environement_list(g_master.env_list);
-	free_environment_list(g_master.env_list);
-}
+void	ft_error_exit(char *str, int error);
+
+#endif
