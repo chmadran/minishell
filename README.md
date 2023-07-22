@@ -139,11 +139,25 @@ Source : http://crasseux.com/books/ctutorial/Environment-variables.html
 Source : https://github.com/mavileo/minishell-42
  </details>
 
+<details>
+<summary><h3>PART 1 : LEXER </h3></summary>
+The goal of the lexer in minishell is to (i) exit if there is an incorrect input (e.g an open double quote or extra and/or invalid operators) otherwise it is (ii) to sort and store the input in a linked list so it can eventually be executed. This process is called the tokenisation.
+
+<h4>1. GETTING A PROMPT</h4>
+
+To collect the input, we use ```readline``` which takes the prompt as argument. For example, our minishell displays ```minishell: ``` when launched, ```readline``` then returns a char * we named ```input_text``` that is the user's input. ```input_text``` is passed as argument to the lexer ready for the tokenisation process. Readline is a function allowed by the subject but be careful as it leaks. From this point onwards, one needs to use the script ```valgrind.sh``` to actually test the program without encountering the readline leaks.  
+
+At this stage, set up the signals so you can actually loop on the readline function until sending a CTRL+D to end the programme, or a CTRL+C to get a new clean prompt. We'll use the simple signal function here as we dont need any information that would be stored in the```sigaction``` structure we'd normally be expected to use. 
+
+Things to note : 
+* ```rl_catch_signals``` is used to control whether Readline should catch signals or let them be handled by the signal handlers defined in the programme. It is set to 0, which means that Readline is instructed not to catch signals. Instead, we have defined its signal handlers for specific signals, such as SIGQUIT and SIGINT.
+
+</details>
 
 
 <summary><h3>ERROR/EXIT HANDLING</h3></summary>
 
-* we use the library erno.h to be able to use error codes
+* we use the library errno.h to be able to use error codes
 
 Using errno.h error codes provides a standardized and consistent way to represent and handle various errors that might occur during program execution. The errno.h header defines a set of macros that represent different error codes, and each code corresponds to a specific error condition. These error codes are typically returned by various library functions and system calls to indicate the nature of the error that occurred. For example, ENOMEM is an error code in Unix-based systems that indicates a failure to allocate memory (insufficient memory). It is defined in the <errno.h> header.
 
