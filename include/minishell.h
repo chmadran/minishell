@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/22 14:15:36 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/22 17:14:58 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 # define MINISHELL_H
 
 # include <errno.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 typedef struct s_env
 {
@@ -29,6 +32,7 @@ typedef struct s_env
 typedef struct s_master
 {
 	t_env	*env_list;
+	char	*line_read;
 	int		exit_status;
 }	t_master;
 
