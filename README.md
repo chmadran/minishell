@@ -151,6 +151,7 @@ At this stage, set up the signals so you can actually loop on the readline funct
 
 Things to note : 
 * ```rl_catch_signals``` is used to control whether Readline should catch signals or let them be handled by the signal handlers defined in the programme. It is set to 0, which means that Readline is instructed not to catch signals. Instead, we have defined its signal handlers for specific signals, such as SIGQUIT and SIGINT.
+* you *will* get a linker command failed error if you don't amend your Makefile at this stage to include the readline library, yes your Makefile. Simply add the following ```-lreadline``` to your include flags
 
 </details>
 
