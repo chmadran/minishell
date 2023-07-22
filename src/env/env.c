@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:27:12 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/22 14:42:26 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/22 16:04:02 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,53 +60,31 @@ static void	create_add_env_node(char *name, char *value, t_env **env_list)
 	}
 }
 
-static void	manage_pwd(t_env **env_list)
+static void	fill_env_node(t_env **env_list, char *n, char *v)
 {
-	char	*cwd;
 	char	*name;
-
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
+	char	*value;
+	
+	name = ft_strdup(n);
+	if (ft_strcmp(name, "PWD") == 0)
+		value = getcwd(NULL, 0);
+	else
+		value = ft_strdup(v);
+	if (!name || !value)
 	{
-		perror("getcwd (manage_empty_environment)");
+		free(name);
+		free(value);
+		ft_error_exit("ft_strdup (manage_empty_environment)", ENOMEM);
 		exit(EXIT_FAILURE);
 	}
-	name = ft_strdup("PWD");
-	if (!name)
-	{
-		free(cwd);
-		perror("ft_strdup (manage_empty_environment)");
-		exit(EXIT_FAILURE);
-	}
-	create_add_env_node(name, cwd, env_list);
+	create_add_env_node(name, value, env_list);
 }
 
 static void	manage_empty_environment(t_env **env_list)
 {
-	char	*name;
-	char	*value;
-
-	manage_pwd(env_list);
-	name = ft_strdup("SHLVL");
-	value = ft_strdup("1");
-	if (!name || !value)
-	{
-		free(name);
-		free(value);
-		ft_error_exit("ft_strdup (manage_empty_environment)", ENOMEM);
-		return ;
-	}
-	create_add_env_node(name, value, env_list);
-	name = ft_strdup("_");
-	value = ft_strdup("minishell");
-	if (!name || !value)
-	{
-		free(name);
-		free(value);
-		ft_error_exit("ft_strdup (manage_empty_environment)", ENOMEM);
-		return ;
-	}
-	create_add_env_node(name, value, env_list);
+	fill_env_node(env_list, "PWD", NULL);
+	fill_env_node(env_list, "SHLVL", "1");
+	fill_env_node(env_list, "_", "minishell");
 }
 
 void	manage_environment(t_env **env_list)
