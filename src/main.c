@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 15:32:48 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/22 17:35:03 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/23 16:07:18 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int	main(void)
 		g_master.line_read = readline("\033[32mminishell: \033[0m");
 		if (!g_master.line_read)
 			break ;
+		if (ft_strlen(g_master.line_read))
+			add_history(g_master.line_read);
 	}
 	//print_environement_list(g_master.env_list);
 	free_environment_list(g_master.env_list);
