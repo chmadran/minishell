@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/08 17:13:19 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/23 18:06:44 by chmadran         ###   ########.fr       */
+/*   Created: 2023/07/23 17:24:14 by chmadran          #+#    #+#             */
+/*   Updated: 2023/07/23 17:24:18 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/libft.h"
 
-size_t	ft_strlcpy(char *dest, const char *src, size_t size)
+int	ft_isspace(int c)
 {
-	size_t	i;
-
-	i = 0;
-	if (size > 0)
-	{
-		while (src[i] && i < (size - 1))
-		{
-			dest[i] = src[i];
-			i++;
-		}
-	dest[i] = '\0';
-	}
-	while (src[i])
-		i++;
-	return (i);
+	if (c == 32 || (c >= 9 && c <= 13))
+		return (1);
+	return (0);
 }

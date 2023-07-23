@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 16:44:34 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/22 14:27:19 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/23 17:25:24 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int				ft_isascii(int c);
 int				ft_isdigit(int c);
 
 int				ft_isprint(int c);
+
+int				ft_isspace(int c);
 
 char			*ft_itoa(int n);
 
