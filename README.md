@@ -154,6 +154,15 @@ Things to note :
 * you *will* get a linker command failed error if you don't amend your Makefile at this stage to include the readline library, yes your Makefile. Simply add the following ```-lreadline``` to your include flags
 * Finally, `add_history` is a function that is in the stdio library and it will allow to use the up and down arroy to check previous (non-empty) inputs as it is asked in the subject to have a working history
 
+<h4>2. CREATING A TOKEN_LIST</h4>
+
+Now, in the global structure `g_master`, we have a variable called `t_token *token_list;`. This is a pointer to a the token list. A token is composed of (i) a type that is OPERATOR OR COMMAND, (ii) a data (the command or NULL if the token is of type OPERATOR), and a pointer to the previous and to the next tokens of the list. We now need to fill this token_list with the user input that has been retrieved by the readline function and stored in `g_master.line_read`. 
+
+We will check at this stage whether there is an uneven number of single or double quotes since we can just exit directly if so. We do this with `is_matched_quotes` but the specificities here are 1. that if we have a backslash before the quote`\'` then it is not interpreted as an opening/closing one but as a simple character (basically as anything but a quote) and 2. that if we have a backslash before a backslash before the quote `\\'` the the first backslash cancels the second and the quote IS considered as a quote and not a simple character. This applies to both single and double quotes.
+
+
+
+
 </details>
 
 
@@ -169,6 +178,9 @@ Using perror provides a convenient and user-friendly way to handle and report er
 
 * returning EXIT_SUCCESS or EXIT_FAILURE
 EXIT_SUCCESS and EXIT_FAILURE are symbolic constants defined in the C programming language, typically found in the stdlib.h header file. They are used to indicate the success or failure status of a program when it exits. These constants are commonly used with the exit() function to terminate a program and provide an exit status to the calling environment. EXIT_SUCCESS has a value of 0 while EXIT_FAILURE has a value of 1.
+
+* using defined EXIT_messages
+The syntax : `# define ESTR_QUOTE "minishell: syntax error: unmatched quote\n"` in the .h files are `preprocessor macros` defined using the C preprocessor directive #define. It is essentially a text substitution mechanism, where the macro ESTR_QUOTE is replaced with the corresponding string value "minishell: syntax error: unmatched quote\n" wherever it appears in the code. It can then be used as follows in the code : ` printf(ESTR_QUOTE);`
 
 </details> 
 
