@@ -163,7 +163,13 @@ Now, in the global structure `g_master`, we have a variable called `t_token *tok
 
 We will check at this stage whether there is an uneven number of single or double quotes since we can just exit directly if so. We do this with `is_matched_quotes` but the specificities here are 1. that if we have a backslash before the quote`\'` then it is not interpreted as an opening/closing one but as a simple character (basically as anything but a quote) and 2. that if we have a backslash before a backslash before the quote `\\'` the the first backslash cancels the second and the quote IS considered as a quote and not a simple character. This applies to both single and double quotes.
 
+Then we enter in the `manage_token` function that will create each token node and fill out the token list. `start_operator` starts by checking whether the first character of `line_read` is an operator as this would be an error in input. If it is a PIPE, it prints the predefined macro  "minishell: syntax error: unexpected token '%c'\n" (Error String Unexpected or ESTR_UNEXP) else if it's an operator of any other type is prints the predefined macro "minishell: syntax error near unexpected token 'newline'\n" (Error String Operator Start or ESTR_OPSTART). Else if it's a builtin it starts the token_list.
 
+The two main functions of `manage_token` are `check_token_type` and `trim_spaces`. `check_token_type` browses through the operators we need to handle's list and if one is found associates the type to the operator enum. If no operator is found, the type is COMMAND.
+
+Things to note : 
+* use `print_token_list` to test the output of the token_list, maybe thats where your error lies
+* the function `is_in_quotes` allows us to check whether an input is within quote so that its counted as part of a single "argument". For example, a pipe within a quoted argument is part of the string it belongs to, it doesnt create a new token.
 
 
 </details>
