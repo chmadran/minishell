@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_utils.c                                        :+:      :+:    :+:   */
+/*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/21 16:39:18 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/22 16:34:37 by chmadran         ###   ########.fr       */
+/*   Created: 2023/07/23 17:56:44 by chmadran          #+#    #+#             */
+/*   Updated: 2023/07/23 18:05:19 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
+#include "minishell.h"
 #include "libft.h"
-#include "exit.h"
+#include "env.h"
 
 void	free_environment_list(t_env *env)
 {
@@ -30,26 +30,17 @@ void	free_environment_list(t_env *env)
 	}
 }
 
-void	print_environement_list(t_env *env_list)
+void	free_token_list(t_token *token_list)
 {
-	t_env	*current;
+	t_token	*next;
+	t_token	*current;
 
-	current = env_list;
+	current = token_list;
 	while (current)
 	{
-		printf("%s=%s\n", current->name, current->value);
-		current = current->next;
+		next = current->next;
+		free(current->data);
+		free(current);
+		current = next;
 	}
-}
-
-void	print_environement_var(t_env *env_list, char *name)
-{
-	t_env	*current;
-
-	current = env_list;
-	while (current && ft_strcmp(current->name, name))
-		current = current->next;
-	if (!current)
-		return ;
-	printf("%s=%s\n", current->name, current->value);
 }

@@ -6,7 +6,7 @@
 #    By: chmadran <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/10 16:46:56 by chmadran          #+#    #+#              #
-#    Updated: 2023/07/22 14:58:39 by chmadran         ###   ########.fr        #
+#    Updated: 2023/07/23 17:31:38 by chmadran         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,9 @@ CFLAGS += -Wall -Wextra -Werror
 RM = rm -f
 
 MY_SOURCES = ft_atoi.c \
+			 ft_bzero.c \
 		     ft_calloc.c \
+			 ft_isspace.c \
 			 ft_itoa.c \
 			 ft_memcpy.c \
 			 ft_memmove.c \
