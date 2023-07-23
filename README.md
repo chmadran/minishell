@@ -167,6 +167,8 @@ Using errno.h error codes provides a standardized and consistent way to represen
 
 Using perror provides a convenient and user-friendly way to handle and report errors in C programs. The perror function is part of the standard C library (stdio.h) and is used to print descriptive error messages to the standard error stream (stderr) based on the value of the global errno variable. For exmaple, the above code could be ```ft_error_exit("malloc (create_add_env_node)", ENOMEM)``` or more simply ```perror("malloc (create_add_env_node)")``` as the correct erno variable would be automatically found.
 
+* returning EXIT_SUCCESS or EXIT_FAILURE
+EXIT_SUCCESS and EXIT_FAILURE are symbolic constants defined in the C programming language, typically found in the stdlib.h header file. They are used to indicate the success or failure status of a program when it exits. These constants are commonly used with the exit() function to terminate a program and provide an exit status to the calling environment. EXIT_SUCCESS has a value of 0 while EXIT_FAILURE has a value of 1.
 
 </details> 
 
