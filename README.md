@@ -83,12 +83,13 @@ OBJ_FILES is another variable that will store a list of object file paths. It us
 
 <details>
 <summary><h3>Some rules we could implement</h3></summary>
-* only include libraries in ```minishell.h```
-* therefore include ```minishell.h``` in each .c file
-* all the error messages are declared in the ```exit.h``` file
-* to be able to use the global variable add ```extern t_master	g_master;``` to .h files
-* never push with leaks OR with norm errors
-* open an issue if you see some commands that segfaults but is not urgent (or is a simple enhancement), using the format : current behaviour/expected behaviour
+* only include libraries in ```minishell.h```   
+* therefore include ```minishell.h``` in each .c file   
+* all the error messages are declared in the ```exit.h``` file   
+* to be able to use the global variable add ```extern t_master	g_master;``` to .h files   
+* never push with leaks OR with norm errors   
+* open an issue if you see some commands that segfaults but is not urgent (or is a simple enhancement), using the format : current behaviour/expected behaviour   
+* calloc not malloc   
 </details>
 
 <h2>Step by Step </h2>
@@ -155,6 +156,8 @@ Things to note :
 * Finally, `add_history` is a function that is in the stdio library and it will allow to use the up and down arroy to check previous (non-empty) inputs as it is asked in the subject to have a working history
 
 <h4>2. CREATING A TOKEN_LIST</h4>
+
+Tokenization is the process of breaking a string (input line) into individual meaningful units called tokens. Tokens can represent different elements of the input, such as commands, arguments, operators, and symbols. The lexer recognizes specific patterns in the input and creates a linked list of tokens, where each node contains a token string and a token type.
 
 Now, in the global structure `g_master`, we have a variable called `t_token *token_list;`. This is a pointer to a the token list. A token is composed of (i) a type that is OPERATOR OR COMMAND, (ii) a data (the command or NULL if the token is of type OPERATOR), and a pointer to the previous and to the next tokens of the list. We now need to fill this token_list with the user input that has been retrieved by the readline function and stored in `g_master.line_read`. 
 
