@@ -165,7 +165,7 @@ We will check at this stage whether there is an uneven number of single or doubl
 
 Then we enter in the `manage_token` function that will create each token node and fill out the token list. `start_operator` starts by checking whether the first character of `line_read` is an operator as this would be an error in input. If it is a PIPE, it prints the predefined macro  "minishell: syntax error: unexpected token '%c'\n" (Error String Unexpected or ESTR_UNEXP) else if it's an operator of any other type is prints the predefined macro "minishell: syntax error near unexpected token 'newline'\n" (Error String Operator Start or ESTR_OPSTART). Else if it's a builtin it starts the token_list.
 
-The two main functions of `manage_token` are `check_token_type` and `trim_spaces`. `check_token_type` browses through the operators we need to handle's list and if one is found associates the type to the operator enum. If no operator is found, the type is COMMAND. `trim_spaces` on the other hand returns a char * data that will fill out the token, if the token is an operator that data is set to NULL.
+The two main functions of `manage_token` are `check_token_type` and `trim_spaces`. `check_token_type` browses through the operators we need to handle's list and if one is found associates the type to the operator enum. If no operator is found, the type is COMMAND. To make enums clearer look at the minishell.h file and see how COMMAND = 0, PIPE = 1 etc. So type = 1 = T_PIPE :) `trim_spaces` on the other hand returns a char * data that will fill out the token, if the token is an operator that data is set to NULL.
 
 Things to note : 
 * use `print_token_list` to test the output of the token_list, maybe thats where your error lies
