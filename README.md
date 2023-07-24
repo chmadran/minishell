@@ -42,13 +42,13 @@
 	◦ ctrl-\ does nothing.
 
 * Your shell must implement the following **builtins**:
-	◦ echo with option -n
-	◦ cd with only a relative or absolute path.
-	◦ pwd with no options
-	◦ export with no options
-	◦ unset with no options
-	◦ env with no options or arguments
-	◦ exit with no options
+	◦ echo with option -n   
+	◦ cd with only a relative or absolute path.   
+	◦ pwd with no options   
+	◦ export with no options    
+	◦ unset with no options   
+	◦ env with no options or arguments   
+	◦ exit with no options  
 
 The readline() function can cause memory leaks. We don’t have to fix them.
 </details>
@@ -175,10 +175,39 @@ Things to note :
 * use `print_token_list` to test the output of the token_list, maybe thats where your error lies
 * the function `is_in_quotes` allows us to check whether an input is within quote so that its counted as part of a single "argument". For example, a pipe within a quoted argument is part of the string it belongs to, it doesnt create a new token.
 
-
-
 </details>
 
+<details>
+<summary><h3>Part 2: THE EXECUTION</h3></summary>
+
+<h4>XXXX. CODING THE REQUIRED BUILTINS</h4>
+
+The subject of minishell asks us to implement some builtins : `cd, echo, env, export, exit, pwd and unset`. Therefore, we must recode them. Very concisely...
+
+<h5>CD</h5>
+The CD builtins if sent without any argument simply searches for the environment variable "HOME" and returns to its path, so to the home directory. You can use ```chdir()``` which is a system call and a C library function used to change the current working directory of a process. It stands for "change directory." The current working directory is the base directory from which all relative pathnames are resolved. If the HOME directory is valid then the environment variable PWD ("Present Working Directory") is updated. If an argument is given to the `cd` buitlins then we check if its a valid directory and if so the PWD environment variable is updated to the value of that new directory and chdir changes it. 
+
+<h5>ECHO</h5>
+We are asked to recreate the `echo` builtins with a potential `-n` flag. So here we use a flag to check if `-n` is present in the input, ifso the flag is set to true, else it stays at false. Then we simply print the arguments of echo on the regular STDOUT, and with a space between each word. If there is no flag `-n` we add a newline after the word, else we dont.
+
+<h5>ENV</h5>
+Simply prints the environment list.
+
+<h5>EXIT</h5>
+Simply clean the programm and use `exit` to leave it. 
+
+<h5>EXPORT</h5>
+If only `export` is sent as argument, we print each variable of the environment list preceded with theword `export` (yes that's it). If an argument is sent to export, we check if (1) its an existing environment variable, if so and its syntaxed a follows NAME=VALUE, we replace the current value of the environment variable found NAME by the new VALUE; (2) else we just add it to the environment variable lists, even if the value is empty.
+
+<h5>PWD</h5>
+We use `getcwd()` which is a C library function and system call used to get the current working directory of a process in a Unix-based operating system to print the working directory. Indeed, the name of the function stands for "get current working directory." The current working directory is the base directory from which all relative pathnames are resolved. It takes two parameters :
+	* buf: A pointer to a buffer where the current working directory path will be stored.  
+	* size: The size of the buffer provided (buf).  
+ 
+<h5>UNSET</h5>
+`Unset` is used to remove environment variables. So we browse through the environment variable and if found we remove it. 
+
+</details>
 
 <summary><h3>ERROR/EXIT HANDLING</h3></summary>
 
