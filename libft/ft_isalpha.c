@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.h                                             :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 12:28:01 by chmadran         ###   ########.fr       */
+/*   Created: 2023/07/24 12:09:17 by chmadran          #+#    #+#             */
+/*   Updated: 2023/07/24 12:09:42 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXEC_H
-# define EXEC_H
+#include "include/libft.h"
 
-# include "minishell.h"
-
-extern t_master	g_master;
-
-/* builtins */
-
-int		ft_cd(int argc, char **argv);
-int		ft_echo(int argc, char **argv);
-int		ft_env(void);
-int		ft_export(int argc, char **argv);
-int		ft_pwd(void);
-
-#endif
+int	ft_isalpha(int c)
+{
+	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+		return (1);
+	return (0);
+}
