@@ -186,7 +186,7 @@ The exec launcher function called `launch_execution` starts by preparing the exe
 <h4>1.2 PREPARING FOR EXECUTION</h4>
 `create_arguments` creates an argument under the format int argc, char **argv. To create the char **, we malloc by the number of spaces (that have been trimmed previously so no risk of extra ones) and then `split_args` fills out the argv from the token data. Then argc is just the number of char * in argv.
 
-Things to note are that we must be careful of quoted/unquoted arguments, and we implemented special rules for backslash. The function `clean_arg` cleans the final argv before it is stored (even reallocating the right amount of memory).
+Things to note are that we must be careful of quoted/unquoted arguments, and we implemented special rules for backslash. The function `clean_arg` cleans the final argv before it is stored (even reallocating the right amount of memory). At this stage, handling backslashes makes the code much more complex, we might want to remove these parts. 
 
 
 <h4>XXXX. CODING THE REQUIRED BUILTINS</h4>
