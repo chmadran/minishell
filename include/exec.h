@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.h                                              :+:      :+:    :+:   */
+/*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/21 16:23:29 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 12:33:34 by chmadran         ###   ########.fr       */
+/*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
+/*   Updated: 2023/07/24 12:33:51 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_H
-# define ENV_H
+#ifndef EXEC_H
+# define EXEC_H
 
 # include "minishell.h"
 
-# define SHLVL "SHLVL"
-
 extern t_master	g_master;
 
-/* env.c */
+/* builtins */
 
-void	manage_environment(t_env **env_list);
-
-/* env_utils.c */
-
-void	remove_var(t_master *master, t_env *env);
-void	add_back_env_var(t_env **env_list, t_env *var);
-bool	is_var_already_in_env(t_env **env_list, t_env *var);
-bool	is_valid_variable_name(char	*name, char *var_str);
+int		ft_cd(int argc, char **argv);
+int		ft_echo(int argc, char **argv);
+int		ft_env(void);
+int		ft_export(int argc, char **argv);
+int		ft_pwd(void);
+int		ft_unset(int argc, char **argv, t_master *master);
 
 #endif

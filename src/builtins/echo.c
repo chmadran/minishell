@@ -1,38 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/21 16:47:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 11:43:09 by chmadran         ###   ########.fr       */
+/*   Created: 2023/07/24 11:03:13 by chmadran          #+#    #+#             */
+/*   Updated: 2023/07/24 11:42:53 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "env.h"
 #include "libft.h"
+#include "exit.h"
+#include "env.h"
+#include "exec.h"
 
-void	ft_cleanup_exit(void)
+int	ft_echo(int argc, char **argv)
 {
-	rl_clear_history();
-	free_environment_list(g_master.env_list);
-	if (g_master.token_list)
-		free_token_list(g_master.token_list);
-	free(g_master.line_read);
-}
+	int		i;
+	bool	is_option;
 
-void	ft_error_exit(char *str, int error)
-{
-	ft_putstr_fd(str, STDERR_FILENO);
-	g_master.exit_status = error;
-}
-
-void	ft_exit(void)
-{
-	//cleanup_executable();
-	ft_cleanup_exit();
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
-	exit(EXIT_SUCCESS);
+	i = 0;
+	is_option = false;
+	if (argc > 1 && !ft_strncmp(argv[1], "-n", 2))
+	{
+		i = 1;
+		is_option = true;
+	}
+	while (argv[i])
+	{
+		ft_putstr_fd(argv[i], STDOUT_FILENO);
+		if (argv[i + 1])
+			ft_putstr_fd(" ", STDOUT_FILENO);
+		i++;
+	}
+	if (!is_option)
+		ft_putstr_fd("\n", STDOUT_FILENO);
+	return (EXIT_SUCCESS);
 }

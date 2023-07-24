@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 15:32:48 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 10:16:08 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 11:42:27 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 #include "exit.h"
 #include "env.h"
+#include "exec.h"
 
 t_master	g_master;
 
@@ -23,7 +24,7 @@ static void	handle_sigint(int signum)
 	{
 		g_master.exit_status = 130;
 		rl_replace_line("", 0);
-		ft_putstr_fd("^C\n", 2);
+		ft_putstr_fd("^C\n", 1);
 		rl_on_new_line();
 		rl_redisplay();
 	}

@@ -1,38 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/21 16:47:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 11:43:09 by chmadran         ###   ########.fr       */
+/*   Created: 2023/07/24 12:30:45 by chmadran          #+#    #+#             */
+/*   Updated: 2023/07/24 12:35:07 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "env.h"
 #include "libft.h"
+#include "exit.h"
+#include "env.h"
+#include "exec.h"
 
-void	ft_cleanup_exit(void)
+int	ft_unset(int argc, char **argv, t_master *master)
 {
-	rl_clear_history();
-	free_environment_list(g_master.env_list);
-	if (g_master.token_list)
-		free_token_list(g_master.token_list);
-	free(g_master.line_read);
-}
+	t_env	*current;
 
-void	ft_error_exit(char *str, int error)
-{
-	ft_putstr_fd(str, STDERR_FILENO);
-	g_master.exit_status = error;
-}
-
-void	ft_exit(void)
-{
-	//cleanup_executable();
-	ft_cleanup_exit();
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
-	exit(EXIT_SUCCESS);
+	current = master->env_list;
+	if (argc != 2)
+		return (EXIT_FAILURE);
+	while (current)
+	{
+		if (ft_strcmp(argv[1], current->name) == 0)
+		{
+			remove_var(master, current);
+			break ;
+		}
+		current = current->next;
+	}
+	return (EXIT_SUCCESS);
 }

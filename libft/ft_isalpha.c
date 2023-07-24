@@ -1,33 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.h                                              :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/21 16:23:29 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 12:33:34 by chmadran         ###   ########.fr       */
+/*   Created: 2023/07/24 12:09:17 by chmadran          #+#    #+#             */
+/*   Updated: 2023/07/24 12:09:42 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_H
-# define ENV_H
+#include "include/libft.h"
 
-# include "minishell.h"
-
-# define SHLVL "SHLVL"
-
-extern t_master	g_master;
-
-/* env.c */
-
-void	manage_environment(t_env **env_list);
-
-/* env_utils.c */
-
-void	remove_var(t_master *master, t_env *env);
-void	add_back_env_var(t_env **env_list, t_env *var);
-bool	is_var_already_in_env(t_env **env_list, t_env *var);
-bool	is_valid_variable_name(char	*name, char *var_str);
-
-#endif
+int	ft_isalpha(int c)
+{
+	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+		return (1);
+	return (0);
+}
