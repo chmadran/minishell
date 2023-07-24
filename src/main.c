@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 15:32:48 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 11:42:27 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 15:29:59 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	main(void)
 	manage_environment(&g_master.env_list);
 	while (1)
 	{
+		g_master.token_list = NULL;
 		g_master.line_read = readline("\033[32mminishell: \033[0m");
 		if (!g_master.line_read)
 			break ;
@@ -45,9 +46,10 @@ int	main(void)
 			add_history(g_master.line_read);
 		if (launch_lexer(g_master.line_read, &g_master.token_list))
 			continue ;
+		free_token_list(g_master.token_list);
+		free(g_master.line_read);
 	}
-	//print_token_list(g_master.token_list);
-	//print_environement_list(g_master.env_list);
-	ft_cleanup_exit();
+	free_environment_list(g_master.env_list);
+	//ft_cleanup_exit();
 	return (0);
 }
