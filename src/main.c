@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 15:32:48 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 15:29:59 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 16:32:59 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ int	main(void)
 		if (launch_lexer(g_master.line_read, &g_master.token_list))
 			continue ;
 		launch_execution(&g_master);
+		free_executable();
 		free_token_list(g_master.token_list);
 		free(g_master.line_read);
 	}
 	//print_environement_list(g_master.env_list);
 	free_environment_list(g_master.env_list);
-	free_executable();
 	//ft_cleanup_exit();
 	return (0);
 }
