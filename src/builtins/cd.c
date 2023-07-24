@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:40:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 13:31:26 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 13:34:18 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static int	change_directory_and_update(t_env *env_list, char *path)
 
 int	ft_cd(int argc, char **argv)
 {
-	const char	*home_path;
+	char	*home_path;
 
 	if (argc == 1)
 	{
