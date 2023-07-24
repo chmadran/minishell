@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 17:53:58 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 16:32:32 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 17:52:47 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,23 @@
 
 void	print_executable(t_exec *exec)
 {
-	printf("FIRST ARGV %s", exec->argv[0]);
-	printf("TOTAL ARGC : %d\n", exec->argc);
+	int	i;
+
+	i = 0;
+	printf("argc: %d\n", exec->argc);
+	if (exec->argv)
+	{
+		printf("argv:\n");
+		while (i < exec->argc)
+		{
+			printf("  argv[%d]: %s\n", i, exec->argv[i]);
+			i++;
+		}
+	}
+	else
+	{
+		printf("argv: NULL\n");
+	}
 }
 
 void	print_environement_list(t_env *env_list)

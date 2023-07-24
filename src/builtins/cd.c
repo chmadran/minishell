@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:40:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 13:34:18 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 16:46:31 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	update_env(t_env *env_list)
 	return (EXIT_SUCCESS);
 }
 
-static char	*get_env_value(t_env *env, char *name)
+static char	*get_env_value_cd(t_env *env, char *name)
 {
 	t_env	*current;
 
@@ -82,7 +82,7 @@ int	ft_cd(int argc, char **argv)
 
 	if (argc == 1)
 	{
-		home_path = get_env_value(g_master.env_list, "HOME");
+		home_path = get_env_value_cd(g_master.env_list, "HOME");
 		if (!home_path)
 		{
 			ft_putstr_fd("minishell: cd: HOME not set\n", STDERR_FILENO);
