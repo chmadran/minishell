@@ -167,9 +167,14 @@ Then we enter in the `manage_token` function that will create each token node an
 
 The two main functions of `manage_token` are `check_token_type` and `trim_spaces`. `check_token_type` browses through the operators we need to handle's list and if one is found associates the type to the operator enum. If no operator is found, the type is COMMAND. To make enums clearer look at the minishell.h file and see how COMMAND = 0, PIPE = 1 etc. So type = 1 = T_PIPE :) `trim_spaces` on the other hand returns a char * data that will fill out the token, if the token is an operator that data is set to NULL.
 
+The final checks at this stage are `is_heredoc_pipe` that checks whether there's a pipe followed by nothing which would open a heredoc pipe but in our program simply displays an error message and opens a new prompt; and `is_clean` that checks whether there are two different or similar operators following each other (so operator, space, operator) which is an invalid input.
+
+If `launch_lexer` exits successfully, we move on to the execution.
+
 Things to note : 
 * use `print_token_list` to test the output of the token_list, maybe thats where your error lies
 * the function `is_in_quotes` allows us to check whether an input is within quote so that its counted as part of a single "argument". For example, a pipe within a quoted argument is part of the string it belongs to, it doesnt create a new token.
+
 
 
 </details>
