@@ -6,13 +6,27 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 17:53:58 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/23 18:05:28 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 14:43:30 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include "env.h"
+
+void	print_executable(t_exec *exec)
+{
+	int i;
+
+	i = 0;
+	if (!exec->argc || exec->argv)
+		printf("THERE ARE NO ARGC\n");
+	while (exec->argv[i])
+	{
+		printf("%s\n", exec->argv[i]);
+	}
+	printf("TOTAL ARGC : %d\n", exec->argc);
+}
 
 void	print_environement_list(t_env *env_list)
 {

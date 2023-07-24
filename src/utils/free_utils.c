@@ -6,13 +6,32 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 17:56:44 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/23 18:05:19 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 14:49:16 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include "env.h"
+
+void	free_double_ptr(char **str)
+{
+	char	**ptr;
+
+	if (!str)
+		return ;
+	ptr = str;
+	while (*ptr)
+		free(*ptr++);
+	free(str);
+}
+
+void	free_executable(void)
+{
+	free_double_ptr(g_master.exec->argv);
+	free(g_master.exec->pathname);
+	free(g_master.exec);
+}
 
 void	free_environment_list(t_env *env)
 {

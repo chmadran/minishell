@@ -227,3 +227,4 @@ The syntax : `# define ESTR_QUOTE "minishell: syntax error: unmatched quote\n"` 
 
 </details> 
 
+TO NOTE !!! SHOULD WE JUST EXIT AFTER FT_ERROR_EXIT??? LIKEFOR MALLOCS ETC, need to harmonize

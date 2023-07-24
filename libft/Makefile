@@ -6,7 +6,7 @@
 #    By: chmadran <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/10 16:46:56 by chmadran          #+#    #+#              #
-#    Updated: 2023/07/24 12:11:15 by chmadran         ###   ########.fr        #
+#    Updated: 2023/07/24 14:34:23 by chmadran         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,8 +35,10 @@ MY_SOURCES = ft_atoi.c \
 			 ft_strlcat.c \
 			 ft_strlcpy.c \
 			 ft_strlen.c \
+			 ft_strncat.c \
 			 ft_strncmp.c \
 			 ft_strndup.c \
+			 ft_strnlen.c \
 			 ft_strnstr.c \
 			 ft_strrchr.c \
 
