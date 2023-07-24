@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 17:27:12 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/23 18:04:30 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 09:58:02 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,52 +45,6 @@ bool	is_in_quotes(const char *line_read, size_t j)
 		i++;
 	}
 	return (inside_single_quotes || inside_double_quotes);
-}
-
-static bool	return_value(bool in_single_quote, bool in_double_quote)
-{
-	if (in_single_quote)
-	{
-		printf(ESTR_QUOTE);
-		g_master.exit_status = 2;
-		return (EXIT_FAILURE);
-	}
-	else if (in_double_quote)
-	{
-		printf(ESTR_DQUOTE);
-		g_master.exit_status = 2;
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
-
-int	unclosed_quotes(const char *line_read)
-{
-	size_t	i;
-	bool	in_single_quote;
-	bool	in_double_quote;
-
-	i = -1;
-	in_single_quote = false;
-	in_double_quote = false;
-	while (line_read[++i])
-	{
-		if (line_read[i] == '\'')
-		{
-			if ((line_read[i - 1] == '\\' && line_read[i - 2] == '\\')
-				|| (line_read[i - 1] != '\\'))
-				if (!in_double_quote)
-					in_single_quote = !in_single_quote;
-		}
-		else if (line_read[i] == '\"')
-		{
-			if ((line_read[i - 1] == '\\' && line_read[i - 2] == '\\')
-				|| (line_read[i - 1] != '\\'))
-				if (!in_single_quote)
-					in_double_quote = !in_double_quote;
-		}
-	}
-	return (return_value(in_single_quote, in_double_quote));
 }
 
 void	create_token_node(t_token_type type, char *data, t_token **token_list)

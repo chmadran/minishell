@@ -6,12 +6,13 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 15:32:48 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/23 18:05:52 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 10:16:08 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
+#include "exit.h"
 #include "env.h"
 
 t_master	g_master;
@@ -41,10 +42,11 @@ int	main(void)
 			break ;
 		if (ft_strlen(g_master.line_read))
 			add_history(g_master.line_read);
-		launch_lexer(g_master.line_read, &g_master.token_list);
-		print_token_list(g_master.token_list);
+		if (launch_lexer(g_master.line_read, &g_master.token_list))
+			continue ;
 	}
+	//print_token_list(g_master.token_list);
 	//print_environement_list(g_master.env_list);
-	free_environment_list(g_master.env_list);
-	free_token_list(g_master.token_list);
+	ft_cleanup_exit();
+	return (0);
 }

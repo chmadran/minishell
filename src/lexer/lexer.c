@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 16:42:19 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/23 18:05:01 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 10:17:39 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,7 @@ static int	manage_token(const char *line_read, t_token **token_lst)
 	i = 0;
 	type = check_token_type(line_read[i], line_read, &i);
 	if (start_operator(type) == EXIT_FAILURE)
-	{
-		g_master.exit_status = 2;
 		return (EXIT_FAILURE);
-	}
 	while (line_read[i])
 	{
 		j = i;
@@ -104,15 +101,15 @@ static int	manage_token(const char *line_read, t_token **token_lst)
 
 int	launch_lexer(char *line_read, t_token **token_list)
 {
-	if (unclosed_quotes(line_read) == EXIT_FAILURE)
+	if (unclosed_quotes(line_read))
 		return (EXIT_FAILURE);
-	if (manage_token(line_read, token_list) == EXIT_FAILURE)
+	if (manage_token(line_read, token_list))
 		return (EXIT_FAILURE);
-	//if ((is_heredoc_pipe(token_list) == EXIT_FAILURE)
-	// 	|| (is_clean(token_list) == EXIT_FAILURE))
-	// {
-	// 	g_master.exit_status = 2;
-	// 	return (EXIT_FAILURE);
-	// }
+	if ((is_heredoc_pipe(token_list))
+		|| (is_clean(token_list)))
+	{
+		g_master.exit_status = 2;
+		return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }
