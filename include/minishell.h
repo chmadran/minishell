@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 14:49:51 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 16:12:22 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ typedef struct s_exec
 {
 	int			argc;
 	char		**argv;
-	char		*pathname;
 	t_token		*token;
 } t_exec;
 
