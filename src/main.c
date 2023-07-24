@@ -14,6 +14,7 @@
 #include "libft.h"
 #include "exit.h"
 #include "env.h"
+#include "exec.h"
 
 t_master	g_master;
 
