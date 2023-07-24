@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:47:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 10:14:58 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 11:43:09 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@ void	ft_cleanup_exit(void)
 
 void	ft_error_exit(char *str, int error)
 {
-	ft_putstr_fd(str, 2);
+	ft_putstr_fd(str, STDERR_FILENO);
 	g_master.exit_status = error;
+}
+
+void	ft_exit(void)
+{
+	//cleanup_executable();
+	ft_cleanup_exit();
+	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	exit(EXIT_SUCCESS);
 }

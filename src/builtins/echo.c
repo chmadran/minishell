@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:03:13 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 11:25:31 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 11:42:53 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ int	ft_echo(int argc, char **argv)
 	}
 	while (argv[i])
 	{
-		ft_putstr_fd(argv[i], 1);
+		ft_putstr_fd(argv[i], STDOUT_FILENO);
 		if (argv[i + 1])
-			ft_putstr_fd(" ", 1);
+			ft_putstr_fd(" ", STDOUT_FILENO);
 		i++;
 	}
 	if (!is_option)
-		ft_putstr_fd("\n", 1);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 	return (EXIT_SUCCESS);
 }
