@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 11:30:14 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 11:43:40 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ extern t_master	g_master;
 
 /* builtins */
 
-int	ft_echo(int argc, char **argv);
-int	ft_env(void);
+int		ft_cd(int argc, char **argv);
+int		ft_echo(int argc, char **argv);
+int		ft_env(void);
 
 #endif
