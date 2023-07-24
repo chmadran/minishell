@@ -180,12 +180,21 @@ Things to note :
 <details>
 <summary><h3>Part 2: THE EXECUTION</h3></summary>
 
+<h4>1. PREPARING FOR EXECUTION</h4>
+The exec launcher function called `launch_execution` starts by preparing the execution.
+
+<h4>1.2 PREPARING FOR EXECUTION</h4>
+`create_arguments` creates an argument under the format int argc, char **argv. To create the char **, we malloc by the number of spaces (that have been trimmed previously so no risk of extra ones) and then `split_args` fills out the argv from the token data. Then argc is just the number of char * in argv.
+
+Things to note are that we must be careful of quoted/unquoted arguments, and we implemented special rules for backslash. The function `clean_arg` cleans the final argv before it is stored (even reallocating the right amount of memory). At this stage, handling backslashes makes the code much more complex, we might want to remove these parts. 
+
+
 <h4>XXXX. CODING THE REQUIRED BUILTINS</h4>
 
 The subject of minishell asks us to implement some builtins : `cd, echo, env, export, exit, pwd and unset`. Therefore, we must recode them. Very concisely...
 
 <h5>CD</h5>
-The CD builtins if sent without any argument simply searches for the environment variable "HOME" and returns to its path, so to the home directory. You can use ```chdir()``` which is a system call and a C library function used to change the current working directory of a process. It stands for "change directory." The current working directory is the base directory from which all relative pathnames are resolved. If the HOME directory is valid then the environment variable PWD ("Present Working Directory") is updated. If an argument is given to the `cd` buitlins then we check if its a valid directory and if so the PWD environment variable is updated to the value of that new directory and chdir changes it. 
+The CD builtins if sent without any argument simply searches for the environment variable "HOME" and returns to its path, so to the home directory. You can use `chdir()` which is a system call and a C library function used to change the current working directory of a process. It stands for "change directory." The current working directory is the base directory from which all relative pathnames are resolved. If the HOME directory is valid then the environment variable PWD ("Present Working Directory") is updated. If an argument is given to the `cd` buitlins then we check if its a valid directory and if so the PWD environment variable is updated to the value of that new directory and chdir changes it. 
 
 <h5>ECHO</h5>
 We are asked to recreate the `echo` builtins with a potential `-n` flag. So here we use a flag to check if `-n` is present in the input, ifso the flag is set to true, else it stays at false. Then we simply print the arguments of echo on the regular STDOUT, and with a space between each word. If there is no flag `-n` we add a newline after the word, else we dont.
