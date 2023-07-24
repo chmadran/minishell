@@ -46,10 +46,13 @@ int	main(void)
 			add_history(g_master.line_read);
 		if (launch_lexer(g_master.line_read, &g_master.token_list))
 			continue ;
+		launch_execution(&g_master);
 		free_token_list(g_master.token_list);
 		free(g_master.line_read);
 	}
+	//print_environement_list(g_master.env_list);
 	free_environment_list(g_master.env_list);
+	free_executable();
 	//ft_cleanup_exit();
 	return (0);
 }

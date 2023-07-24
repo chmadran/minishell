@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 12:33:51 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 14:40:04 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,19 @@ int		ft_env(void);
 int		ft_export(int argc, char **argv);
 int		ft_pwd(void);
 int		ft_unset(int argc, char **argv, t_master *master);
+
+/* execution : arguments */
+void	launch_execution(t_master *master);
+char	*clean_arg(char *s);
+void	split_args(char *s, char **argv);
+t_exec	*create_arguments(t_token *token);
+
+/* execution : arguments utils */
+
+size_t	count_spaces(char *str);
+char	*allocate_memory_for_arg(char *s);
+char	*handle_quoted_argument(char *s, char **arg);
+char	*handle_unquoted_argument(char *s, char **arg);
+
 
 #endif

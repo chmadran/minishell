@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 09:58:23 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 16:12:22 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,18 @@ typedef struct s_env
 	struct s_env	*last;
 }	t_env;
 
+typedef struct s_exec
+{
+	int			argc;
+	char		**argv;
+	t_token		*token;
+} t_exec;
+
 typedef struct s_master
 {
 	t_env	*env_list;
 	t_token	*token_list;
+	t_exec	*exec;
 	char	*line_read;
 	int		exit_status;
 }	t_master;
@@ -77,11 +85,14 @@ int		is_clean(t_token **token_lst);
 int		unclosed_quotes(const char *line_read);
 
 /* print_utils.c */
+void	print_executable(t_exec *exec);
 void	print_environement_var(t_env *env_list, char *name);
 void	print_environement_list(t_env *env_list);
 void	print_token_list(t_token *token_list);
 
 /* free_utils.c */
+void	free_double_ptr(char **str);
+void	free_executable(void);
 void	free_environment_list(t_env *env);
 void	free_token_list(t_token *token_list);
 

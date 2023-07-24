@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 16:44:34 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/23 17:25:24 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 14:36:49 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,16 @@ size_t			ft_strlen(const char *s);
 
 char			*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 
+char			*ft_strncat(char *dst, const char *src, size_t n);
+
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 
 char			*ft_strnstr(const char *haystack, const char *needle,
 					size_t len);
 
 char			*ft_strndup(const char *s1, size_t n);
+
+size_t			ft_strnlen(const char *str, size_t maxlen);
 
 char			*ft_strrchr(const char *s, int c);
 

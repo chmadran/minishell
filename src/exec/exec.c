@@ -1,38 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/21 16:47:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 15:05:28 by chmadran         ###   ########.fr       */
+/*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
+/*   Updated: 2023/07/24 14:54:33 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "env.h"
 #include "libft.h"
+#include "exit.h"
+#include "env.h"
+#include "exec.h"
 
-void	ft_cleanup_exit(void)
+static void	prepare_execution(t_master *master, t_token *token, t_exec *exec)
 {
-	rl_clear_history();
-	//free_executable();
-	free_environment_list(g_master.env_list);
-	free_token_list(g_master.token_list);
-	free(g_master.line_read);
+	master->exec = create_arguments(token);
+	(void)token;
+	(void)exec;
 }
 
-void	ft_error_exit(char *str, int error)
+void	launch_execution(t_master *master)
 {
-	ft_putstr_fd(str, STDERR_FILENO);
-	g_master.exit_status = error;
-}
+	t_exec		exec;
+	t_token		*token;
 
-void	ft_exit(void)
-{
-	//cleanup_executable();
-	ft_cleanup_exit();
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
-	exit(EXIT_SUCCESS);
+	token = master->token_list;
+	prepare_execution(master, token, &exec);
+	//if (master->exit_status == 127)
+	//	break ;
+	//print_executable(&exec);
 }
