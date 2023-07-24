@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:40:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 11:55:22 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 12:03:02 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static char	*get_env_value(t_env *env, char *name)
 	return (NULL);
 }
 
-static int	change_directory_and_update(t_master *master,
+static int	change_directory_and_update(t_env *env_list,
 const char *path)
 {
 	if (chdir(path) == -1)
@@ -72,7 +72,7 @@ const char *path)
 		ft_error_exit("minishell: cd", ENOENT);
 		return (EXIT_FAILURE);
 	}
-	if (update_env(master->env_list))
+	if (update_env(env_list))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
