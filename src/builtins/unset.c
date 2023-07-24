@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 12:30:45 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 12:34:09 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 12:35:07 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "exit.h"
 #include "env.h"
 #include "exec.h"
-
 
 int	ft_unset(int argc, char **argv, t_master *master)
 {

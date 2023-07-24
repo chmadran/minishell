@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 12:00:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 12:32:41 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 13:31:17 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ static int	export_var(char *var_str, char *equals_location)
 
 	var = malloc(1 * sizeof(t_env));
 	if (!var)
-	{
-		ft_error_exit("malloc (export_var)\n", ENOMEM);
 		return (EXIT_FAILURE);
-	}
 	if (equals_location)
 	{
 		*equals_location = '\0';
