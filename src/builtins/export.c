@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 12:00:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 12:15:18 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 12:32:41 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,60 +15,6 @@
 #include "exit.h"
 #include "env.h"
 #include "exec.h"
-
-static bool	is_valid_variable_name(char	*name, char *var_str)
-{
-	if (!ft_isalpha(name[0]) && name[0] != '_')
-	{
-		printf("minishell: export: '%s': not a valid identifier\n", var_str);
-		return (false);
-	}
-	name++;
-	while (*name)
-	{
-		if (!ft_isalnum(*name) && *name != '_')
-		{
-			printf("minishell: export: '%s': not a valid identifier\n", var_str);
-			return (false);
-		}
-		name++;
-	}
-	return (true);
-}
-
-static bool	is_var_already_in_env(t_env **env_list, t_env *var)
-{
-	t_env	*current;
-
-	current = *env_list;
-	if (!current->name || !var->name)
-	{
-		return (false);
-	}
-	while (current)
-	{
-		if (!ft_strcmp(current->name, var->name))
-		{
-			free(current->value);
-			current->value = var->value;
-			free(var->name);
-			return (true);
-		}
-		current = current->next;
-	}
-	return (false);
-}
-
-static void	add_back_env_var(t_env **env_list, t_env *var)
-{
-	if (!env_list)
-		env_list = &var;
-	else
-	{
-		(*env_list)->last->next = var;
-		(*env_list)->last = var;
-	}
-}
 
 static int	export_var(char *var_str, char *equals_location)
 {
