@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 14:40:04 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 16:49:36 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 extern t_master	g_master;
 
 /* builtins */
-
 int		ft_cd(int argc, char **argv);
 int		ft_echo(int argc, char **argv);
 int		ft_env(void);
@@ -33,11 +32,13 @@ void	split_args(char *s, char **argv);
 t_exec	*create_arguments(t_token *token);
 
 /* execution : arguments utils */
-
 size_t	count_spaces(char *str);
 char	*allocate_memory_for_arg(char *s);
 char	*handle_quoted_argument(char *s, char **arg);
 char	*handle_unquoted_argument(char *s, char **arg);
 
+/* expansion */
+void	launch_expansion(t_exec *exec);
+char	*extract_expansion_name(char *str);
 
 #endif

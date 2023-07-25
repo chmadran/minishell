@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:27:12 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/22 16:34:46 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/25 09:24:38 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	fill_env_node(t_env **env_list, char *n, char *v)
 {
 	char	*name;
 	char	*value;
-	
+
 	name = ft_strdup(n);
 	if (ft_strcmp(name, "PWD") == 0)
 		value = getcwd(NULL, 0);
