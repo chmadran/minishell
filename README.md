@@ -200,7 +200,7 @@ We start by look at argv[0] in `find_arg_type` and assigning it a type following
 
 Then we `execute_command_or_builtin`, indeed if the type is ERROR we start by handling it by printing the correct error message and assigning the exit_code to 127. Now if the type is not ERROR and not OTHERS it means its a builtin we had to recreate. We send our exec arg to `execute_builtin` and then to the correct recreated builtin function (cd, echo, env, export, exit, pwd or unset). Finally, if the type is neither ERROR nor a known BUILTIN then it's OTHERS. The exec arg is sent to `execute_command` that will `search_path_command` check if the command sent as argv[0] is an existing pathname under the environment variable `PATH`. If not (TOFILL), else it returns true and stores it in the exec structure under `char *pathname`. 
 
-NOT SURe WHY WE CHECK WHETHER A PATH NOT FOUND IS EXECUTABLE THEN IS_DIR OR NOT... TBC
+NOT SURE WHY WE CHECK WHETHER A PATH NOT FOUND IS EXECUTABLE THEN IS_DIR OR NOT... TBC
 
 Things to note :   
 *  When we check if an entry is a directory, the correct type for representing a directory stream in C is DIR, and it is typically used in conjunction with the `opendir`, `readdir`, and `closedir` functions from the <dirent.h> header
@@ -208,7 +208,7 @@ Things to note :
 * The `access` function in C is used to check the accessibility of a file with respect to the permissions of the calling process. It is declared in the `<unistd.h>` header. The second argument, mode, is an integer representing the mode of access you want to check. One of the possible values for the mode argument is X_OK, which is used to check if a file is executable (has the execute permission bit set) by the calling process.
 
 
-<h4>XXXX. CODING THE REQUIRED BUILTINS</h4>
+<h4>1.4. CODING THE REQUIRED BUILTINS</h4>
 
 The subject of minishell asks us to implement some builtins : `cd, echo, env, export, exit, pwd and unset`. Therefore, we must recode them. Very concisely...
 
