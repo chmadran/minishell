@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:47:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 15:05:28 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:33:21 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_error_exit(char *str, int error)
 
 void	ft_exit(void)
 {
-	//cleanup_executable();
+	free_executable();
 	ft_cleanup_exit();
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	exit(EXIT_SUCCESS);
