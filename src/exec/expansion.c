@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:42:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 18:57:39 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/25 09:24:25 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,6 @@ static void	process_expansion_replace(t_exec *exec, char *substr_start, int i)
 	char	*value;
 	char	*new_str;
 
-	value = NULL;
-	name = NULL;
-	new_str = NULL;
 	name = extract_expansion_name(substr_start);
 	if (substr_start[1] == '?')
 	{
@@ -96,9 +93,7 @@ static void	process_expansion_replace(t_exec *exec, char *substr_start, int i)
 		}
 	}
 	else
-	{
 		value = get_env_value(g_master.env_list, name);
-	}
 	new_str = create_new_string(substr_start, name, value, i);
 	free(exec->argv[i]);
 	exec->argv[i] = new_str;
