@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/25 11:09:21 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:06:55 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <unistd.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
 # define DEFAULT_PATH_1 "/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin"
 # define DEFAULT_PATH_2 ":/opt/homebrew/bin"
@@ -71,6 +74,10 @@ typedef struct s_exec
 	char		**argv;
 	char		*pathname;
 	t_token		*token;
+	pid_t		pid;
+	int			pipefd[2];
+	int			old_pipefd[2];
+	bool		first_cmd;
 }	t_exec;
 
 typedef struct s_env

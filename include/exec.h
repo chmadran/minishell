@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/25 13:33:33 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/25 16:44:31 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,10 @@ void	launch_expansion(t_exec *exec);
 void	handle_error_cases(t_master *master, t_exec *exec);
 int		execute_command(t_master *master, t_exec *exec);
 int		execute_builtin(t_exec *exec, t_builtin_type type);
+
+/* exec_process.c*/
+void	child_process_execution(t_master *master, t_token *token, t_exec *exec);
+void	parent_process_execution(t_token **token, t_exec *exec);
+void	execve_execute_command(t_exec *exec, t_env *env_list);
 
 #endif

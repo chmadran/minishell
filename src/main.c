@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 15:32:48 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/25 09:24:49 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/25 16:55:40 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	main(void)
 		if (launch_lexer(g_master.line_read, &g_master.token_list))
 			continue ;
 		launch_execution(&g_master);
-		free_executable();
+		//free_executable();
 		free_token_list(g_master.token_list);
 		free(g_master.line_read);
 	}
