@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:13:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/25 13:33:11 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/25 15:28:49 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,84 +16,49 @@
 #include "env.h"
 #include "exec.h"
 
-void	handle_error_cases(t_master *master, t_exec *exec)
+static char	**search_paths_commands(void)
 {
-	if (ft_strcmp(exec->argv[0], ".") == 0 && exec->argc == 1)
-	{
-		printf("minishell: .: filename argument required\n");
-		printf(".: usage: . filename [arguments]\n");
-		master->exit_status = 2;
-	}
-	else
-	{
-		printf("minishell: %s: command not found\n", exec->argv[0]);
-		master->exit_status = 127;
-	}
-}
-
-static char	*search_path_command(t_env *env_list, char *command)
-{
-	int		i;
-	char	*temp;
-	char	**paths;
 	t_env	*current;
-	char	*pathname;
 
-	current = env_list;
+	current = g_master.env_list;
 	while (current && current->name && ft_strcmp(current->name, "PATH"))
 		current = current->next;
 	if (!current || !current->value)
-		paths = ft_split(DEFAULT_PATH_1 DEFAULT_PATH_2, ':');
+		return (ft_split(DEFAULT_PATH_1 DEFAULT_PATH_2, ':'));
 	else
-		paths = ft_split(current->value, ':');
-	i = -1;
-	while (paths[++i])
-	{
-		temp = ft_strjoin("/", command);
-		pathname = ft_strjoin(paths[i], temp);
-		free(temp);
-		if (!access(pathname, X_OK))
-			return (free_double_ptr(paths), pathname);
-		free(pathname);
-	}
-	free_double_ptr(paths);
+		return (ft_split(current->value, ':'));
 	return (NULL);
 }
 
-static bool	is_directory(const char *path)
+static char	*search_pathname_command(char *command)
 {
-	DIR	*dir;
+	int		i;
+	char	*temp_command;
+	char	**paths;
+	char	*pathname;
 
-	dir = opendir(path);
-	if (dir)
+	i = 0;
+	temp_command = ft_strjoin("/", command);
+	paths = search_paths_commands();
+	while (paths[i])
 	{
-		closedir(dir);
-		return (true);
+		pathname = ft_strjoin(paths[i], temp_command);
+		if (access(pathname, X_OK) == 0)
+			return (free(temp_command), free_double_ptr(paths), pathname);
+		free(pathname);
+		i++;
 	}
-	return (false);
+	return (free(temp_command), free_double_ptr(paths), NULL);
 }
 
 int	execute_command(t_master *master, t_exec *exec)
 {
-	exec->pathname = search_path_command(master->env_list, exec->argv[0]);
+	exec->pathname = search_pathname_command(exec->argv[0]);
 	if (!exec->pathname)
 	{
-		if (access(exec->argv[0], X_OK) == 0)
-		{
-			if (is_directory(exec->argv[0]))
-			{
-				printf("minishell: %s: Is a directory\n", exec->argv[0]);
-				master->exit_status = 126;
-				return (EXIT_FAILURE);
-			}
-			exec->pathname = ft_strdup(exec->argv[0]);
-		}
-		else
-		{
-			printf("minishell: %s: command not found\n", exec->argv[0]);
-			master->exit_status = 127;
-			return (EXIT_FAILURE);
-		}
+		printf("minishell: %s: command not found\n", exec->argv[0]);
+		master->exit_status = 127;
+		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/25 13:32:26 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/25 15:27:49 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 
 static int	launch_command_or_builtin(t_exec *exec, t_builtin_type type)
 {
-	if (type == T_ERROR || !ft_strcmp(exec->argv[0], ".")
-		|| !ft_strcmp(exec->argv[0], ".."))
+	if (type == T_ERROR)
 	{
-		handle_error_cases(&g_master, exec);
+		printf("minishell: %s: command not found\n", exec->argv[0]);
+		g_master.exit_status = 127;
 		return (T_ERROR);
 	}
 	else if (type != T_OTHERS)
@@ -67,9 +67,7 @@ static void	prepare_execution(t_master *master, t_token *token, t_exec *exec)
 	master->exec = create_arguments(token);
 	launch_expansion(master->exec);
 	type = find_arg_type(master->exec->argv[0]);
-	print_data_builtins(master->exec);
 	launch_command_or_builtin(master->exec, type);
-	printf("NOW TIME TO DO THE REAL EXECUTION YEAH\n");
 	return ;
 }
 
