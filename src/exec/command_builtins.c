@@ -24,11 +24,6 @@ void	handle_error_cases(t_master *master, t_exec *exec)
 		printf(".: usage: . filename [arguments]\n");
 		master->exit_status = 2;
 	}
-	else if (ft_strcmp(exec->argv[0], "..") == 0)
-	{
-		printf("minishell: %s: command not found\n", exec->argv[0]);
-		master->exit_status = 127;
-	}
 	else
 	{
 		printf("minishell: %s: command not found\n", exec->argv[0]);
