@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:42:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/25 13:29:49 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/25 09:24:25 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "env.h"
 #include "exec.h"
 
-static char	*extract_expansion_name(char *str)
+char	*extract_expansion_name(char *str)
 {
 	size_t	i;
 	char	*name;
@@ -50,7 +50,6 @@ static char	*create_new_string(char *substr_start, char *name, char *value,
 	char	*new_str;
 	size_t	len;
 
-	new_str = NULL;
 	if (value)
 		len = ft_strlen(g_master.exec->argv[i]) + ft_strlen(value) + 1;
 	else
@@ -63,13 +62,15 @@ static char	*create_new_string(char *substr_start, char *name, char *value,
 		ft_error_exit("malloc (create_new_string)", ENOMEM);
 		exit(EXIT_FAILURE);
 	}
+	ft_strlcpy(new_str, g_master.exec->argv[i], substr_start
+		- g_master.exec->argv[i] + 1);
 	if (value)
 	{
-		ft_strlcpy(new_str, value, len);
+		ft_strlcat(new_str, value, len);
 		ft_strlcat(new_str, substr_start + ft_strlen(name) + 1, len);
 	}
 	else
-		ft_strlcpy(new_str, substr_start + ft_strlen(name) + 1, len);
+		ft_strlcat(new_str, substr_start + ft_strlen(name) + 1, len);
 	return (new_str);
 }
 

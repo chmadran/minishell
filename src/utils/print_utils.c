@@ -6,13 +6,34 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 17:53:58 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/25 10:16:18 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/24 17:52:47 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include "env.h"
+
+void	print_executable(t_exec *exec)
+{
+	int	i;
+
+	i = 0;
+	printf("argc: %d\n", exec->argc);
+	if (exec->argv)
+	{
+		printf("argv:\n");
+		while (i < exec->argc)
+		{
+			printf("  argv[%d]: %s\n", i, exec->argv[i]);
+			i++;
+		}
+	}
+	else
+	{
+		printf("argv: NULL\n");
+	}
+}
 
 void	print_environement_list(t_env *env_list)
 {
@@ -55,21 +76,4 @@ void	print_token_list(t_token *token_list)
 		i++;
 	}
 	printf("---------------------------------------------\n\n\n");
-}
-
-void	print_data_builtins(t_exec	*current)
-{
-	int	i;
-
-	i = 0;
-	printf("------ARGUMENTS ENVOYES EN EXECUTION-----------\n");
-	printf("| %-15s | %-25s |\n", "Int ARGC", "Char **ARGV");
-	printf("-----------------------------------------------\n");
-	printf("| %-15d | %-25s |\n", current->argc, current->argv[i++]);
-	while (current->argv[i])
-	{
-		printf("| %-15s | %-25s |\n", " ", current->argv[i]);
-		i++;
-	}
-	printf("-----------------------------------------------\n\n\n");
 }
