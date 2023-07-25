@@ -6,7 +6,7 @@
 #    By: chmadran <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/10 16:46:56 by chmadran          #+#    #+#              #
-#    Updated: 2023/07/24 14:34:23 by chmadran         ###   ########.fr        #
+#    Updated: 2023/07/25 10:35:17 by chmadran         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ MY_SOURCES = ft_atoi.c \
 			 ft_memset.c \
 			 ft_putchar_fd.c \
 			 ft_putstr_fd.c \
+			 ft_split.c \
 			 ft_strchr.c \
 			 ft_strcmp.c \
 			 ft_strdup.c \
