@@ -181,39 +181,61 @@ Things to note :
 <summary><h3>Part 2: THE EXECUTION</h3></summary>
 
 <h4>1. PREPARING FOR EXECUTION</h4>
+
 The exec launcher function called `launch_execution` starts by preparing the execution.
 
-<h4>1.2 PREPARING FOR EXECUTION</h4>
+<h4>1.1 PREPARING FOR EXECUTION</h4>
+
 `create_arguments` creates an argument under the format int argc, char **argv. To create the char **, we malloc by the number of spaces (that have been trimmed previously so no risk of extra ones) and then `split_args` fills out the argv from the token data. Then argc is just the number of char * in argv.
 
 Things to note are that we must be careful of quoted/unquoted arguments, and we implemented special rules for backslash. The function `clean_arg` cleans the final argv before it is stored (even reallocating the right amount of memory). At this stage, handling backslashes makes the code much more complex, we might want to remove these parts. 
 
+<h4>1.2 EXPANDING THE INPUT</h4>
 
-<h4>XXXX. CODING THE REQUIRED BUILTINS</h4>
+At this stage, the function `launch_expansion` will start looking for `$` characters. If one is found then a substring of the corresponding argv is sent to an expansion processer, that's `process_expansion_replace`. If the character following the dollar sign is a question mark `?` then it means the expansion will replace argv[i] (`$?`) by the exit code found in the global structure master. If no question mark is found right after the dollar sign, then we are looking for an environment variable matching the string following the dollar sign, until the next space, for example "$USER fenkfnek" here we will look for the `USER` environment variable. If found, we replace `argv[i] = $USER fenkfnek` by `argv[i] = "chmadran fenkfnek` that is the environment variable found. Else we replace with nothing !
+
+<h4>1.3 BUILTIN OR COMMAND ?</h4>
+
+We start by look at argv[0] in `find_arg_type` and assigning it a type following an enum you'll find in`minishell.h`. It can be either one of the builtins we had to recreate ELSE it is a type OTHER (potentiallya command / builtin we didnt have to recreate) or an ERROR.  Then we `execute_command_or_builtin`, indeed if the type is ERROR we start by handling it by printing the correct error message and assigning the exit_code to 127. Now if the type is not ERROR and not OTHERS it means its a builtin we had to recreate. We send our exec arg to `execute_builtin` and then to the correct recreated builtin function (cd, echo, env, export, exit, pwd or unset). Finally, if the type is neither ERROR nor a known BUILTIN then it's OTHERS. The exec arg is sent to `execute_command` that will `search_path_command` check if the command sent as argv[0] is an existing pathname under the environment variable `PATH`. If not (TOFILL), else it returns true and stores it in the exec structure under `char *pathname`. 
+
+Things to note :   
+*  When we check if an entry is a directory, the correct type for representing a directory stream in C is DIR, and it is typically used in conjunction with the `opendir`, `readdir`, and `closedir` functions from the `<dirent.h>` header
+*  An alternative to check if an entry is a directory is to use the `struct stat` is a C structure defined in the `<sys/stat.h> header (or <sys/types.h> and <sys/stat.h> headers on some systems).` It is commonly used to store information about files and file systems. This structure is filled with file system metadata retrieved by functions like stat, lstat, fstat, etc. In this case, wecould have used the S_ISDIR macro which is a conditional macro provided in `<sys/stat.h>` that checks whether the st_mode member of the struct stat indicates that the file is a directory. It evaluates to a non-zero value (true) if the file is a directory and 0 (false) otherwise. For readability, we decided to use a simple `is_directory` function.
+* The `access` function in C is used to check the accessibility of a file with respect to the permissions of the calling process. It is declared in the `<unistd.h>` header. The second argument, mode, is an integer representing the mode of access you want to check. One of the possible values for the mode argument is X_OK, which is used to check if a file is executable (has the execute permission bit set) by the calling process.
+
+
+<h4>1.4. CODING THE REQUIRED BUILTINS</h4>
 
 The subject of minishell asks us to implement some builtins : `cd, echo, env, export, exit, pwd and unset`. Therefore, we must recode them. Very concisely...
 
 <h5>CD</h5>
+
 The CD builtins if sent without any argument simply searches for the environment variable "HOME" and returns to its path, so to the home directory. You can use `chdir()` which is a system call and a C library function used to change the current working directory of a process. It stands for "change directory." The current working directory is the base directory from which all relative pathnames are resolved. If the HOME directory is valid then the environment variable PWD ("Present Working Directory") is updated. If an argument is given to the `cd` buitlins then we check if its a valid directory and if so the PWD environment variable is updated to the value of that new directory and chdir changes it. 
 
 <h5>ECHO</h5>
+
 We are asked to recreate the `echo` builtins with a potential `-n` flag. So here we use a flag to check if `-n` is present in the input, ifso the flag is set to true, else it stays at false. Then we simply print the arguments of echo on the regular STDOUT, and with a space between each word. If there is no flag `-n` we add a newline after the word, else we dont.
 
 <h5>ENV</h5>
+
 Simply prints the environment list.
 
 <h5>EXIT</h5>
+
 Simply clean the programm and use `exit` to leave it. 
 
 <h5>EXPORT</h5>
+
 If only `export` is sent as argument, we print each variable of the environment list preceded with theword `export` (yes that's it). If an argument is sent to export, we check if (1) its an existing environment variable, if so and its syntaxed a follows NAME=VALUE, we replace the current value of the environment variable found NAME by the new VALUE; (2) else we just add it to the environment variable lists, even if the value is empty.
 
 <h5>PWD</h5>
+
 We use `getcwd()` which is a C library function and system call used to get the current working directory of a process in a Unix-based operating system to print the working directory. Indeed, the name of the function stands for "get current working directory." The current working directory is the base directory from which all relative pathnames are resolved. It takes two parameters :
 	* buf: A pointer to a buffer where the current working directory path will be stored.  
 	* size: The size of the buffer provided (buf).  
  
 <h5>UNSET</h5>
+
 `Unset` is used to remove environment variables. So we browse through the environment variable and if found we remove it. 
 
 </details>
