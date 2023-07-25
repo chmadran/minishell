@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 17:56:44 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 16:32:00 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/25 12:02:29 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	free_double_ptr(char **str)
 void	free_executable(void)
 {
 	free_double_ptr(g_master.exec->argv);
-	//free(g_master.exec->pathname);
+	free(g_master.exec->pathname);
 	free(g_master.exec);
 }
 

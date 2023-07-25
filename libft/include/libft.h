@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 16:44:34 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 14:36:49 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/25 13:33:51 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ size_t			ft_strlcat(char *dst, const char *src, size_t size);
 size_t			ft_strlcpy(char *dst, const char *src, size_t size);
 
 size_t			ft_strlen(const char *s);
+
+char			**ft_split(char const *s, char c);
 
 char			*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 

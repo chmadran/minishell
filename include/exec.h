@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 16:49:36 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/25 13:33:33 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		ft_echo(int argc, char **argv);
 int		ft_env(void);
 int		ft_export(int argc, char **argv);
 int		ft_pwd(void);
-int		ft_unset(int argc, char **argv, t_master *master);
+int		ft_unset(int argc, char **argv);
 
 /* execution : arguments */
 void	launch_execution(t_master *master);
@@ -37,8 +37,12 @@ char	*allocate_memory_for_arg(char *s);
 char	*handle_quoted_argument(char *s, char **arg);
 char	*handle_unquoted_argument(char *s, char **arg);
 
-/* expansion */
+/* expansion.c */
 void	launch_expansion(t_exec *exec);
-char	*extract_expansion_name(char *str);
+
+/* command_builtins.c */
+void	handle_error_cases(t_master *master, t_exec *exec);
+int		execute_command(t_master *master, t_exec *exec);
+int		execute_builtin(t_exec *exec, t_builtin_type type);
 
 #endif
