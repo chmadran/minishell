@@ -6,13 +6,37 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 09:48:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/26 18:15:57 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 19:00:00 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include "exit.h"
+
+int	check_start(char *str)
+{
+	if (str[0] == ':')
+	{
+		g_master.exit_status = 0;
+		return (EXIT_FAILURE);
+	}
+	else if (str[0] == '!')
+	{
+		g_master.exit_status = 1;
+		return (EXIT_FAILURE);
+	}
+	else if (!ft_isalpha(str[0]) && (str[0] != '\'' && str[0] != '\"'))
+	{
+		if (str[1] && !ft_isalpha(str[1]))
+			printf(EDSTR_UNEXP, str[0], str[1]);
+		else
+			printf(ESTR_UNEXP, str[0]);
+		g_master.exit_status = 2;
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
 
 int	is_heredoc_pipe(t_token **token_lst)
 {
@@ -84,13 +108,13 @@ int	unclosed_quotes(const char *line_read)
 	{
 		if (line_read[i] == '\'')
 		{
-				if (!in_double_quote)
-					in_single_quote = !in_single_quote;
+			if (!in_double_quote)
+				in_single_quote = !in_single_quote;
 		}
 		else if (line_read[i] == '\"')
 		{
-				if (!in_single_quote)
-					in_double_quote = !in_double_quote;
+			if (!in_single_quote)
+				in_double_quote = !in_double_quote;
 		}
 	}
 	return (return_value(in_single_quote, in_double_quote));

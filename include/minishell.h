@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/26 17:31:01 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 19:00:15 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int		launch_lexer(char *line_read, t_token **token_list);
 int		launch_parser(t_token **token_list);
 
 /* lexer_utils.c */
+int		check_start(char *str);
 int		start_operator(t_token_type type);
 bool	is_in_quotes(const char *line_read, size_t j);
 void	create_token_node(t_token_type type, char *data, t_token **token_list);
