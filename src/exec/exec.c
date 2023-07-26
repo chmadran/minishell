@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/25 15:27:49 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 15:16:31 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,16 @@
 #include "env.h"
 #include "exec.h"
 
-static int	launch_command_or_builtin(t_exec *exec, t_builtin_type type)
+static int	prep_command_or_error(t_exec *exec, t_builtin_type type)
 {
 	if (type == T_ERROR)
 	{
 		printf("minishell: %s: command not found\n", exec->argv[0]);
 		g_master.exit_status = 127;
-		return (T_ERROR);
+		free_executable();
+		ft_exit();
 	}
-	else if (type != T_OTHERS)
-	{
-		g_master.exit_status = execute_builtin(exec, type);
-		return (type);
-	}
-	else if (!execute_command(&g_master, exec))
-		return (T_ERROR);
-	return (T_OTHERS);
+	return (prepare_command(&g_master, exec));
 }
 
 static t_builtin_type	find_arg_type(char *arg)
@@ -59,26 +53,55 @@ static t_builtin_type	find_arg_type(char *arg)
 	return (type);
 }
 
-static void	prepare_execution(t_master *master, t_token *token, t_exec *exec)
+static t_builtin_type	prepare_execution(t_master *master, t_token *token)
 {
-	t_builtin_type	type;
-
-	(void)exec;
 	master->exec = create_arguments(token);
 	launch_expansion(master->exec);
-	type = find_arg_type(master->exec->argv[0]);
-	launch_command_or_builtin(master->exec, type);
-	return ;
+	return (find_arg_type(master->exec->argv[0]));
 }
 
 void	launch_execution(t_master *master)
 {
-	t_exec		exec;
-	t_token		*token;
+	t_exec			exec;
+	int				status;
+	t_token			*token;
+	t_builtin_type	type;
 
+	exec.pipefd[0] = -1;
+	exec.pipefd[1] = -1;
+	exec.old_pipefd[0] = -1;
+	exec.old_pipefd[1] = -1;
+	exec.pid = -1;
+	exec.first_cmd = true;
 	token = master->token_list;
-	prepare_execution(master, token, &exec);
-	//if (master->exit_status == 127)
-	//	break ;
-	//print_executable(&exec);
+	while (token)
+	{
+		type = prepare_execution(master, token);
+		if (type == T_OTHERS)
+			prep_command_or_error(master->exec, type);
+		if (type == T_ERROR)
+		{
+			free_executable();
+			return ;
+		}
+		if (type != T_OTHERS && type != T_ERROR && master->token_count == 1)
+		{
+			g_master.exit_status = execute_builtin(master->exec, type);
+			free_executable();
+			return ;
+		}
+		if (token->next && token->next->type == T_PIPE)
+				pipe(exec.pipefd);
+		exec.pid = fork();
+		child_process_execution(master, token, &exec, type);
+		parent_process_execution(&token, &exec);
+	}
+	if (!exec.first_cmd)
+	{
+		close(exec.old_pipefd[0]);
+		close(exec.old_pipefd[1]);
+	}
+	while ((waitpid(exec.pid, &status, 0)) > 0)
+		if (WIFEXITED(status) && master->exit_status != 127)
+			master->exit_status = WEXITSTATUS(status);
 }

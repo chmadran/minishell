@@ -121,6 +121,20 @@ static int	check_start(char *str)
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
+  
+static void	ft_token_count(t_token **token_lst)
+{
+	t_token		*current;
+	int			count;
+
+	count = 0;
+	current = *token_lst;
+	while (current)
+	{
+		count++;
+		current = current->next;
+	}
+	g_master.token_count = count;
 }
 
 int	launch_lexer(char *line_read, t_token **token_list)

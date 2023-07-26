@@ -22,6 +22,9 @@
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <unistd.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
 # define DEFAULT_PATH_1 "/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin"
 # define DEFAULT_PATH_2 ":/opt/homebrew/bin"
@@ -72,6 +75,10 @@ typedef struct s_exec
 	char		**argv;
 	char		*pathname;
 	t_token		*token;
+	pid_t		pid;
+	int			pipefd[2];
+	int			old_pipefd[2];
+	bool		first_cmd;
 }	t_exec;
 
 typedef struct s_env
@@ -89,10 +96,12 @@ typedef struct s_master
 	t_exec	*exec;
 	char	*line_read;
 	int		exit_status;
+	int		token_count;
 }	t_master;
 
 /* lexer.c */
 int		launch_lexer(char *line_read, t_token **token_list);
+int		launch_parser(t_token **token_list);
 
 /* lexer_utils.c */
 int		start_operator(t_token_type type);
