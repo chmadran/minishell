@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/25 17:06:55 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 17:07:33 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,12 @@ typedef struct s_master
 	t_exec	*exec;
 	char	*line_read;
 	int		exit_status;
+	int		token_count;
 }	t_master;
 
 /* lexer.c */
 int		launch_lexer(char *line_read, t_token **token_list);
+int		launch_parser(t_token **token_list);
 
 /* lexer_utils.c */
 int		start_operator(t_token_type type);

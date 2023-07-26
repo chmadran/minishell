@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/26 11:53:07 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 15:17:24 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	execve_execute_command(t_exec *exec, t_env *env_list, t_builtin_type type)
 	else
 	{
 		g_master.exit_status = execute_builtin(exec, type);
-	 	free_double_ptr(envp);
+		free_double_ptr(envp);
 		return ;
 	}
 	free_double_ptr(envp);
@@ -96,13 +96,6 @@ void	child_process_execution(t_master *master, t_token *token, t_exec *exec, t_b
 		}
 		if ((type == T_OTHERS && master->exec->pathname) || (type != T_ERROR && type != T_OTHERS))
 			execve_execute_command(master->exec, master->env_list, type);
-
-		// if (token->next && token->next->type == T_PIPE)
-		// {
-		// 	close(exec->pipefd[0]);
-		// 	close(exec->pipefd[1]);
-		// }
-
 		if (exec->old_pipefd[0] != -1)
 			close(exec->old_pipefd[0]);
 		if (exec->old_pipefd[1] != -1)
@@ -121,8 +114,6 @@ void parent_process_execution(t_token **token, t_exec *exec)
 
 		if (exec->old_pipefd[0] != -1 && exec->old_pipefd[1] != -1)
 		{
-			// If the old_pipefd array is initialized, it means the current command
-			// is part of a pipeline, and we need to close the old pipe file descriptors
 			close(exec->old_pipefd[0]);
 			close(exec->old_pipefd[1]);
 			exec->old_pipefd[0] = -1;
@@ -130,24 +121,16 @@ void parent_process_execution(t_token **token, t_exec *exec)
 		}
 		if ((*token)->next && (*token)->next->type == T_PIPE)
 		{
-			// Save the current pipe file descriptors as old_pipefd
-			// This is done to maintain the previous pipe for the next command in the pipeline
 			exec->old_pipefd[0] = exec->pipefd[0];
 			exec->old_pipefd[1] = exec->pipefd[1];
-			exec->first_cmd = false; // Indicate that this is not the first command in the pipeline
+			exec->first_cmd = false;
 		}
 		else
-		{
-			// If there is no next token or the next token is not a pipe,
-			// it means this is not part of a pipeline (possibly the first command)
 			exec->first_cmd = true;
-		}
-
-		// Move to the next token in the token list (skip the current command and pipe symbol, if any)
 		if ((*token)->next)
-			*token = (*token)->next->next; // Move two positions to skip the current command and pipe symbol
+			*token = (*token)->next->next;
 		else
-			*token = (*token)->next; // Move to the next token
+			*token = (*token)->next;
 		free_executable();
 	}
 }
