@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:03:13 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/25 11:53:39 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 17:58:51 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,25 @@
 #include "env.h"
 #include "exec.h"
 
+static int	flag_check(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str[i])
+		return (0);
+	if (str[i] == '-' && str[i + 1])
+	{
+		i++;
+		while (str[i] && str[i] == 'n')
+			i++;
+	}
+	if (!str[i])
+		return (1);
+	else
+		return (0);
+}
+
 int	ft_echo(int argc, char **argv)
 {
 	int		i;
@@ -23,11 +42,10 @@ int	ft_echo(int argc, char **argv)
 
 	i = 1;
 	is_option = false;
-	if (argc > 1 && !ft_strncmp(argv[1], "-n", 2))
-	{
-		i = 2;
-		is_option = true;
-	}
+	if (argc > 1 && argv[i])
+		is_option = flag_check(argv[i]);
+	while (argv[i] && flag_check(argv[i]))
+		i++;
 	while (argv[i])
 	{
 		ft_putstr_fd(argv[i], STDOUT_FILENO);

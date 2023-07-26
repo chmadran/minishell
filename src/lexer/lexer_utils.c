@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 17:27:12 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 09:58:02 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 18:15:25 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,9 @@ bool	is_in_quotes(const char *line_read, size_t j)
 	inside_single_quotes = false;
 	while (line_read[i] && i < j)
 	{
-		if (line_read[i] == '\'' && line_read[i - 1] != '\\'
-			&& !inside_double_quotes)
+		if (line_read[i] == '\'' && !inside_double_quotes)
 			inside_single_quotes = !inside_single_quotes;
-		else if (line_read[i] == '\"' && line_read[i - 1] != '\\'
-			&& !inside_single_quotes)
+		else if (line_read[i] == '\"' && !inside_single_quotes)
 			inside_double_quotes = !inside_double_quotes;
 		i++;
 	}

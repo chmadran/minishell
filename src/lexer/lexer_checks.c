@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 09:48:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 10:17:55 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 18:15:57 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,11 @@ int	unclosed_quotes(const char *line_read)
 	{
 		if (line_read[i] == '\'')
 		{
-			if ((line_read[i - 1] == '\\' && line_read[i - 2] == '\\')
-				|| (line_read[i - 1] != '\\'))
 				if (!in_double_quote)
 					in_single_quote = !in_single_quote;
 		}
 		else if (line_read[i] == '\"')
 		{
-			if ((line_read[i - 1] == '\\' && line_read[i - 2] == '\\')
-				|| (line_read[i - 1] != '\\'))
 				if (!in_single_quote)
 					in_double_quote = !in_double_quote;
 		}

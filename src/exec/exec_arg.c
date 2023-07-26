@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:24:07 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 14:54:29 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 18:16:42 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	split_args(char *s, char **argv)
 		arg = allocate_memory_for_arg(s);
 		while (*s && *s != ' ')
 		{
-			if (((*s == '\'') || (*s == '\"')) && (*(s - 1) != '\\'))
+			if ((*s == '\'') || (*s == '\"'))
 				s = handle_quoted_argument(s, &arg);
 			else
 				s = handle_unquoted_argument(s, &arg);
