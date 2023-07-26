@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/25 17:32:30 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 10:58:20 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,27 +110,49 @@ void	child_process_execution(t_master *master, t_token *token, t_exec *exec)
 	}
 }
 
-void	parent_process_execution(t_token **token, t_exec *exec)
+void parent_process_execution(t_token **token, t_exec *exec)
 {
-	if (exec->pid != 0)
-	{
-		if (!exec->first_cmd)
-		{
-			close(exec->old_pipefd[0]);
-			close(exec->old_pipefd[1]);
-			exec->old_pipefd[0] = -1;
-			exec->old_pipefd[1] = -1;
-		}
-		if ((*token)->next && (*token)->next->type == T_PIPE)
-		{
-			exec->old_pipefd[0] = exec->pipefd[0];
-			exec->old_pipefd[1] = exec->pipefd[1];
-			exec->first_cmd = false;
-		}
-		if ((*token)->next)
-			*token = (*token)->next->next;
-		else
-			*token = (*token)->next;
-		free_executable();
-	}
+    if (exec->pid != 0)
+    {
+        // If the process is not a child process (i.e., it's the parent process)
+
+        if (exec->old_pipefd[0] != -1 && exec->old_pipefd[1] != -1)
+        {
+            // If the old_pipefd array is initialized, it means the current command
+            // is part of a pipeline, and we need to close the old pipe file descriptors
+            close(exec->old_pipefd[0]);
+            close(exec->old_pipefd[1]);
+            exec->old_pipefd[0] = -1;
+            exec->old_pipefd[1] = -1;
+        }
+
+        // Check if there is a next token and if the next token is of type T_PIPE
+        if ((*token)->next && (*token)->next->type == T_PIPE)
+        {
+            // Save the current pipe file descriptors as old_pipefd
+            // This is done to maintain the previous pipe for the next command in the pipeline
+            exec->old_pipefd[0] = exec->pipefd[0];
+            exec->old_pipefd[1] = exec->pipefd[1];
+            exec->first_cmd = false; // Indicate that this is not the first command in the pipeline
+        }
+        else
+        {
+            // If there is no next token or the next token is not a pipe,
+            // it means this is not part of a pipeline (possibly the first command)
+            exec->first_cmd = true;
+        }
+
+        // Move to the next token in the token list (skip the current command and pipe symbol, if any)
+        if ((*token)->next)
+            *token = (*token)->next->next; // Move two positions to skip the current command and pipe symbol
+        else
+            *token = (*token)->next; // Move to the next token
+
+        free_executable(); // Free the memory allocated for the current command
+
+        // Note: At this point, the parent process continues with the next command, if any.
+        // If there are more commands in the pipeline, another child process will be created
+        // to execute the next command, and the parent process will wait for its completion.
+        // This process continues until all commands in the pipeline are executed.
+    }
 }
