@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 16:42:19 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/26 17:36:40 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 18:14:38 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ static int	check_start(char *str)
 		g_master.exit_status = 1;
 		return (EXIT_FAILURE);
 	}
-	else if (!ft_isalpha(str[0]))
+	else if (!ft_isalpha(str[0]) && (str[0] != '\'' && str[0] != '\"'))
 	{
 		if (str[1] && !ft_isalpha(str[1]))
 			printf(EDSTR_UNEXP, str[0], str[1]);
