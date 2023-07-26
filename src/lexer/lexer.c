@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 16:42:19 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/26 17:16:27 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 18:14:38 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,29 @@ static int	manage_token(const char *line_read, t_token **token_lst)
 	return (EXIT_SUCCESS);
 }
 
+static int	check_start(char *str)
+{
+	if (str[0] == ':')
+	{
+		g_master.exit_status = 0;
+		return(EXIT_FAILURE);
+	}
+	else if (str[0] == '!')
+	{
+		g_master.exit_status = 1;
+		return (EXIT_FAILURE);
+	}
+	else if (!ft_isalpha(str[0]) && (str[0] != '\'' && str[0] != '\"'))
+	{
+		if (str[1] && !ft_isalpha(str[1]))
+			printf(EDSTR_UNEXP, str[0], str[1]);
+		else
+			printf(ESTR_UNEXP, str[0]);
+		g_master.exit_status = 2;
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+  
 static void	ft_token_count(t_token **token_lst)
 {
 	t_token		*current;
@@ -116,7 +139,7 @@ static void	ft_token_count(t_token **token_lst)
 
 int	launch_lexer(char *line_read, t_token **token_list)
 {
-	if (unclosed_quotes(line_read))
+	if (check_start(line_read) || unclosed_quotes(line_read))
 		return (EXIT_FAILURE);
 	if (manage_token(line_read, token_list))
 		return (EXIT_FAILURE);

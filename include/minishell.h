@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/26 17:07:33 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 17:31:01 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define ESTR_DQUOTE "minishell: syntax error: unmatched double quote\n"
 # define EHDOC_PIPE "minishell: syntax error: invalid heredoc pipe\n"
 # define ESTR_UNEXP "minishell: syntax error: unexpected token '%c'\n"
+# define EDSTR_UNEXP "minishell: syntax error: unexpected token '%c%c'\n"
 # define ESTR_OPSTART "minishell: syntax error near unexpected token 'newline'\n"
 
 # define OP 5
