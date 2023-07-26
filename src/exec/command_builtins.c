@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:13:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/25 15:28:49 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 13:41:21 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,14 @@ static char	*search_pathname_command(char *command)
 	return (free(temp_command), free_double_ptr(paths), NULL);
 }
 
-int	execute_command(t_master *master, t_exec *exec)
+int	prepare_command(t_master *master, t_exec *exec)
 {
 	exec->pathname = search_pathname_command(exec->argv[0]);
 	if (!exec->pathname)
 	{
 		printf("minishell: %s: command not found\n", exec->argv[0]);
 		master->exit_status = 127;
+		ft_exit();
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

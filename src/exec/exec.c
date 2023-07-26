@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/26 10:37:41 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 13:40:18 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,16 @@
 #include "env.h"
 #include "exec.h"
 
-static int	launch_command_or_builtin(t_exec *exec, t_builtin_type type)
+static int	prep_command_or_error(t_exec *exec, t_builtin_type type)
 {
 	if (type == T_ERROR)
 	{
 		printf("minishell: %s: command not found\n", exec->argv[0]);
 		g_master.exit_status = 127;
-		return (T_ERROR);
+		free_executable();
+		ft_exit();
 	}
-	else if (type != T_OTHERS)
-	{
-		g_master.exit_status = execute_builtin(exec, type);
-		return (type);
-	}
-	else if (!execute_command(&g_master, exec))
+	else if (!prepare_command(&g_master, exec))
 		return (T_ERROR);
 	return (T_OTHERS);
 }
@@ -83,19 +79,16 @@ void	launch_execution(t_master *master)
 	while (token)
 	{
 		type = prepare_execution(master, token);
-		launch_command_or_builtin(master->exec, type);
-		if (type == T_ERROR || master->exit_status == 127)
+		prep_command_or_error(master->exec, type);
+		if (type == T_ERROR)
 		{
 			free_executable();
 			return ;
 		}
-		if (type == T_OTHERS)
-		{
-			if (token->next && token->next->type == T_PIPE)
-				pipe(exec.pipefd);
-			exec.pid = fork();
-		}
-		child_process_execution(master, token, &exec);
+		if (token->next && token->next->type == T_PIPE)
+			pipe(exec.pipefd);
+		exec.pid = fork();
+		child_process_execution(master, token, &exec, type);
 		parent_process_execution(&token, &exec);
 	}
 	if (!exec.first_cmd)
