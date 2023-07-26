@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 16:42:19 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 15:11:57 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 17:16:27 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,21 @@ static int	manage_token(const char *line_read, t_token **token_lst)
 		}
 	}
 	return (EXIT_SUCCESS);
+}
+
+static void	ft_token_count(t_token **token_lst)
+{
+	t_token		*current;
+	int			count;
+
+	count = 0;
+	current = *token_lst;
+	while (current)
+	{
+		count++;
+		current = current->next;
+	}
+	g_master.token_count = count;
 }
 
 int	launch_lexer(char *line_read, t_token **token_list)
