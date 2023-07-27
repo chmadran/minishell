@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 12:00:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 13:31:17 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/27 18:39:32 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	ft_export(int argc, char **argv)
 
 	i = 0;
 	current = g_master.env_list;
+	equals_location = NULL;
 	if (argc == 1)
 	{
 		while (current)
@@ -64,7 +65,8 @@ int	ft_export(int argc, char **argv)
 	}
 	while (++i < argc)
 	{
-		equals_location = ft_strchr(argv[i], '=');
+		if (ft_strlen(argv[i]) && argv[i][0] != '=')
+			equals_location = ft_strchr(argv[i], '=');
 		if (export_var(argv[i], equals_location))
 			return (EXIT_FAILURE);
 	}

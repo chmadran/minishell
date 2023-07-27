@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 12:31:42 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 16:47:21 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/27 18:05:03 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ bool	is_valid_variable_name(char	*name, char *var_str)
 	if (!ft_isalpha(name[0]) && name[0] != '_')
 	{
 		printf("minishell: export: '%s': not a valid identifier\n", var_str);
+		g_master.exit_status = 1;
 		return (false);
 	}
 	name++;
@@ -57,6 +58,7 @@ bool	is_valid_variable_name(char	*name, char *var_str)
 		if (!ft_isalnum(*name) && *name != '_')
 		{
 			printf("minishell: export: '%s': not a valid identifier\n", var_str);
+			g_master.exit_status = 1;
 			return (false);
 		}
 		name++;
