@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:42:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/27 16:00:01 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/27 16:37:25 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	launch_expansion(t_exec *exec)
 		{
 			if (exec->argv[i][j] == '$')
 			{
-				if ( j == 0 || (j != 0 && exec->argv[i][j - 1] != '\\'))
+				if ((j == 0 && exec->argv[i][j + 1]) || (j != 0 && exec->argv[i][j - 1] != '\\'))
 				{
 					substr_start = ft_strdup(exec->argv[i] + j);
 					process_expansion_replace(exec, substr_start, i, exec->argv[i]);
