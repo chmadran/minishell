@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:42:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/25 13:29:49 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/27 16:00:01 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,12 @@ static char	*extract_expansion_name(char *str)
 		}
 		return (name);
 	}
-	while (str[i] && str[i] != '$' && !ft_isspace(str[i]))
+	if (ft_isdigit(str[i]))
+	{
+		name = ft_strndup(&str[i], 1);
+		return (name);
+	}
+	while (str[i] && str[i] != '$' && !ft_isspace(str[i]) && (ft_isalpha(str[i]) || str[i] == '_' || ft_isdigit(str[i])))
 		i++;
 	name = ft_strndup(str + 1, i - 1);
 	if (!name)
@@ -45,7 +50,7 @@ static char	*extract_expansion_name(char *str)
 }
 
 static char	*create_new_string(char *substr_start, char *name, char *value,
-	size_t i)
+	size_t i, char *str)
 {
 	char	*new_str;
 	size_t	len;
@@ -65,15 +70,19 @@ static char	*create_new_string(char *substr_start, char *name, char *value,
 	}
 	if (value)
 	{
-		ft_strlcpy(new_str, value, len);
+		ft_strlcpy(new_str, str, ft_strlen(str) - ft_strlen(substr_start) + 1);
+		ft_strlcat(new_str, value, len);
 		ft_strlcat(new_str, substr_start + ft_strlen(name) + 1, len);
 	}
 	else
-		ft_strlcpy(new_str, substr_start + ft_strlen(name) + 1, len);
+	{
+		ft_strlcpy(new_str, str, ft_strlen(str) - ft_strlen(substr_start) + 1);
+		ft_strlcat(new_str, substr_start + ft_strlen(name) + 1, len);
+	}
 	return (new_str);
 }
 
-static void	process_expansion_replace(t_exec *exec, char *substr_start, int i)
+static void	process_expansion_replace(t_exec *exec, char *substr_start, int i, char *str)
 {
 	char	*name;
 	char	*value;
@@ -93,7 +102,7 @@ static void	process_expansion_replace(t_exec *exec, char *substr_start, int i)
 	}
 	else
 		value = get_env_value(g_master.env_list, name);
-	new_str = create_new_string(substr_start, name, value, i);
+	new_str = create_new_string(substr_start, name, value, i, str);
 	free(exec->argv[i]);
 	exec->argv[i] = new_str;
 	free(substr_start);
@@ -118,8 +127,11 @@ void	launch_expansion(t_exec *exec)
 		{
 			if (exec->argv[i][j] == '$')
 			{
-				substr_start = ft_strdup(exec->argv[i] + j);
-				process_expansion_replace(exec, substr_start, i);
+				if ( j == 0 || (j != 0 && exec->argv[i][j - 1] != '\\'))
+				{
+					substr_start = ft_strdup(exec->argv[i] + j);
+					process_expansion_replace(exec, substr_start, i, exec->argv[i]);
+				}
 			}
 			j++;
 		}
