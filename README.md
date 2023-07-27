@@ -275,13 +275,10 @@ When you run echo $?$, it doesn't quite work the way you might expect, because o
 In shell scripting, when you attempt to echo a variable that doesn't exist (like $), it prints nothing. So, in your command echo $?$, the shell sees $ (which isn't a variable), and prints nothing. Then it sees $?, which it replaces with the exit status of the last command.
 
 <h4>INTERNAL VARIABLE UID</h4>
-We noticed in a Minishell GSheet checker that there was a check of the return value of $UID. We decided NOT to include the $UID variable since the functions to retrieve it are not allowed. Here is why. The $UID variable in Unix-like systems (when you're using a shell like Bash or Zsh) is an internal shell variable, not an environment variable. This is why you do not see it when you print all the environment variables with env or accessing them through extern char **env in a C program.
+We noticed in a Minishell GSheet checker that there was a check of the return value of $UID. We decided NOT to include the $UID variable since the functions to retrieve it are not allowed. Here is why. The $UID variable in Unix-like systems (when you're using a shell like Bash or Zsh) is an internal shell variable, not an environment variable. This is why you do not see it when you print all the environment variables with env or accessing them through extern char **env in a C program. Internal shell variables are used by the shell to keep track of certain states or settings. They are not automatically exported to the environment of child processes, which is why they're not seen when you print the environment variables.
 
-Internal shell variables are used by the shell to keep track of certain states or settings. They are not automatically exported to the environment of child processes, which is why they're not seen when you print the environment variables.
+You can access the value of the $UID variable in a shell script or at the shell prompt, but it will not be visible to programs run from that shell, unless it's exported explicitly. However, $UID is typically not exported because it's set and managed by the shell, and applications can get the same information via system calls like getuid or geteuid in C or similar functions in other languages. If you want to see the user ID in a C program, you would use the getuid() or geteuid() function, which return the real and effective user ID, respectively. 
 
-You can access the value of the $UID variable in a shell script or at the shell prompt, but it will not be visible to programs run from that shell, unless it's exported explicitly. However, $UID is typically not exported because it's set and managed by the shell, and applications can get the same information via system calls like getuid or geteuid in C or similar functions in other languages.
-
-If you want to see the user ID in a C program, you would use the getuid() or geteuid() function, which return the real and effective user ID, respectively.
 </details> 
 
 TO NOTE !!! SHOULD WE JUST EXIT AFTER FT_ERROR_EXIT??? LIKEFOR MALLOCS ETC, need to harmonize
