@@ -260,6 +260,22 @@ EXIT_SUCCESS and EXIT_FAILURE are symbolic constants defined in the C programmin
 * using defined EXIT_messages
 The syntax : `# define ESTR_QUOTE "minishell: syntax error: unmatched quote\n"` in the .h files are `preprocessor macros` defined using the C preprocessor directive #define. It is essentially a text substitution mechanism, where the macro ESTR_QUOTE is replaced with the corresponding string value "minishell: syntax error: unmatched quote\n" wherever it appears in the code. It can then be used as follows in the code : ` printf(ESTR_QUOTE);`
 
+
+<summary><h3>SPECIAL RULES TO WATCH OUT FOR</h3></summary>
+
+<h4>THE FLAG -N</h4>
+ADD RULE ABOUT ECHO -N WITH EXTRA N AND STUFF
+
+<h4>ECHO $?$</h4>
+
+`echo $?$` returns 0. In the Unix-like shell environment, the special shell variable $? holds the exit status of the last command that was executed. If that command executed successfully, $? will be 0; if it failed, $? will be some other number, usually 1.
+
+When you run echo $?$, it doesn't quite work the way you might expect, because of how the shell parses the command. It doesn't interpret $?$ as a single variable; instead, it interprets it as two separate pieces: $ (which is not a valid variable) and $? (the exit status of the last command).
+
+In shell scripting, when you attempt to echo a variable that doesn't exist (like $), it prints nothing. So, in your command echo $?$, the shell sees $ (which isn't a variable), and prints nothing. Then it sees $?, which it replaces with the exit status of the last command.
+
+
+
 </details> 
 
 TO NOTE !!! SHOULD WE JUST EXIT AFTER FT_ERROR_EXIT??? LIKEFOR MALLOCS ETC, need to harmonize
