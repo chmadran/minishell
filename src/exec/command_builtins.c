@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:13:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/26 14:01:18 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/27 09:52:32 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	prepare_command(t_master *master, t_exec *exec)
 	{
 		printf("minishell: %s: command not found\n", exec->argv[0]);
 		master->exit_status = 127;
-		ft_exit();
 		return (T_ERROR);
 	}
 	return (T_OTHERS);

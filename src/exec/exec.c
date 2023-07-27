@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/26 15:16:31 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/27 09:51:53 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	launch_execution(t_master *master)
 	{
 		type = prepare_execution(master, token);
 		if (type == T_OTHERS)
-			prep_command_or_error(master->exec, type);
+			type = prep_command_or_error(master->exec, type);
 		if (type == T_ERROR)
 		{
 			free_executable();
