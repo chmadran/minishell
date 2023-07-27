@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/27 09:51:53 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/27 13:35:28 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static t_builtin_type	find_arg_type(char *arg)
 	const t_builtin_type	types[8] = {T_CD, T_ECHO, T_ENV, T_EXIT, T_PWD,
 		T_UNSET, T_EXPORT, T_EXIT};
 
-	if (!arg)
+	if (!arg || !arg[0])
 		return (T_ERROR);
 	i = 0;
 	type = T_OTHERS;
@@ -77,6 +77,7 @@ void	launch_execution(t_master *master)
 	while (token)
 	{
 		type = prepare_execution(master, token);
+		print_data_builtins(master->exec);
 		if (type == T_OTHERS)
 			type = prep_command_or_error(master->exec, type);
 		if (type == T_ERROR)
