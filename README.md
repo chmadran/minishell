@@ -281,6 +281,8 @@ You can access the value of the $UID variable in a shell script or at the shell 
 
 <h4>TRICKY EXPANSION</h4>
 
+the rule is that environment variable names cannot start with a digit. They must begin with a letter or an underscore. If the parser/lexer encounters a $ followed by a digit or a sequence of digits, it will treat it as a literal dollar sign followed by the digits and not as a variable reference. It will stop after 1 digit, replace the $ and digit by NULL, and just send the rest as ARGV.
+
 Quoting can affect variable expansion. Single quotes ' prevent any expansion, while double quotes " allow variable expansion but preserve whitespace. Also, the backslash `\` before the dollar sign prevents variable expansion.
 
 Now, when the shell encounters a variable name followed by a special character like !, @, #, $, ^, &, *, (, ), -, =, +, [, {, etc, it treats the special character as a literal character and includes it in the output after expanding the variable. This behavior applies to any special character that is not part of a valid variable name character set (letters, digits, and underscores).
