@@ -230,7 +230,7 @@ Simply clean the programm and use `exit` to leave it.
 
 <h5>EXPORT</h5>
 
-If only `export` is sent as argument, we print each variable of the environment list preceded with theword `export` (yes that's it). If an argument is sent to export, we check if (1) its an existing environment variable, if so and its syntaxed a follows NAME=VALUE, we replace the current value of the environment variable found NAME by the new VALUE; (2) else we just add it to the environment variable lists, even if the value is empty.
+If only `export` is sent as argument, we print each variable of the environment list preceded with theword `export` in ALPHABETICAL ORDER (dont rearrange the environment variables altogether). If an argument is sent to export, we check if (1) its an existing environment variable, if so and its syntaxed a follows NAME=VALUE, we replace the current value of the environment variable found NAME by the new VALUE; (2) else we just add it to the environment variable lists, even if the value is empty.
 
 <h5>PWD</h5>
 
