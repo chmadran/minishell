@@ -287,6 +287,10 @@ Quoting can affect variable expansion. Single quotes ' prevent any expansion, wh
 
 Now, when the shell encounters a variable name followed by a special character like !, @, #, $, ^, &, *, (, ), -, =, +, [, {, etc, it treats the special character as a literal character and includes it in the output after expanding the variable. This behavior applies to any special character that is not part of a valid variable name character set (letters, digits, and underscores).
 
+<h4>TRICKY EXPORT</h4>
+
+When you input `export VARIABLE` without assigning it a value, that variable doesnt become an environment variable but is in the export list when asked to be printed. See `add_back_envp_var`.
+
 </details> 
 
 TO NOTE !!! SHOULD WE JUST EXIT AFTER FT_ERROR_EXIT??? LIKEFOR MALLOCS ETC, need to harmonize
