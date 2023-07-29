@@ -244,6 +244,54 @@ We use `getcwd()` which is a C library function and system call used to get the 
 
 </details>
 
+<details> 
+<summary><h3>Part 3: DEBUGGING :cowboy_hat_face: </h3></summary>
+
+We used a [spreadsheet](https://docs.google.com/spreadsheets/d/1ejFaynqpGdesM2IBUPgswXOv1Vcysf9ilns25Ik5TIY/edit?usp=sharing) that is a cleaned version of @vietdu91's [minishell bible](https://docs.google.com/spreadsheets/d/1uJHQu0VPsjjBkR4hxOeCMEt3AOM1Hp_SmUzPFhAH-nA/edit#gid=0), in order to browse through all the tricky stuff and make sure our project covered them. Since the subject is not very explicit about the matter, i'd say that having the correct **error messages** is your choice but definitively make sure **exit codes** are set as expected.
+
+<h4>THE FLAG -N</h4>
+
+You probably will not have treated the flag `-n` correctly, here are additional rules to implement : 
+*  The `-n` option must come before any string arguments, i.e., it must be the first argument after echo.  
+*  Multiple `-n` options are allowed and treated as one, i.e., `-nn`, `-nnn`, etc., are valid and work the same as `-n`.  
+*  There must not be any other character after the `-n` or `-nn`, `-nnn` etc. in the option string. If there is, it's treated as an argument to `echo` and not an option. So `-na` would not be treated as the `-n` option, but as an argument to print.  
+*  The `-n` option, if used, prevents a trailing newline from being printed.  
+*  All other arguments are treated as strings to be printed, separated by spaces.  
+So based on this code, `echo -n -n hello` would output `hello` without a trailing newline, `echo -na hello would` output `-na hello` with a trailing newline, and `echo hello world` would output `hello world` with a trailing newline.  
+
+
+<h4>FURTHER BUILTINS INPUT CHECK</h4>
+
+Some checks you might not have included for the input of your builtins : 
+*  `not a valid identifier` : If the input doesnt start with a letter or an underscore, or of the string contains a special character(`@`, `?` etc), applies to `export` and `unset` (basically to environment variable names) and exit code is 1. 
+*  `invalid option` : if the input contains `-` at argv[0], applies to `cd` and `export` and `pwd`, the exit code is 2.
+*  `event not found` : if the input contains `!`, applies to `export` and `unset`, the exit code is 1. 
+
+
+<h4>INTERNAL VARIABLE UID</h4>
+We noticed in a Minishell GSheet checker that there was a check of the return value of $UID. We decided NOT to include the $UID variable since the functions to retrieve it are not allowed. Here is why. The $UID variable in Unix-like systems (when you're using a shell like Bash or Zsh) is an internal shell variable, not an environment variable. This is why you do not see it when you print all the environment variables with env or accessing them through extern char **env in a C program. Internal shell variables are used by the shell to keep track of certain states or settings. They are not automatically exported to the environment of child processes, which is why they're not seen when you print the environment variables.
+
+You can access the value of the $UID variable in a shell script or at the shell prompt, but it will not be visible to programs run from that shell, unless it's exported explicitly. However, $UID is typically not exported because it's set and managed by the shell, and applications can get the same information via system calls like getuid or geteuid in C or similar functions in other languages. If you want to see the user ID in a C program, you would use the getuid() or geteuid() function, which return the real and effective user ID, respectively. 
+
+
+<h4>EXPANSION's TRICKS</h4>
+
+	TO VERIFY/CHECK IN CODE: Quoting can affect variable expansion. Single quotes ' prevent any expansion, while double quotes " allow variable expansion but preserve whitespace. Also, the backslash `\` before the dollar sign prevents variable expansion. When the shell encounters a variable name followed by a special character like !, @, #, $, ^, &, *, (, ), -, =, +, [, {, etc, it treats the special character as a literal character and includes it in the output after expanding the variable. This behavior applies to any special character that is not part of a valid variable name character set (letters, digits, and underscores). So for example, `echo $:$= | cat -e` results in `$:$=$` because $: and $= are not replaced by an empty string but treated as literal strings, meaning the shell won't try to replace them with the value of a variable. The cat -e command is used to display the incoming data and will append $ at the end of each line. So the final command echo $:$= | cat -e in POSIX mode will output : $:$=$
+
+
+<h4>EXPORT & UNSET SUBWORLDS</h4>
+
+When you input `export VARIABLE` without assigning it a value, that variable does NOT become an environment variable BUT is in the **export list** when you print the environment variables using `export`. What's up?? See `add_back_envp_var` but basically we created a copy of the environment variables that is accessible through `g_master` called `char **export_envp`. this is where a variable added to the environment variables through export gets added if it doesnt have a value yet (cf line 199 gsheet).
+
+	TODO:Update the export sub envronment char ** if anything is added to the real environment variables while the programme is ongoing. 
+
+<h4> HANDLE BINARY FILES </h4>
+
+You're supposed to be able to enter the pathname of a buitlin (i.e binary file) and it should compile, for example the output of `/bin/echo Hola Que Tal` should be `Hola Que Tal`. To handle binary files i.e inputs like `/bin/env`, `/bin/cd` etc, add a check in your pathname filer, if there is no pathname found but you have `access` to exec->argv[0] then check if its a valid directory and if so store it as the pathname see `is_directory` in `prepare_command`.
+
+</details> 
+
+
 <summary><h3>ERROR/EXIT HANDLING</h3></summary>
 
 * we use the library errno.h to be able to use error codes
@@ -260,48 +308,3 @@ EXIT_SUCCESS and EXIT_FAILURE are symbolic constants defined in the C programmin
 * using defined EXIT_messages
 The syntax : `# define ESTR_QUOTE "minishell: syntax error: unmatched quote\n"` in the .h files are `preprocessor macros` defined using the C preprocessor directive #define. It is essentially a text substitution mechanism, where the macro ESTR_QUOTE is replaced with the corresponding string value "minishell: syntax error: unmatched quote\n" wherever it appears in the code. It can then be used as follows in the code : ` printf(ESTR_QUOTE);`
 
-
-<summary><h3>SPECIAL RULES TO WATCH OUT FOR</h3></summary>
-
-<h4>THE FLAG -N</h4>
-ADD RULE ABOUT ECHO -N WITH EXTRA N AND STUFF
-
-<h4>ECHO $?$</h4>
-
-`echo $?$` returns 0. In the Unix-like shell environment, the special shell variable $? holds the exit status of the last command that was executed. If that command executed successfully, $? will be 0; if it failed, $? will be some other number, usually 1.
-
-When you run echo $?$, it doesn't quite work the way you might expect, because of how the shell parses the command. It doesn't interpret $?$ as a single variable; instead, it interprets it as two separate pieces: $ (which is not a valid variable) and $? (the exit status of the last command).
-
-In shell scripting, when you attempt to echo a variable that doesn't exist (like $), it prints nothing. So, in your command echo $?$, the shell sees $ (which isn't a variable), and prints nothing. Then it sees $?, which it replaces with the exit status of the last command.
-
-<h4>INTERNAL VARIABLE UID</h4>
-We noticed in a Minishell GSheet checker that there was a check of the return value of $UID. We decided NOT to include the $UID variable since the functions to retrieve it are not allowed. Here is why. The $UID variable in Unix-like systems (when you're using a shell like Bash or Zsh) is an internal shell variable, not an environment variable. This is why you do not see it when you print all the environment variables with env or accessing them through extern char **env in a C program. Internal shell variables are used by the shell to keep track of certain states or settings. They are not automatically exported to the environment of child processes, which is why they're not seen when you print the environment variables.
-
-You can access the value of the $UID variable in a shell script or at the shell prompt, but it will not be visible to programs run from that shell, unless it's exported explicitly. However, $UID is typically not exported because it's set and managed by the shell, and applications can get the same information via system calls like getuid or geteuid in C or similar functions in other languages. If you want to see the user ID in a C program, you would use the getuid() or geteuid() function, which return the real and effective user ID, respectively. 
-
-<h4>TRICKY EXPANSION</h4>
-
-the rule is that environment variable names cannot start with a digit. They must begin with a letter or an underscore. If the parser/lexer encounters a $ followed by a digit or a sequence of digits, it will treat it as a literal dollar sign followed by the digits and not as a variable reference. It will stop after 1 digit, replace the $ and digit by NULL, and just send the rest as ARGV.
-
-Quoting can affect variable expansion. Single quotes ' prevent any expansion, while double quotes " allow variable expansion but preserve whitespace. Also, the backslash `\` before the dollar sign prevents variable expansion.
-
-Now, when the shell encounters a variable name followed by a special character like !, @, #, $, ^, &, *, (, ), -, =, +, [, {, etc, it treats the special character as a literal character and includes it in the output after expanding the variable. This behavior applies to any special character that is not part of a valid variable name character set (letters, digits, and underscores).
-
-So for example, `echo $:$= | cat -e` results in `$:$=$` because $: and $= are not replaced by an empty string but treated as literal strings, meaning the shell won't try to replace them with the value of a variable. The cat -e command is used to display the incoming data and will append $ at the end of each line. So the final command echo $:$= | cat -e in POSIX mode will output : $:$=$
-
-<h4>TRICKY EXPORT & UNSET </h4>
-
-When you input `export VARIABLE` without assigning it a value, that variable doesnt become an environment variable but is in the export list when asked to be printed. See `add_back_envp_var`.
-
-Be mindful of 1. exit codes 2. error messages (invalid identifier) depending on the special characters entered (e.g exit code 2 for invalid option, but exit code 1 for invalid identifier). 
-
-<h4> HANDLE BINARY FILES </h4>
-
-You're supposed to be able to enter the pathname of a buitlin ii.e that you didnt have to recreate and it should compile, for example the output of `/bin/echo Hola Que Tal` is `Hola Que Tal`. To handle binary files i.e inputs like `/bin/env`, `/bin/cd` etc, add a check in your pathname filer, if there is no pathname found but you have `access` to exec->argv[0] then check if its a valid directory and if so store it as the pathname see `is_directory` in `prepare_command`.
-
-
-</details> 
-
-TO NOTE !!! SHOULD WE JUST EXIT AFTER FT_ERROR_EXIT??? LIKEFOR MALLOCS ETC, need to harmonize
-@vietdu91's project and his minishell bible : https://docs.google.com/spreadsheets/d/1uJHQu0VPsjjBkR4hxOeCMEt3AOM1Hp_SmUzPFhAH-nA/edit#gid=0
-@bboisset's checklist: https://docs.google.com/spreadsheets/d/1ssdLRjY8lJu4GK5IuoA3nf5Plkt7Kx-dNfc5KxvIcXg/edit#gid=0
