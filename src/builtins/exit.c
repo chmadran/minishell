@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:47:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 14:34:01 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/29 14:43:07 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,11 @@ void	check_numeric_arguments(int argc, char **argv)
 	if (value < 0)
 	{
 			g_master.exit_status = (value % 256 + 256) % 256;
-			printf("G_EXIT_STATUS = %d\n", g_master.exit_status);
 			return ;
 	}
 	else if (value > 255)
 	{
 		g_master.exit_status = value  % 256;
-		printf("G_EXIT_STATUS = %d\n", g_master.exit_status);
 		return ;
 	}
 	g_master.exit_status = value;
