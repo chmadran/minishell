@@ -287,11 +287,18 @@ Quoting can affect variable expansion. Single quotes ' prevent any expansion, wh
 
 Now, when the shell encounters a variable name followed by a special character like !, @, #, $, ^, &, *, (, ), -, =, +, [, {, etc, it treats the special character as a literal character and includes it in the output after expanding the variable. This behavior applies to any special character that is not part of a valid variable name character set (letters, digits, and underscores).
 
+So for example, `echo $:$= | cat -e` results in `$:$=$` because $: and $= are not replaced by an empty string but treated as literal strings, meaning the shell won't try to replace them with the value of a variable. The cat -e command is used to display the incoming data and will append $ at the end of each line. So the final command echo $:$= | cat -e in POSIX mode will output : $:$=$
+
 <h4>TRICKY EXPORT & UNSET </h4>
 
 When you input `export VARIABLE` without assigning it a value, that variable doesnt become an environment variable but is in the export list when asked to be printed. See `add_back_envp_var`.
 
 Be mindful of 1. exit codes 2. error messages (invalid identifier) depending on the special characters entered (e.g exit code 2 for invalid option, but exit code 1 for invalid identifier). 
+
+<h4> HANDLE BINARY FILES </h4>
+
+You're supposed to be able to enter the pathname of a buitlin ii.e that you didnt have to recreate and it should compile, for example the output of `/bin/echo Hola Que Tal` is `Hola Que Tal`. To handle binary files i.e inputs like `/bin/env`, `/bin/cd` etc, add a check in your pathname filer, if there is no pathname found but you have `access` to exec->argv[0] then check if its a valid directory and if so store it as the pathname see `is_directory` in `prepare_command`.
+
 
 </details> 
 
