@@ -6,12 +6,13 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:27:12 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/25 09:24:38 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/28 12:42:57 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "env.h"
+#include "exec.h"
 #include "exit.h"
 #include "libft.h"
 
@@ -112,4 +113,5 @@ void	manage_environment(t_env **env_list)
 		create_add_env_node(name, value, env_list);
 		environ++;
 	}
+	g_master.export_envp = env_list_to_array(g_master.env_list);
 }

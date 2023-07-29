@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:40:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 16:46:31 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/29 12:21:12 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,20 @@
 #include "exit.h"
 #include "env.h"
 #include "exec.h"
+
+static int	check_option(char *str)
+{
+	if (str[0] == '-' && str[1])
+	{
+		if (str[1])
+			printf("minishell: unset: '%c%c': invalid option\n", str[0], str[1]);
+		else
+			printf("minishell: unset: '%c': invalid option\n", str[0]);
+		g_master.exit_status = 2;
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
 
 static int	update_env(t_env *env_list)
 {
@@ -66,9 +80,12 @@ static char	*get_env_value_cd(t_env *env, char *name)
 
 static int	change_directory_and_update(t_env *env_list, char *path)
 {
+	if (path[0] == '/')
+		path++;	
 	if (chdir(path) == -1)
 	{
-		ft_error_exit("minishell: cd", ENOENT);
+		printf("minishell: cd: %s: No such file or directory\n", path);
+		g_master.exit_status = 1;
 		return (EXIT_FAILURE);
 	}
 	if (update_env(env_list))
@@ -90,5 +107,7 @@ int	ft_cd(int argc, char **argv)
 		}
 		return (change_directory_and_update(g_master.env_list, home_path));
 	}
+	if (check_option(argv[1]))
+		return (EXIT_FAILURE);
 	return (change_directory_and_update(g_master.env_list, argv[1]));
 }
