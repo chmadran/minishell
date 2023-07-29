@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 12:27:38 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 13:30:06 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/29 11:09:35 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,26 @@
 #include "env.h"
 #include "exec.h"
 
-int	ft_pwd(void)
+static int	check_option(char *str)
+{
+	if (str[0] == '-')
+	{
+		if (str[1])
+			printf("minishell: unset: '%c%c': invalid option\n", str[0], str[1]);
+		else
+			printf("minishell: unset: '%c': invalid option\n", str[0]);
+		g_master.exit_status = 2;
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	ft_pwd(char **argv)
 {
 	char	*cwd;
 
+	if (check_option(argv[1]))
+		return (EXIT_FAILURE);
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:42:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/27 16:37:25 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/28 18:17:32 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,13 @@ static void	process_expansion_replace(t_exec *exec, char *substr_start, int i, c
 	free(value);
 }
 
+static int	is_valid_name(char *str)
+{
+	if (!ft_isalpha(str[1]) && !ft_isdigit(str[1]) && str[1] != '?')
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
 void	launch_expansion(t_exec *exec)
 {
 	char	*substr_start;
@@ -130,7 +137,10 @@ void	launch_expansion(t_exec *exec)
 				if ((j == 0 && exec->argv[i][j + 1]) || (j != 0 && exec->argv[i][j - 1] != '\\'))
 				{
 					substr_start = ft_strdup(exec->argv[i] + j);
-					process_expansion_replace(exec, substr_start, i, exec->argv[i]);
+					if (is_valid_name(substr_start) == 0)
+						process_expansion_replace(exec, substr_start, i, exec->argv[i]);
+					else
+						free(substr_start);
 				}
 			}
 			j++;

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 16:44:34 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/25 13:33:51 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/29 13:28:32 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int				ft_isprint(int c);
 int				ft_isspace(int c);
 
 char			*ft_itoa(int n);
+
+long long		ft_llatoi(const char *str);
 
 void			*ft_memccpy(void *dst, const void *src, int c, size_t n);
 

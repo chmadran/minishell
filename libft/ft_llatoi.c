@@ -1,24 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.h                                             :+:      :+:    :+:   */
+/*   ft_llatoi.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/21 16:48:12 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 12:57:39 by chmadran         ###   ########.fr       */
+/*   Created: 2023/07/29 13:27:54 by chmadran          #+#    #+#             */
+/*   Updated: 2023/07/29 13:31:38 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXIT_H
-# define EXIT_H
+#include "include/libft.h"
 
-# include "minishell.h"
+long long	ft_llatoi(const char *str)
+{
+	int	i;
+	long long res;
+	int	sign;
 
-extern t_master	g_master;
-
-void	ft_exit(int argc, char **argv);
-void	ft_error_exit(char *str, int error);
-void	ft_cleanup_exit(void);
-
-#endif
+	i = 0;
+	res = 0;
+	sign = 1;
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		res = res * 10 + str[i] - '0';
+		i++;
+	}
+	return (res * sign);
+}

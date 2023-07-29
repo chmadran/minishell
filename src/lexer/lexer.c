@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 16:42:19 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/27 14:40:27 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/29 11:55:10 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,11 @@ int	launch_lexer(char *line_read, t_token **token_list)
 {
 	if ((ft_strlen(line_read) <= 2 && check_start(line_read)) || unclosed_quotes(line_read))
 		return (EXIT_FAILURE);
+	if (check_directory(line_read))
+		return(EXIT_FAILURE);
 	if (manage_token(line_read, token_list))
 		return (EXIT_FAILURE);
-	if ((is_heredoc_pipe(token_list))
-		|| (is_clean(token_list)))
+	if ((is_heredoc_pipe(token_list)) || (is_clean(token_list)))
 	{
 		free_token_list(*token_list);
 		g_master.exit_status = 2;
