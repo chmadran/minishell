@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 09:48:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 11:57:51 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:40:20 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,18 @@ int	check_directory(char *str)
 		{
 			printf("minishell: .: filename argument required\n");
 			g_master.exit_status = 2;
-			return(EXIT_FAILURE);
+			return (EXIT_FAILURE);
 		}
 		if (str[1] == '.' && !str[2])
 		{
 			printf("minishell: ..: command not found\n");
 			g_master.exit_status = 127;
-			return(EXIT_FAILURE);
+			return (EXIT_FAILURE);
 		}
 	}
 	if (is_directory(str))
 	{
-		printf("minishell: %s: Is a directory\n",str);
+		printf("minishell: %s: Is a directory\n", str);
 		g_master.exit_status = 126;
 		return (EXIT_FAILURE);
 	}
@@ -53,7 +53,8 @@ int	check_start(char *str)
 		g_master.exit_status = 1;
 		return (EXIT_FAILURE);
 	}
-	else if (!ft_isalpha(str[0]) && (str[0] != '\'' && str[0] != '\"') && (str[0] != '$') && (str[0] != '.'))
+	else if (!ft_isalpha(str[0]) && (str[0] != '\'' && str[0] != '\"')
+		&& (str[0] != '$') && (str[0] != '.'))
 	{
 		if (str[1] && !ft_isalpha(str[1]))
 			printf(EDSTR_UNEXP, str[0], str[1]);
@@ -108,23 +109,6 @@ int	is_clean(t_token **token_lst)
 	return (EXIT_SUCCESS);
 }
 
-static bool	return_value(bool in_single_quote, bool in_double_quote)
-{
-	if (in_single_quote)
-	{
-		printf(ESTR_QUOTE);
-		g_master.exit_status = 2;
-		return (EXIT_FAILURE);
-	}
-	else if (in_double_quote)
-	{
-		printf(ESTR_DQUOTE);
-		g_master.exit_status = 2;
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
-
 int	unclosed_quotes(const char *line_read)
 {
 	size_t	i;
@@ -137,15 +121,17 @@ int	unclosed_quotes(const char *line_read)
 	while (line_read[++i])
 	{
 		if (line_read[i] == '\'')
-		{
 			if (!in_double_quote)
 				in_single_quote = !in_single_quote;
-		}
-		else if (line_read[i] == '\"')
-		{
+		if (line_read[i] == '\"')
 			if (!in_single_quote)
 				in_double_quote = !in_double_quote;
-		}
 	}
-	return (return_value(in_single_quote, in_double_quote));
+	if (in_single_quote || in_double_quote)
+	{
+		g_master.exit_status = 2;
+		printf(ESTR_QUOTE);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }

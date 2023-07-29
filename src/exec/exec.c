@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 12:57:21 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:15:36 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	launch_execution(t_master *master)
 			return ;
 		}
 		if (token->next && token->next->type == T_PIPE)
-				pipe(exec.pipefd);
+			pipe(exec.pipefd);
 		exec.pid = fork();
 		child_process_execution(master, token, &exec, type);
 		parent_process_execution(&token, &exec);

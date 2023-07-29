@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 15:32:48 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/28 15:46:31 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:22:26 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,16 @@ static void	handle_sigint(int signum)
 	}
 }
 
-int	main(void)
+static void	manage_signals(void)
 {
 	rl_catch_signals = 0;
-	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+int	main(void)
+{
+	manage_signals();
 	manage_environment(&g_master.env_list);
 	while (1)
 	{

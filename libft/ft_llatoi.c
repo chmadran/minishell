@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 13:27:54 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 13:31:38 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:24:50 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 long long	ft_llatoi(const char *str)
 {
-	int	i;
-	long long res;
-	int	sign;
+	int			i;
+	int			sign;
+	long long	res;
 
 	i = 0;
 	res = 0;

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:47:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 14:43:07 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:19:11 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,26 @@
 #include "exit.h"
 #include "libft.h"
 
+static long long	update_exit_value(char *arg)
+{
+	long long	value;
+
+	value = ft_llatoi(arg);
+	if (value > LLONG_MAX || value < LLONG_MIN)
+	{
+		printf("minishell: exit: %s: numeric argument required\n", arg);
+		return (2);
+	}
+	if (value < 0)
+		return ((value % 256 + 256) % 256);
+	else if (value > 255)
+		return (value % 256);
+	return (0);
+}
+
 void	check_numeric_arguments(int argc, char **argv)
 {
-	int	i;
+	int			i;
 	long long	value;
 
 	i = -1;
@@ -39,24 +56,7 @@ void	check_numeric_arguments(int argc, char **argv)
 		g_master.exit_status = 1;
 		return ;
 	}
-	i = 0;
-	value = ft_llatoi(argv[1]);
-	if (value > LLONG_MAX || value < LLONG_MIN) // we dont handle overflow properly but its ok
-	{
-		printf("minishell: exit: %s: numeric argument required\n", argv[1]);
-		g_master.exit_status = 2;
-		return ;
-	}
-	if (value < 0)
-	{
-			g_master.exit_status = (value % 256 + 256) % 256;
-			return ;
-	}
-	else if (value > 255)
-	{
-		g_master.exit_status = value  % 256;
-		return ;
-	}
+	value = update_exit_value(argv[1]);
 	g_master.exit_status = value;
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:13:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 13:05:07 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:14:38 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ static char	*search_pathname_command(char *command)
 
 int	is_directory(char *path)
 {
-	DIR *dir;
-	
+	DIR	*dir;
+
 	dir = opendir(path);
 	if (dir)
 	{

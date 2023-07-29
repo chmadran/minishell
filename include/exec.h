@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 11:09:13 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/29 16:11:05 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,13 @@ int		ft_export(int argc, char **argv);
 int		ft_pwd(char **argv);
 int		ft_unset(int argc, char **argv);
 
+/* builtins_utils */
+int		check_equals(char *str);
+int		check_option(char *str, int flag);
+int		check_event(char *str, int flag);
+int		ft_array_size(char **envp);
+char	**ft_sort_array(int argc, char **argv);
+
 /* execution : arguments */
 void	launch_execution(t_master *master);
 char	*clean_arg(char *s);
@@ -37,8 +44,10 @@ char	*allocate_memory_for_arg(char *s);
 char	*handle_quoted_argument(char *s, char **arg);
 char	*handle_unquoted_argument(char *s, char **arg);
 
-/* expansion.c */
+/* expansion.c & expansion_utils.c*/
 void	launch_expansion(t_exec *exec);
+char	*create_new_string(char *substr_start, char *name, char *value, size_t i, char *str);
+int		is_valid_name(char *str);
 
 /* command_builtins.c */
 int		is_directory(char *path);

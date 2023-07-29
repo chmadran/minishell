@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 12:31:42 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/28 18:21:54 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:36:29 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "exit.h"
 #include "libft.h"
 
-char	*get_env_value(t_env *env, char *name)
+char	*get_env_value(t_env *env, char *name, int flag)
 {
 	char	*value;
 
@@ -27,13 +27,9 @@ char	*get_env_value(t_env *env, char *name)
 		{
 			if (env->value)
 			{
+				if (flag == 0)
+					return (env->value);
 				value = ft_strdup(env->value);
-				if (!value)
-				{
-					free(name);
-					free_executable();
-					ft_error_exit("ft_strdup (get_env_value)", ENOMEM);
-				}
 				return (value);
 			}
 			else

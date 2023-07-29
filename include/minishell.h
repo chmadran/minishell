@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 13:22:43 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:34:04 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@
 # define DEFAULT_PATH_2 ":/opt/homebrew/bin"
 
 # define ESTR_QUOTE "minishell: syntax error: unmatched quote\n"
-# define ESTR_DQUOTE "minishell: syntax error: unmatched double quote\n"
 # define EHDOC_PIPE "minishell: syntax error: invalid heredoc pipe\n"
 # define ESTR_UNEXP "minishell: syntax error: unexpected token '%c'\n"
 # define EDSTR_UNEXP "minishell: syntax error: unexpected token '%c%c'\n"
@@ -119,6 +118,7 @@ int		is_clean(t_token **token_lst);
 int		unclosed_quotes(const char *line_read);
 
 /* print_utils.c */
+int		print_export(char **envp);
 void	print_data_builtins(t_exec	*current);
 void	print_environement_var(t_env *env_list, char *name);
 void	print_environement_list(t_env *env_list);
@@ -129,5 +129,7 @@ void	free_double_ptr(char **str);
 void	free_executable(void);
 void	free_environment_list(t_env *env);
 void	free_token_list(t_token *token_list);
+
+/* other_utils.c */
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:27:12 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/28 12:42:57 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:37:18 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,6 @@ void	manage_environment(t_env **env_list)
 		if (!name)
 			ft_error_exit("ft_strndup (manage_environment)", ENOMEM);
 		value = ft_strdup(equals_location + 1);
-		if (!value)
-		{
-			free(name);
-			ft_error_exit("ft_strdup (manage_environment)", ENOMEM);
-			return ;
-		}
 		if (!ft_strcmp(name, SHLVL))
 			value = update_shlvl(value, name);
 		create_add_env_node(name, value, env_list);

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 12:30:45 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 12:20:07 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:20:14 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,6 @@
 #include "exit.h"
 #include "env.h"
 #include "exec.h"
-
-static int	check_event(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '!')
-		{
-			printf("minishell: export: '%s': event not found\n", &str[i]);
-			g_master.exit_status = 1;
-			return (EXIT_FAILURE);
-		}
-		i++;
-	}
-	return (EXIT_SUCCESS);
-}
 
 static int	is_valid_identifier(char *str)
 {
@@ -55,7 +37,7 @@ static int	is_valid_identifier(char *str)
 		}
 		i++;
 	}
-	return(EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }
 
 int	ft_unset(int argc, char **argv)
@@ -63,13 +45,12 @@ int	ft_unset(int argc, char **argv)
 	int		i;
 	t_env	*current;
 
+	(void)argc;
 	i = 0;
 	current = g_master.env_list;
-	
-	(void)argc;
 	while (argv[++i])
 	{
-		if (check_event(argv[i]) || is_valid_identifier(argv[i]))
+		if (check_event(argv[i], 1) || is_valid_identifier(argv[i]))
 			continue ;
 		while (current)
 		{
