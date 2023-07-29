@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 13:22:43 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 19:00:15 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <stdbool.h>
 # include <errno.h>
 # include <dirent.h>
-# include <limits.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -96,7 +95,6 @@ typedef struct s_master
 	t_token	*token_list;
 	t_exec	*exec;
 	char	*line_read;
-	char	**export_envp;
 	int		exit_status;
 	int		token_count;
 }	t_master;
@@ -106,8 +104,6 @@ int		launch_lexer(char *line_read, t_token **token_list);
 int		launch_parser(t_token **token_list);
 
 /* lexer_utils.c */
-int		is_empty_filename(t_exec *exec);
-int		check_directory(char *str);
 int		check_start(char *str);
 int		start_operator(t_token_type type);
 bool	is_in_quotes(const char *line_read, size_t j);

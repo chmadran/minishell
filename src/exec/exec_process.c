@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/28 10:48:21 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/26 18:59:02 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static size_t	get_env_list_size(t_env *env_list)
 	return (size);
 }
 
-char	**env_list_to_array(t_env *env_list)
+static char	**env_list_to_array(t_env *env_list)
 {
 	size_t	i;
 	char	*tmp;

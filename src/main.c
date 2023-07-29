@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 15:32:48 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/28 15:46:31 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/27 16:44:09 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,5 @@ int	main(void)
 		}
 	}
 	free_environment_list(g_master.env_list);
-	free_double_ptr(g_master.export_envp);
 	return (0);
 }

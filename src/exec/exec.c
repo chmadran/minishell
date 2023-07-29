@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 12:57:21 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/27 13:35:28 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	prep_command_or_error(t_exec *exec, t_builtin_type type)
 		printf("minishell: %s: command not found\n", exec->argv[0]);
 		g_master.exit_status = 127;
 		free_executable();
-		ft_exit(exec->argc, exec->argv);
+		ft_exit();
 	}
 	return (prepare_command(&g_master, exec));
 }
@@ -77,6 +77,7 @@ void	launch_execution(t_master *master)
 	while (token)
 	{
 		type = prepare_execution(master, token);
+		print_data_builtins(master->exec);
 		if (type == T_OTHERS)
 			type = prep_command_or_error(master->exec, type);
 		if (type == T_ERROR)

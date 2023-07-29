@@ -6,7 +6,7 @@
 #    By: chmadran <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/10 16:46:56 by chmadran          #+#    #+#              #
-#    Updated: 2023/07/29 13:28:13 by chmadran         ###   ########.fr        #
+#    Updated: 2023/07/25 10:35:17 by chmadran         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,6 @@ MY_SOURCES = ft_atoi.c \
 			 ft_isdigit.c \
 			 ft_isspace.c \
 			 ft_itoa.c \
-			 ft_llatoi.c \
 			 ft_memcpy.c \
 			 ft_memmove.c \
 			 ft_memset.c \

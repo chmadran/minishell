@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:13:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 13:05:07 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/07/27 09:52:32 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,41 +51,14 @@ static char	*search_pathname_command(char *command)
 	return (free(temp_command), free_double_ptr(paths), NULL);
 }
 
-int	is_directory(char *path)
-{
-	DIR *dir;
-	
-	dir = opendir(path);
-	if (dir)
-	{
-		closedir(dir);
-		return (1);
-	}
-	else
-		return (0);
-}
-
 int	prepare_command(t_master *master, t_exec *exec)
 {
 	exec->pathname = search_pathname_command(exec->argv[0]);
 	if (!exec->pathname)
 	{
-		if (access(exec->argv[0], X_OK) == 0)
-		{
-			if (is_directory(exec->argv[0]))
-			{
-				printf("minishell: %s: Is a directory\n", exec->argv[0]);
-				master->exit_status = 126;
-				return (EXIT_FAILURE);
-			}
-			exec->pathname = ft_strdup(exec->argv[0]);
-		}
-		else
-		{
-			printf("minishell: %s: command not found\n", exec->argv[0]);
-			master->exit_status = 127;
-			return (T_ERROR);
-		}
+		printf("minishell: %s: command not found\n", exec->argv[0]);
+		master->exit_status = 127;
+		return (T_ERROR);
 	}
 	return (T_OTHERS);
 }
@@ -101,10 +74,10 @@ int	execute_builtin(t_exec *exec, t_builtin_type type)
 	else if (type == T_EXPORT)
 		return (ft_export(exec->argc, exec->argv), T_EXPORT);
 	else if (type == T_PWD)
-		return (ft_pwd(exec->argv), T_PWD);
+		return (ft_pwd(), T_PWD);
 	else if (type == T_UNSET)
 		return (ft_unset(exec->argc, exec->argv), T_UNSET);
 	else if (type == T_EXIT)
-		ft_exit(exec->argc, exec->argv);
+		ft_exit();
 	return (T_ERROR);
 }
