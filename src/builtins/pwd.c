@@ -20,7 +20,7 @@ int	ft_pwd(char **argv)
 {
 	char	*cwd;
 
-	if (check_option(argv[1], 2))
+	if (argv[1] && check_option(argv[1], 2))
 		return (EXIT_FAILURE);
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
