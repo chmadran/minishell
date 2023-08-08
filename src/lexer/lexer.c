@@ -140,7 +140,8 @@ int	launch_lexer(char *line_read, t_token **token_list)
 		return (EXIT_FAILURE);
 	if (manage_token(line_read, token_list))
 		return (EXIT_FAILURE);
-	if ((is_heredoc_pipe(token_list)) || (is_clean(token_list)) || end_op(token_list))
+	if ((is_heredoc_pipe(token_list)) || (is_clean(token_list))
+		|| end_op(token_list))
 	{
 		free_token_list(*token_list);
 		g_master.exit_status = 2;

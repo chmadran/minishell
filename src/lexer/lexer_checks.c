@@ -84,8 +84,6 @@ int	is_heredoc_pipe(t_token **token_lst)
 	return (EXIT_SUCCESS);
 }
 
-
-
 int	is_clean(t_token **token_lst)
 {
 	t_token			*current;

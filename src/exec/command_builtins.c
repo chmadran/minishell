@@ -80,13 +80,7 @@ int	prepare_command(t_master *master, t_exec *exec)
 			}
 			exec->pathname = ft_strdup(exec->argv[0]);
 		}
-
-		// else if (exec->argv[0])
-		// {
-		// 	master->redirection_done = 0;
-		// 	return (T_OTHERS);
-		// }
-		// else
+		else
 		{
 			printf("minishell: %s: command not found\n", exec->argv[0]);
 			master->exit_status = 127;

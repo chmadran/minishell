@@ -14,8 +14,7 @@
 # define EXEC_H
 
 # include "minishell.h"
-#include <fcntl.h>
-
+# include <fcntl.h>
 
 extern t_master	g_master;
 
@@ -64,5 +63,14 @@ void	parent_process_execution(t_token **token, t_exec *exec);
 void	execve_execute_command(t_exec *exec, t_env *env_list,
 			t_builtin_type type);
 char	**env_list_to_array(t_env *env_list);
+
+/* redir.c*/
+int	launch_redirection(t_exec *exec);
+
+/* redir_utils.c*/
+int		find_redirection(char **argv);
+int		clean_argv(t_exec *exec);
+int		clean_redir(t_exec *exec);
+int		check_redir(char **argv);
 
 #endif

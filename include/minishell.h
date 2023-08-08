@@ -38,14 +38,14 @@
 
 # define OP 1
 
+// T_RED_IN,
+// T_D_RED_IN,
+// T_RED_OUT,
+// T_D_RED_OUT,
 typedef enum e_token_type
 {
 	T_COMMAND,
 	T_PIPE,
-	// T_RED_IN,
-	// T_D_RED_IN,
-	// T_RED_OUT,
-	// T_D_RED_OUT,
 }	t_token_type;
 
 typedef struct s_token
