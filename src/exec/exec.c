@@ -53,10 +53,142 @@ static t_builtin_type	find_arg_type(char *arg)
 	return (type);
 }
 
+int		find_redirection(char **argv)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (argv[i])
+	{
+		j = 0;
+		while (argv[i][j])
+		{
+			if (argv[i][j] == '<')
+				return (i);
+			else if (argv[i][j] == '>')
+				return (i);
+			j++;
+		}
+		i++;
+	}
+	return (-1);
+}
+
+int		clean_argv(t_exec *exec)
+{
+	int		i;
+
+	i = 0;
+	i = find_redirection(exec->argv);
+	if (i == -1)
+		return (EXIT_FAILURE);
+	exec->argc = i + 1;
+	while (exec->argv[i])
+	{
+		free(exec->argv[i]);
+		exec->argv[i] = NULL;
+		i++;
+	}
+	return (EXIT_SUCCESS);
+}
+
+int clean_redir(t_exec *exec)
+{
+	int	i;
+	int	j;
+	
+	i = find_redirection(exec->argv);
+	if (i == -1)
+		return (EXIT_FAILURE);
+	j = i + 1;
+	free(exec->argv[i]);
+	exec->argv[i] = NULL;
+	while (exec->argv[j])
+	{
+		exec->argv[j - 1] = exec->argv[j];
+		exec->argv[exec->argc - 1] = NULL;
+		exec->argc--;
+		j++;
+	}
+	return (EXIT_SUCCESS);
+}
+
+int		check_redir(char **argv)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	
+	while (argv[i])
+	{
+		j = 0;
+		while (argv[i][j])
+		{
+			if (argv[i][j] == '<')
+				return (1);
+			else if (argv[i][j] == '>')
+			{
+				if (argv[i][j + 1] == '>')
+					return (3);
+				else
+					return (2);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	launch_redirection(t_exec *exec)
+{
+	int	fd;
+	int	redir;
+
+	fd = 0;
+	redir = check_redir(exec->argv);
+	if (redir == 1)
+	{
+		fd = open(exec->argv[exec->argc - 1], O_RDONLY, 0644);
+		if (fd < 0)
+		{
+			clean_redir(exec);
+			return (-1);
+		}
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+	}
+	else if (redir ==	2)
+	{
+		fd = open(exec->argv[exec->argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (fd < 0)
+			return (-1);
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+	}
+	else if (redir == 3)
+	{
+		fd = open(exec->argv[exec->argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (fd < 0)
+			return (-1);
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+	}
+	clean_argv(exec);
+	return (0);
+}
+
 static t_builtin_type	prepare_execution(t_master *master, t_token *token)
 {
 	master->exec = create_arguments(token);
 	launch_expansion(master->exec);
+	print_data_builtins(master->exec);
+	launch_redirection(master->exec);
+	print_data_builtins(master->exec);
 	return (find_arg_type(master->exec->argv[0]));
 }
 
@@ -84,16 +216,16 @@ void	launch_execution(t_master *master)
 			free_executable();
 			return ;
 		}
-		if (type != T_OTHERS && type != T_ERROR && master->token_count == 1)
-		{
-			g_master.exit_status = execute_builtin(master->exec, type);
-			free_executable();
-			return ;
-		}
+		// if (type != T_OTHERS && type != T_ERROR && master->token_count == 1)
+		// {
+		// 	g_master.exit_status = execute_builtin(master->exec, type);
+		// 	free_executable();
+		// 	return ;
+		// }
 		if (token->next && token->next->type == T_PIPE)
 			pipe(exec.pipefd);
 		exec.pid = fork();
-		child_process_execution(master, token, &exec, type);
+		child_process_execution(master, token, &exec, type);		
 		parent_process_execution(&token, &exec);
 	}
 	if (!exec.first_cmd)

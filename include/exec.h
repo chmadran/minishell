@@ -14,6 +14,8 @@
 # define EXEC_H
 
 # include "minishell.h"
+#include <fcntl.h>
+
 
 extern t_master	g_master;
 

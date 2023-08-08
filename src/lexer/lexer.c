@@ -14,6 +14,24 @@
 #include "libft.h"
 #include "exit.h"
 
+int	end_op(t_token **token_lst)
+{
+	t_token			*current;
+
+	current = *token_lst;
+	while (current)
+	{
+		if (current->type != T_COMMAND && !current->next)
+		{
+			printf("syntax error near unexpected token \n");
+			g_master.exit_status = 2;
+			return (EXIT_FAILURE);
+		}
+		current = current->next;
+	}
+	return (EXIT_SUCCESS);
+}
+
 static char	*trim_spaces(const char *str, size_t start, size_t end)
 {
 	size_t		i;
@@ -46,9 +64,8 @@ static t_token_type	check_token_type(char c, const char *line_read, size_t *j)
 {
 	size_t				i;
 	t_token_type		token_type;
-	const char			*ops[OP] = {"|", "<", "<<", ">", ">>"};
-	const t_token_type	types[OP] = {T_PIPE, T_RED_IN, T_D_RED_IN, T_RED_OUT,
-		T_D_RED_OUT};
+	const char			*ops[OP] = {"|"};
+	const t_token_type	types[OP] = {T_PIPE};
 
 	i = 0;
 	token_type = T_COMMAND;
@@ -123,12 +140,13 @@ int	launch_lexer(char *line_read, t_token **token_list)
 		return (EXIT_FAILURE);
 	if (manage_token(line_read, token_list))
 		return (EXIT_FAILURE);
-	if ((is_heredoc_pipe(token_list)) || (is_clean(token_list)))
+	if ((is_heredoc_pipe(token_list)) || (is_clean(token_list)) || end_op(token_list))
 	{
 		free_token_list(*token_list);
 		g_master.exit_status = 2;
 		return (EXIT_FAILURE);
 	}
 	ft_token_count(token_list);
+	//print_token_list(*token_list);
 	return (EXIT_SUCCESS);
 }

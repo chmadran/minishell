@@ -36,16 +36,16 @@
 # define EDSTR_UNEXP "minishell: syntax error: unexpected token '%c%c'\n"
 # define ESTR_OPSTART "minishell: syntax error near unexpected token 'newline'\n"
 
-# define OP 5
+# define OP 1
 
 typedef enum e_token_type
 {
 	T_COMMAND,
 	T_PIPE,
-	T_RED_IN,
-	T_D_RED_IN,
-	T_RED_OUT,
-	T_D_RED_OUT,
+	// T_RED_IN,
+	// T_D_RED_IN,
+	// T_RED_OUT,
+	// T_D_RED_OUT,
 }	t_token_type;
 
 typedef struct s_token
@@ -67,6 +67,7 @@ typedef enum e_builtin_type
 	T_UNSET,
 	T_EXPORT,
 	T_OTHERS,
+	T_REDIR,
 }	t_builtin_type;
 
 typedef struct s_exec
@@ -98,6 +99,8 @@ typedef struct s_master
 	char	**export_envp;
 	int		exit_status;
 	int		token_count;
+	int		redirection_done;
+
 }	t_master;
 
 /* lexer.c */

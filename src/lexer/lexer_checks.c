@@ -84,11 +84,13 @@ int	is_heredoc_pipe(t_token **token_lst)
 	return (EXIT_SUCCESS);
 }
 
+
+
 int	is_clean(t_token **token_lst)
 {
 	t_token			*current;
 	char			type;
-	const char		*ops[OP] = {"|", "<", "<<", ">", ">>"};
+	const char		*ops[5] = {"|", "<", "<<", ">", ">>"};
 
 	current = *token_lst;
 	while (current && current->next)

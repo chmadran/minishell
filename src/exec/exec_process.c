@@ -77,6 +77,37 @@ void	execve_execute_command(t_exec *exec, t_env *env_list,
 	perror("execve (execute_command)");
 }
 
+// int    setup_redirections(t_token *token)
+// {
+//     int    fd;
+
+//     if (token->type == T_RED_OUT)
+//     {
+//         fd = open(token->next->data, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+//         if (fd < 0)
+//             return (-1);
+//         dup2(fd, STDOUT_FILENO);
+//         close(fd);
+//     }
+// 		else if (token->type == T_RED_IN)
+//     {
+//         fd = open(token->next->data, O_RDONLY, 0644);
+//         if (fd < 0)
+//             return (-1);
+//         dup2(fd, STDIN_FILENO);
+//         close(fd);
+//     }
+// 		else if (token->type == T_D_RED_OUT)
+//     {
+//         fd = open(token->next->data, O_WRONLY | O_CREAT | O_APPEND, 0644);
+//         if (fd < 0)
+//             return (-1);
+//         dup2(fd, STDOUT_FILENO);
+//         close(fd);
+//     }
+//     return (0);
+// }
+
 void	child_process_execution(t_master *master, t_token *token, t_exec *exec,
 			t_builtin_type type)
 {
@@ -94,6 +125,8 @@ void	child_process_execution(t_master *master, t_token *token, t_exec *exec,
 			dup2(exec->pipefd[1], STDOUT_FILENO);
 			close(exec->pipefd[1]);
 		}
+		// if (token->next && (token->next->type == T_RED_OUT || token->next->type == T_RED_IN || token->next->type == T_D_RED_OUT))
+		// 	setup_redirections(token->next);
 		if ((type == T_OTHERS && master->exec->pathname)
 			|| (type != T_ERROR && type != T_OTHERS))
 			execve_execute_command(master->exec, master->env_list, type);

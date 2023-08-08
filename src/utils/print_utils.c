@@ -80,38 +80,38 @@ void	print_environement_var(t_env *env_list, char *name)
 	printf("%s=%s\n", current->name, current->value);
 }
 
-// void	print_token_list(t_token *token_list)
-// {
-// 	size_t	i;
-// 	t_token	*current;
+void	print_token_list(t_token *token_list)
+{
+	size_t	i;
+	t_token	*current;
 
-// 	i = 0;
-// 	current = token_list;
-// 	printf("\n\n---------------TABLEAU DE TOKENS-------------\n");
-// 	printf("| %-5s | %-25s | %-5s |\n", "#", "Token Data", "Type");
-// 	printf("---------------------------------------------\n");
-// 	while (current)
-// 	{
-// 		printf("| %-5zu | %-25s | %-5d |\n", i, current->data, current->type);
-// 		current = current->next;
-// 		i++;
-// 	}
-// 	printf("---------------------------------------------\n\n\n");
-// }
+	i = 0;
+	current = token_list;
+	printf("\n\n---------------TABLEAU DE TOKENS-------------\n");
+	printf("| %-5s | %-25s | %-5s |\n", "#", "Token Data", "Type");
+	printf("---------------------------------------------\n");
+	while (current)
+	{
+		printf("| %-5zu | %-25s | %-5d |\n", i, current->data, current->type);
+		current = current->next;
+		i++;
+	}
+	printf("---------------------------------------------\n\n\n");
+}
 
-// void	print_data_builtins(t_exec	*current)
-// {
-// 	int	i;
+void	print_data_builtins(t_exec	*current)
+{
+	int	i;
 
-// 	i = 0;
-// 	printf("------ARGUMENTS ENVOYES EN EXECUTION-----------\n");
-// 	printf("| %-15s | %-25s |\n", "Int ARGC", "Char **ARGV");
-// 	printf("-----------------------------------------------\n");
-// 	printf("| %-15d | %-25s |\n", current->argc, current->argv[i++]);
-// 	while (current->argv[i])
-// 	{
-// 		printf("| %-15s | %-25s |\n", " ", current->argv[i]);
-// 		i++;
-// 	}
-// 	printf("-----------------------------------------------\n\n\n");
-// }
+	i = 0;
+	printf("------ARGUMENTS ENVOYES EN EXECUTION-----------\n");
+	printf("| %-15s | %-25s |\n", "Int ARGC", "Char **ARGV");
+	printf("-----------------------------------------------\n");
+	printf("| %-15d | %-25s |\n", current->argc, current->argv[i++]);
+	while (current->argv[i])
+	{
+		printf("| %-15s | %-25s |\n", " ", current->argv[i]);
+		i++;
+	}
+	printf("-----------------------------------------------\n\n\n");
+}
