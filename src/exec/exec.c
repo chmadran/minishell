@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 15:15:36 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/09 08:53:27 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ static t_builtin_type	prepare_execution(t_master *master, t_token *token)
 {
 	master->exec = create_arguments(token);
 	launch_expansion(master->exec);
-	print_data_builtins(master->exec);
+	//print_data_builtins(master->exec);
 	launch_redirection(master->exec);
-	print_data_builtins(master->exec);
+	//print_data_builtins(master->exec);
 	return (find_arg_type(master->exec->argv[0]));
 }
 
@@ -80,6 +80,7 @@ void	launch_execution(t_master *master)
 	token = master->token_list;
 	while (token)
 	{
+		print_token_list(token);
 		type = prepare_execution(master, token);
 		if (type == T_OTHERS)
 			type = prep_command_or_error(master->exec, type);
@@ -88,12 +89,12 @@ void	launch_execution(t_master *master)
 			free_executable();
 			return ;
 		}
-		// if (type != T_OTHERS && type != T_ERROR && master->token_count == 1)
-		// {
-		// 	g_master.exit_status = execute_builtin(master->exec, type);
-		// 	free_executable();
-		// 	return ;
-		// }
+		if (type != T_OTHERS && type != T_ERROR && master->token_count == 1)
+		{
+			g_master.exit_status = execute_builtin(master->exec, type);
+			free_executable();
+			return ;
+		}
 		if (token->next && token->next->type == T_PIPE)
 			pipe(exec.pipefd);
 		exec.pid = fork();
