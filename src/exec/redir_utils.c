@@ -93,7 +93,7 @@ int		check_redir(char **argv)
 				return (1);
 			else if (argv[i][j] == '>')
 			{
-				if (argv[i][j + 1] == '>')
+				if (argv[i][j + 1] && argv[i][j + 1] == '>')
 					return (3);
 				else
 					return (2);

@@ -59,7 +59,7 @@ static t_builtin_type	prepare_execution(t_master *master, t_token *token)
 	master->exec = create_arguments(token);
 	launch_expansion(master->exec);
 	//print_data_builtins(master->exec);
-	launch_redirection(master->exec);
+	// launch_redirection(master->exec);
 	//print_data_builtins(master->exec);
 	return (find_arg_type(master->exec->argv[0]));
 }
@@ -80,7 +80,6 @@ void	launch_execution(t_master *master)
 	token = master->token_list;
 	while (token)
 	{
-		print_token_list(token);
 		type = prepare_execution(master, token);
 		if (type == T_OTHERS)
 			type = prep_command_or_error(master->exec, type);
@@ -89,7 +88,7 @@ void	launch_execution(t_master *master)
 			free_executable();
 			return ;
 		}
-		if (type != T_OTHERS && type != T_ERROR && master->token_count == 1)
+		if (type != T_OTHERS && type != T_ERROR && master->token_count == 1 && check_redir(master->exec->argv) == 0)
 		{
 			g_master.exit_status = execute_builtin(master->exec, type);
 			free_executable();

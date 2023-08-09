@@ -32,19 +32,14 @@ int	launch_redirection(t_exec *exec)
 {
 	int	redir;
 
+	redir = 0;
 	redir = check_redir(exec->argv);
 	if (redir == 1)
-	{
-		if (open_and_dup(exec, O_RDONLY, STDIN_FILENO) == -1)
-		{
-			clean_redir(exec);
-			return (-1);
-		}
-	}
-	else if (redir == 2 && open_and_dup(exec, O_WRONLY | O_CREAT | O_TRUNC, STDOUT_FILENO) == - 1)
-		return (-1);
-	else if (redir == 3 && open_and_dup(exec, O_WRONLY | O_CREAT | O_APPEND, STDOUT_FILENO) == -1)
-		return (-1);
+		open_and_dup(exec, O_RDONLY, STDIN_FILENO);
+	else if (redir == 2)
+		open_and_dup(exec, O_WRONLY | O_CREAT | O_TRUNC, STDOUT_FILENO);
+	else if (redir == 3)
+		open_and_dup(exec, O_WRONLY | O_CREAT | O_APPEND, STDOUT_FILENO);
 	clean_argv(exec);
 	return (0);
 }
