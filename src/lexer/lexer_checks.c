@@ -84,13 +84,58 @@ int	is_heredoc_pipe(t_token **token_lst)
 	return (EXIT_SUCCESS);
 }
 
+int	check_more_than_two_op(t_token *current)
+{
+	int i;
+	int count;
+	const char	ops[4] = "<>|";
+
+	i = 0;
+	count = 0;
+	while (current->data[i])
+	{
+		if (strchr(ops, current->data[i]))
+		{
+			if (i == 0 || current->data[i] == current->data[i - 1])
+				count++;
+			else
+			{
+				if (count == 1)
+					return (EXIT_FAILURE);
+				count = 1;
+			}
+			if (count > 2)
+				return (EXIT_FAILURE);
+		}
+		else
+			count = 0;
+		i++;
+	}
+	return (EXIT_SUCCESS);
+}
+
+
 int	is_clean(t_token **token_lst)
 {
 	t_token			*current;
-	char			type;
+	t_token			*current_cpy;
+	char			type = 0;
 	const char		*ops[5] = {"|", "<", "<<", ">", ">>"};
 
 	current = *token_lst;
+	current_cpy = current;
+	
+	while (current_cpy)
+	{
+		if (check_more_than_two_op(current) == EXIT_FAILURE)
+		{
+			printf(ESTR_UNEXP, type);
+			g_master.exit_status = 2;
+			return (EXIT_FAILURE);
+		}
+		current_cpy = current_cpy->next;
+	}
+
 	while (current && current->next)
 	{
 		if (current->next->type == T_COMMAND && !ft_strlen(current->next->data)
