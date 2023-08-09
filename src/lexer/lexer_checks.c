@@ -94,7 +94,7 @@ int	check_more_than_two_op(t_token *current)
 	count = 0;
 	while (current->data[i])
 	{
-		if (strchr(ops, current->data[i]))
+		if (ft_strchr(ops, current->data[i]))
 		{
 			if (i == 0 || current->data[i] == current->data[i - 1])
 				count++;
