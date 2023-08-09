@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 16:11:05 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/09 08:47:15 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "env.h"
 #include "exec.h"
 
-int		find_redirection(char **argv)
+static int		find_redirection(char **argv)
 {
 	int i;
 	int j;

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 16:11:05 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/09 08:50:08 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "env.h"
 #include "exec.h"
 
-int	open_and_dup(t_exec *exec, int flags, int std_type)
+static int	open_and_dup(t_exec *exec, int flags, int std_type)
 {
 	int	fd;
 
@@ -41,7 +41,7 @@ int	launch_redirection(t_exec *exec)
 			return (-1);
 		}
 	}
-	else if (redir ==	2 && open_and_dup(exec, O_WRONLY | O_CREAT | O_TRUNC, STDOUT_FILENO) == - 1)
+	else if (redir == 2 && open_and_dup(exec, O_WRONLY | O_CREAT | O_TRUNC, STDOUT_FILENO) == - 1)
 		return (-1);
 	else if (redir == 3 && open_and_dup(exec, O_WRONLY | O_CREAT | O_APPEND, STDOUT_FILENO) == -1)
 		return (-1);
