@@ -87,11 +87,68 @@ static t_token_type	check_token_type(char c, const char *line_read, size_t *j)
 	return (token_type);
 }
 
+static char *add_spaces_between_ops(const char *data) 
+{
+    const char ops[] = "<>|&";
+    int i = 0; 
+		int j = 0; 
+		int len = ft_strlen(data);
+    int add_spaces = 0;
+
+    while (data[i]) 
+		{
+        if (ft_strchr(ops, data[i])) 
+				{
+					if ((ft_isalnum(data[i - 1]) && ft_isalnum(data[i + 1])))
+						add_spaces += 2;
+					else if (ft_isalnum(data[i - 1]) || ft_isalnum(data[i + 1]))
+						add_spaces += 1;
+				}
+				i++;
+		}
+		char *new_data = (char *)malloc(len + add_spaces + 1);
+		if (!new_data)
+			return (NULL);
+
+		i = 0;
+    while (data[i]) 
+		{
+        if (ft_strchr(ops, data[i])) 
+				{
+					if (ft_isalnum(data[i - 1]) && (ft_isalnum(data[i + 1])))
+					{
+            new_data[j++] = ' ';
+            new_data[j++] = data[i++];
+						new_data[j++] = ' ';
+					}
+					else if (ft_isalnum(data[i - 1]))
+					{
+            new_data[j++] = ' ';
+            new_data[j++] = data[i++];
+					}
+					else if (ft_isalnum(data[i + 1]))
+					{
+						new_data[j++] = data[i++];
+						new_data[j++] = ' ';
+					}
+					else
+						new_data[j++] = data[i++];
+				}
+				else
+					new_data[j++] = data[i++];
+		}
+    
+    new_data[j] = '\0';
+		return (new_data);
+}
+
+
 static int	manage_token(const char *line_read, t_token **token_lst)
 {
 	size_t			i;
 	size_t			j;
 	char			*data;
+	char			*tmp;
 	t_token_type	type;
 
 	i = 0;
@@ -105,6 +162,9 @@ static int	manage_token(const char *line_read, t_token **token_lst)
 		while (line_read[i] && type == T_COMMAND)
 			type = check_token_type(line_read[++i], line_read, &i);
 		data = trim_spaces(line_read, j, i - 1);
+		tmp =  add_spaces_between_ops(data);
+		free(data);
+		data = tmp;
 		create_token_node(T_COMMAND, data, token_lst);
 		if (type != T_COMMAND)
 		{
