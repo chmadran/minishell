@@ -26,6 +26,8 @@
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <fcntl.h>
+
 
 # define DEFAULT_PATH_1 "/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin"
 # define DEFAULT_PATH_2 ":/opt/homebrew/bin"
@@ -38,10 +40,6 @@
 
 # define OP 1
 
-// T_RED_IN,
-// T_D_RED_IN,
-// T_RED_OUT,
-// T_D_RED_OUT,
 typedef enum e_token_type
 {
 	T_COMMAND,
@@ -67,7 +65,6 @@ typedef enum e_builtin_type
 	T_UNSET,
 	T_EXPORT,
 	T_OTHERS,
-	T_REDIR,
 }	t_builtin_type;
 
 typedef struct s_exec
@@ -99,8 +96,6 @@ typedef struct s_master
 	char	**export_envp;
 	int		exit_status;
 	int		token_count;
-	int		redirection_done;
-
 }	t_master;
 
 /* lexer.c */
