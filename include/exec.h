@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/09 08:47:19 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 11:24:53 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ char	*handle_unquoted_argument(char *s, char **arg);
 
 /* expansion.c & expansion_utils.c*/
 void	launch_expansion(t_exec *exec);
-char	*create_new_string(char *substr_start, char *name, char *value, size_t i, char *str);
+char	*create_new_string(char *substr_start, char *name, char *value,
+			char *str);
 int		is_valid_name(char *str);
 
 /* command_builtins.c */

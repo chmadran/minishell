@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 16:02:09 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 16:10:27 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 11:25:10 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,27 @@ int	is_valid_name(char *str)
 	return (EXIT_SUCCESS);
 }
 
-static size_t calculate_len(char *value, size_t i)
+static size_t	calculate_len(char *value)
 {
-	size_t len;
-
-	if (value)
-		len = ft_strlen(g_master.exec->argv[i]) + ft_strlen(value) + 1;
-	else
-		len = ft_strlen(g_master.exec->argv[i]) + 1;
-	return (len);
+	size_t	i;
+	size_t	j;
+	i = -1;
+	while (g_master.exec->argv[++i])
+	{
+		j = -1;
+		while (g_master.exec->argv[i][++j])
+		{
+			if (g_master.exec->argv[i][j] == '$')
+			{
+				if (value)
+					return (ft_strlen(g_master.exec->argv[i])
+						+ ft_strlen(value) + 1);
+				else
+					return (ft_strlen(g_master.exec->argv[i]) + 1);
+			}
+		}
+	}
+	return (-1);
 }
 
 static char *allocate_new_string(size_t len, char *name)
@@ -49,12 +61,12 @@ static char *allocate_new_string(size_t len, char *name)
 }
 
 char	*create_new_string(char *substr_start, char *name, char *value,
-	size_t i, char *str)
+		char *str)
 {
 	char	*new_str;
 	size_t	len;
 
-	len = calculate_len(value, i);
+	len = calculate_len(value);
 	new_str = allocate_new_string(len, name);
 	if (value)
 	{
