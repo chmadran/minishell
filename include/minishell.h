@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 13:45:42 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 14:19:58 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,14 @@ int		launch_parser(t_token **token_list);
 
 /* lexer_utils.c */
 int		is_empty_filename(t_exec *exec);
-int		check_directory(char *str);
-int		check_start(char *str);
 int		start_operator(t_token_type type);
 bool	is_in_quotes(const char *line_read, size_t j);
 void	create_token_node(t_token_type type, char *data, t_token **token_list);
+char	check_more_than_two_op(t_token *current);
 
 /* lexer_checks.c */
+int		check_directory(char *str);
+int		check_start(char *str);
 int		is_heredoc_pipe(t_token **token_lst);
 int		is_clean(t_token **token_lst);
 int		unclosed_quotes(const char *line_read);
