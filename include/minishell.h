@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 11:43:00 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 12:27:39 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ void	free_double_ptr(char **str);
 void	free_executable(void);
 void	free_environment_list(t_env *env);
 void	free_token_list(t_token *token_list);
+void	remove_tmpfile(void);
 
 /* other_utils.c */
 

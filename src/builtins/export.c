@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 12:00:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 15:47:55 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 12:38:34 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,24 @@ static char	**add_back_envp_var(int arraySize, char *argv, char **envp)
 	return (new_array);
 }
 
+int	export_local_var(int *array_size, char *argv)
+{
+	char	**new_array;
+
+	new_array = add_back_envp_var(*array_size, argv,
+			g_master.export_envp);
+	if (!new_array)
+		return (EXIT_FAILURE);
+	free_double_ptr(g_master.export_envp);
+	g_master.export_envp = new_array;
+	array_size++;
+	return (EXIT_SUCCESS);
+}
+
 int	ft_export(int argc, char **argv)
 {
 	int		i;
 	int		array_size;
-	char	**new_array;
 	char	*equals_location;
 
 	i = 0;
@@ -82,8 +95,7 @@ int	ft_export(int argc, char **argv)
 		if (check_equals(argv[i]) || check_event(argv[i], 0)
 			|| check_option(argv[i], 1))
 			return (EXIT_FAILURE);
-		if (ft_strlen(argv[i]))
-			equals_location = ft_strchr(argv[i], '=');
+		equals_location = ft_strchr(argv[i], '=');
 		if (equals_location && *(equals_location + 1))
 		{
 			if (export_var(argv[i], equals_location))
@@ -91,13 +103,8 @@ int	ft_export(int argc, char **argv)
 		}
 		else if (ft_strlen(argv[i]))
 		{
-			new_array = add_back_envp_var(array_size, argv[i],
-					g_master.export_envp);
-			if (!new_array)
+			if (export_local_var(&array_size, argv[i]))
 				return (EXIT_FAILURE);
-			free_double_ptr(g_master.export_envp);
-			g_master.export_envp = new_array;
-			array_size++;
 		}
 	}
 	return (EXIT_SUCCESS);

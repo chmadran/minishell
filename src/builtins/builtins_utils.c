@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:44:01 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 11:42:42 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 12:27:11 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,4 @@ char	**ft_sort_array(int argc, char **argv)
 		argc--;
 	}
 	return (argv);
-}
-
-void	remove_tmpfile(void)
-{
-	if (access("minishell_heredoc_tmp.txt", F_OK) != -1)
-		unlink("minishell_heredoc_tmp.txt");
 }

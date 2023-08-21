@@ -6,13 +6,19 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 17:56:44 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/25 12:02:29 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 12:26:56 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include "env.h"
+
+void	remove_tmpfile(void)
+{
+	if (access("minishell_heredoc_tmp.txt", F_OK) != -1)
+		unlink("minishell_heredoc_tmp.txt");
+}
 
 void	free_double_ptr(char **str)
 {
