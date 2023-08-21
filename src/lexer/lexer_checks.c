@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 09:48:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 15:40:20 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 11:55:57 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ int	is_heredoc_pipe(t_token **token_lst)
 
 char	check_more_than_two_op(t_token *current)
 {
-	int i;
-	int count;
+	int			i;
+	int			count;
 	const char	ops[4] = "<>|";
 
 	i = 0;
@@ -114,18 +114,16 @@ char	check_more_than_two_op(t_token *current)
 	return (-1);
 }
 
-
 int	is_clean(t_token **token_lst)
 {
 	t_token			*current;
 	t_token			*current_cpy;
 	char			type = 0;
 	const char		*ops[5] = {"|", "<", "<<", ">", ">>"};
-	char	err_tkn;
+	char			err_tkn;
 
 	current = *token_lst;
 	current_cpy = current;
-	
 	while (current_cpy)
 	{
 		err_tkn = check_more_than_two_op(current);
@@ -137,7 +135,6 @@ int	is_clean(t_token **token_lst)
 		}
 		current_cpy = current_cpy->next;
 	}
-
 	while (current && current->next)
 	{
 		if (current->next->type == T_COMMAND && !ft_strlen(current->next->data)

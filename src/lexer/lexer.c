@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 16:42:19 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 15:13:43 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 12:01:39 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,61 +87,63 @@ static t_token_type	check_token_type(char c, const char *line_read, size_t *j)
 	return (token_type);
 }
 
-
-static char *add_spaces_between_ops(const char *data) 
+static char	*add_spaces_between_ops(const char *data)
 {
-    const char ops[] = "<>|&";
-    int i = 0; 
-    int j = 0; 
-    int len = ft_strlen(data);
-    int add_spaces = 0;
+	const char	ops[] = "<>|&";
+	int	i;
+	int	j;
+	int	len;
+	int	add_spaces;
+	char	*new_data;
 
-    while (data[i]) 
-    {
-        if (ft_strchr(ops, data[i])) 
-        {
-            if (i > 0 && ft_isalnum(data[i - 1]) && i < len - 1 && ft_isalnum(data[i + 1]))
-                add_spaces += 2;
-            else if ((i > 0 && ft_isalnum(data[i - 1])) || (i < len - 1 && ft_isalnum(data[i + 1])))
-                add_spaces += 1;
-        }
-        i++;
-    }
-
-    char *new_data = (char *)malloc(len + add_spaces + 1);
-    if (!new_data)
-        return (NULL);
-
-    i = 0;
-    while (data[i]) 
-    {
-        if (ft_strchr(ops, data[i])) 
-        {
-            if (i > 0 && ft_isalnum(data[i - 1]) && i < len - 1 && ft_isalnum(data[i + 1]))
-            {
-                new_data[j++] = ' ';
-                new_data[j++] = data[i++];
-                new_data[j++] = ' ';
-            }
-            else if (i > 0 && ft_isalnum(data[i - 1]))
-            {
-                new_data[j++] = ' ';
-                new_data[j++] = data[i++];
-            }
-            else if (i < len - 1 && ft_isalnum(data[i + 1]))
-            {
-                new_data[j++] = data[i++];
-                new_data[j++] = ' ';
-            }
-            else
-                new_data[j++] = data[i++];
-        }
-        else
-            new_data[j++] = data[i++];
-    }
-    
-    new_data[j] = '\0';
-    return (new_data);
+	i = 0;
+	j = 0;
+	len = ft_strlen(data);
+	add_spaces = 0;
+	new_data = NULL;
+	while (data[i])
+	{
+		if (ft_strchr(ops, data[i]))
+		{
+			if (i > 0 && ft_isalnum(data[i - 1]) && i < len - 1 && ft_isalnum(data[i + 1]))
+				add_spaces += 2;
+			else if ((i > 0 && ft_isalnum(data[i - 1])) || (i < len - 1 && ft_isalnum(data[i + 1])))
+				add_spaces += 1;
+		}
+		i++;
+	}
+	new_data = (char *)malloc(len + add_spaces + 1);
+	if (!new_data)
+		return (NULL);
+	i = 0;
+	while (data[i])
+	{
+		if (ft_strchr(ops, data[i]))
+		{
+			if (i > 0 && ft_isalnum(data[i - 1]) && i < len - 1 && ft_isalnum(data[i + 1]))
+			{
+				new_data[j++] = ' ';
+				new_data[j++] = data[i++];
+				new_data[j++] = ' ';
+			}
+			else if (i > 0 && ft_isalnum(data[i - 1]))
+			{
+				new_data[j++] = ' ';
+				new_data[j++] = data[i++];
+			}
+			else if (i < len - 1 && ft_isalnum(data[i + 1]))
+			{
+				new_data[j++] = data[i++];
+				new_data[j++] = ' ';
+			}
+			else
+				new_data[j++] = data[i++];
+		}
+		else
+			new_data[j++] = data[i++];
+	}
+	new_data[j] = '\0';
+	return (new_data);
 }
 
 static int	manage_token(char *line_read, t_token **token_lst)
@@ -227,7 +229,6 @@ int	check_syntax(char *line_read)
 				printf("minishell : syntax error near unexpected token '%c%c%c'\n", line_read[i], line_read[i], line_read[i]);
 				return (1);
 			}
-
 			if ((line_read[i] == '>' && line_read[i + 1] == '>') || (line_read[i] == '<' && line_read[i + 1] == '<'))
 			{
 				printf("minishell : syntax error near unexpected token '%c%c'\n", line_read[i], line_read[i]);

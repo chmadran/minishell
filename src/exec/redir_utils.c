@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/09 08:47:15 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 11:47:13 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 #include "env.h"
 #include "exec.h"
 
-static int		find_redirection(char **argv)
+static int	find_redirection(char **argv)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
@@ -37,11 +37,10 @@ static int		find_redirection(char **argv)
 	return (-1);
 }
 
-int		clean_argv(t_exec *exec)
+int	clean_argv(t_exec *exec)
 {
-	int		i;
+	int	i;
 
-	// i = 0;
 	i = find_redirection(exec->argv);
 	if (i == -1)
 		return (EXIT_FAILURE);
@@ -55,11 +54,11 @@ int		clean_argv(t_exec *exec)
 	return (EXIT_SUCCESS);
 }
 
-int clean_redir(t_exec *exec)
+int	clean_redir(t_exec *exec)
 {
 	int	i;
 	int	j;
-	
+
 	i = find_redirection(exec->argv);
 	if (i == -1)
 		return (EXIT_FAILURE);
@@ -76,14 +75,13 @@ int clean_redir(t_exec *exec)
 	return (EXIT_SUCCESS);
 }
 
-int		check_redir(char **argv)
+int	check_redir(char **argv)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
-	
 	while (argv[i])
 	{
 		j = 0;

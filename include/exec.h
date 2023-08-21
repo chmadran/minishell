@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 11:24:53 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 11:41:01 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ void	execve_execute_command(t_exec *exec, t_env *env_list,
 char	**env_list_to_array(t_env *env_list);
 
 /* redir.c*/
-int	launch_redirection(t_exec *exec);
+int		launch_redirection(t_exec *exec);
 
 /* redir.c*/
-int	launch_heredoc(t_exec *exec);
+int		launch_heredoc(t_exec *exec);
 
 /* redir_utils.c*/
 int		clean_argv(t_exec *exec);
