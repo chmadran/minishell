@@ -146,7 +146,7 @@ static char *add_spaces_between_ops(const char *data)
 
 
 
-static int	manage_token(const char *line_read, t_token **token_lst)
+static int	manage_token(char *line_read, t_token **token_lst)
 {
 	size_t			i;
 	size_t			j;
@@ -158,7 +158,10 @@ static int	manage_token(const char *line_read, t_token **token_lst)
 	type = check_token_type(line_read[i], line_read, &i);
 	line_read =  add_spaces_between_ops(line_read);
 	if (start_operator(type) == EXIT_FAILURE)
+	{
+		free(line_read);
 		return (EXIT_FAILURE);
+	}
 	while (line_read[i])
 	{
 		j = i;
@@ -177,6 +180,7 @@ static int	manage_token(const char *line_read, t_token **token_lst)
 				i++;
 		}
 	}
+	free(line_read);
 	return (EXIT_SUCCESS);
 }
 
