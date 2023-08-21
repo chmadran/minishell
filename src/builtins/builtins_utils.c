@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:44:01 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/07 09:18:35 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 10:18:09 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ int	check_event(char *str, int flag)
 	{
 		if (str[i] == '!')
 		{
-			printf("minishell: %s: '%s': event not found\n", function_name, &str[i]);
+			printf("minishell: %s: '%s': event not found\n",
+				function_name, &str[i]);
 			g_master.exit_status = 1;
 			return (EXIT_FAILURE);
 		}

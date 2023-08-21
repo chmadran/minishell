@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 16:02:09 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 16:10:27 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 10:20:01 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int	is_valid_name(char *str)
 	return (EXIT_SUCCESS);
 }
 
-static size_t calculate_len(char *value, size_t i)
+static size_t	calculate_len(char *value, size_t i)
 {
-	size_t len;
+	size_t	len;
 
 	if (value)
 		len = ft_strlen(g_master.exec->argv[i]) + ft_strlen(value) + 1;
@@ -34,10 +34,11 @@ static size_t calculate_len(char *value, size_t i)
 	return (len);
 }
 
-static char *allocate_new_string(size_t len, char *name)
+static char	*allocate_new_string(size_t len, char *name)
 {
-	char *new_str = malloc(len);
+	char	*new_str;
 
+	new_str = malloc(len);
 	if (!new_str)
 	{
 		free(name);

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/28 10:48:21 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 10:21:49 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ void	parent_process_execution(t_token **token, t_exec *exec)
 			exec->old_pipefd[1] = exec->pipefd[1];
 			exec->first_cmd = false;
 		}
-
 		else
 			exec->first_cmd = true;
 		if ((*token)->next)

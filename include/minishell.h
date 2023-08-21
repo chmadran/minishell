@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 15:34:04 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 10:17:16 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <fcntl.h>
-
 
 # define DEFAULT_PATH_1 "/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin"
 # define DEFAULT_PATH_2 ":/opt/homebrew/bin"

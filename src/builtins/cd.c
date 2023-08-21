@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:40:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 16:15:52 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 10:17:39 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ static int	update_env(t_env *env_list)
 
 static int	change_directory_and_update(t_env *env_list, char *path)
 {
-	// if (path[0] == '/')
-	// 	path++;
 	if (chdir(path) == -1)
 	{
 		printf("minishell: cd: %s: No such file or directory\n", path);
