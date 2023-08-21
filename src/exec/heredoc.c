@@ -16,29 +16,6 @@
 #include "env.h"
 #include "exec.h"
 
-int	check_heredoc(char **argv, int *position)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (argv[i])
-	{
-		j = 0;
-		while (argv[i][j])
-		{
-			if (ft_strncmp(&argv[i][j], "<<", 2) == 0)
-			{
-				*position = j;
-				return (i);
-			}
-			j++;
-		}
-		i++;
-	}
-	return (-1);
-}
-
 static void	ft_here_sig(int signal)
 {
 	if (signal == SIGINT)
@@ -60,10 +37,7 @@ static void	ft_here(char *limiter)
 	tmp_filename = "minishell_heredoc_tmp.txt";
 	tmp_file_fd = open(tmp_filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (tmp_file_fd == -1)
-	{
-		perror("Error opening tmp file");
 		exit(EXIT_FAILURE);
-	}
 	while (1)
 	{
 		signal(SIGQUIT, SIG_IGN);
@@ -104,78 +78,23 @@ static int	ft_exec_heredoc(t_exec *exec)
 	return (g_master.exit_status);
 }
 
-void	clean_args(t_exec *exec, int heredoc_index)
-{
-	int	i;
-
-	i = heredoc_index;
-	free(exec->argv[heredoc_index]);
-	free(exec->argv[heredoc_index + 1]);
-	while (exec->argv[i + 2])
-	{
-		exec->argv[i] = exec->argv[i + 2];
-		i++;
-	}
-	exec->argv[i] = NULL;
-	exec->argc -= 2;
-}
-
-void	add_and_swap_args(t_exec *exec, int htkn)
-{
-	int		i;
-	char	*temp;
-	char	**new_argv;
-
-	i = 0;
-	temp = NULL;
-	new_argv = NULL;
-	if (ft_strcmp(exec->argv[0], "cat") == 0 && htkn == 1 && !exec->argv[1])
-	{
-		exec->argc++;
-		exec->argv[1] = ft_strdup("minishell_heredoc_tmp.txt");
-		exec->argv[2] = NULL;
-	}
-	if (ft_strcmp(exec->argv[0], "cat") == 0 && ft_strcmp(exec->argv[1], ">") == 0 && htkn == 1)
-	{
-		new_argv = (char **)malloc(sizeof(char *) * (exec->argc + 2));
-		if (!new_argv)
-		{
-			perror("Error allocating memory for new argv");
-			exit(EXIT_FAILURE);
-		}
-		new_argv[0] = ft_strdup("minishell_heredoc_tmp.txt");
-		while (i < exec->argc)
-		{
-			new_argv[i + 1] = exec->argv[i];
-			i++;
-		}
-		new_argv[exec->argc + 1] = NULL;
-		free(exec->argv);
-		exec->argv = new_argv;
-		exec->argc++;
-		temp = exec->argv[0];
-		exec->argv[0] = exec->argv[1];
-		exec->argv[1] = temp;
-	}
-}
-
 int	launch_heredoc(t_exec *exec)
 {
 	int	redir;
 	int	position;
-	int	htkn;
+	int	heredoc_tkn;
 
-	htkn = 0;
+	heredoc_tkn = 0;
 	redir = check_heredoc(exec->argv, &position);
 	while (redir != -1)
 	{
-		htkn = 1;
+		heredoc_tkn = 1;
 		signal(SIGQUIT, &ft_child_sig);
 		signal(SIGINT, &ft_child_sig);
 		ft_exec_heredoc(exec);
 		clean_args(exec, redir);
 		redir = check_heredoc(exec->argv, &position);
 	}
-	add_and_swap_args(exec, htkn);
+	add_tmp_file(exec, heredoc_tkn);
 	return (0);
 }

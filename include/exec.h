@@ -67,8 +67,16 @@ char	**env_list_to_array(t_env *env_list);
 /* redir.c*/
 int		launch_redirection(t_exec *exec);
 
-/* redir.c*/
+/* heredoc.c*/
 int		launch_heredoc(t_exec *exec);
+/* heredoc_utils.c*/
+void	add_tmp_file(t_exec *exec, int heredoc_tkn);
+void	clean_args(t_exec *exec, int heredoc_index);
+int	check_heredoc(char **argv, int *position);
+
+
+
+
 
 /* redir_utils.c*/
 int		clean_argv(t_exec *exec);
