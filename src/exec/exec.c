@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 11:45:38 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 14:02:02 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,34 @@ static t_builtin_type	find_arg_type(char *arg)
 	return (type);
 }
 
-static t_builtin_type	prepare_execution(t_master *master, t_token *token)
+static int	prepare_type_execution(t_master *master, t_builtin_type type)
 {
+	if (type == T_OTHERS)
+		type = prep_command_or_error(master->exec, type);
+	if (type == T_ERROR)
+	{
+		free_executable();
+		return (EXIT_FAILURE);
+	}
+	if (type != T_OTHERS && type != T_ERROR && master->token_count == 1
+		&& check_redir(master->exec->argv) == 0)
+	{
+		master->exit_status = execute_builtin(master->exec, type);
+		free_executable();
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
+static t_builtin_type	prepare_execution(t_master *master, t_token *token,
+	t_exec *exec)
+{
+	exec->pipefd[0] = -1;
+	exec->pipefd[1] = -1;
+	exec->old_pipefd[0] = -1;
+	exec->old_pipefd[1] = -1;
+	exec->pid = -1;
+	exec->first_cmd = true;
 	master->exec = create_arguments(token);
 	launch_heredoc(master->exec);
 	launch_expansion(master->exec);
@@ -68,30 +94,12 @@ void	launch_execution(t_master *master)
 	t_token			*token;
 	t_builtin_type	type;
 
-	exec.pipefd[0] = -1;
-	exec.pipefd[1] = -1;
-	exec.old_pipefd[0] = -1;
-	exec.old_pipefd[1] = -1;
-	exec.pid = -1;
-	exec.first_cmd = true;
 	token = master->token_list;
 	while (token)
 	{
-		type = prepare_execution(master, token);
-		if (type == T_OTHERS)
-			type = prep_command_or_error(master->exec, type);
-		if (type == T_ERROR)
-		{
-			free_executable();
+		type = prepare_execution(master, token, &exec);
+		if (prepare_type_execution(master, type) == EXIT_FAILURE)
 			return ;
-		}
-		if (type != T_OTHERS && type != T_ERROR && master->token_count == 1
-			&& check_redir(master->exec->argv) == 0)
-		{
-			g_master.exit_status = execute_builtin(master->exec, type);
-			free_executable();
-			return ;
-		}
 		if (token->next && token->next->type == T_PIPE)
 			pipe(exec.pipefd);
 		exec.pid = fork();
