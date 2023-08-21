@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 09:48:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 11:55:57 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 14:19:00 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,11 @@ char	check_more_than_two_op(t_token *current)
 {
 	int			i;
 	int			count;
-	const char	ops[4] = "<>|";
+	const char	ops[4] = "|&<>";
 
-	i = 0;
+	i = -1;
 	count = 0;
-	while (current->data[i])
+	while (current->data[++i])
 	{
 		if (ft_strchr(ops, current->data[i]))
 		{
@@ -109,48 +109,8 @@ char	check_more_than_two_op(t_token *current)
 		}
 		else
 			count = 0;
-		i++;
 	}
 	return (-1);
-}
-
-int	is_clean(t_token **token_lst)
-{
-	t_token			*current;
-	t_token			*current_cpy;
-	char			type = 0;
-	const char		*ops[5] = {"|", "<", "<<", ">", ">>"};
-	char			err_tkn;
-
-	current = *token_lst;
-	current_cpy = current;
-	while (current_cpy)
-	{
-		err_tkn = check_more_than_two_op(current);
-		if (err_tkn != -1)
-		{
-			printf(ESTR_UNEXP, err_tkn);
-			g_master.exit_status = 2;
-			return (EXIT_FAILURE);
-		}
-		current_cpy = current_cpy->next;
-	}
-	while (current && current->next)
-	{
-		if (current->next->type == T_COMMAND && !ft_strlen(current->next->data)
-			&& current->type > T_COMMAND)
-		{
-			if (current->next->next && current->next->next->type > T_COMMAND)
-				type = *ops[current->next->next->type - 1];
-			else
-				type = *ops[current->type - 1];
-			printf(ESTR_UNEXP, type);
-			g_master.exit_status = 2;
-			return (EXIT_FAILURE);
-		}
-		current = current->next;
-	}
-	return (EXIT_SUCCESS);
 }
 
 int	unclosed_quotes(const char *line_read)
