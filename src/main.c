@@ -59,6 +59,7 @@ int	main(void)
 			free_token_list(g_master.token_list);
 			free(g_master.line_read);
 		}
+		remove_tmpfile();
 	}
 	free_environment_list(g_master.env_list);
 	free_double_ptr(g_master.export_envp);

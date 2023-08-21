@@ -108,3 +108,9 @@ char	**ft_sort_array(int argc, char **argv)
 	}
 	return (argv);
 }
+
+void	remove_tmpfile(void)
+{
+	if (access("minishell_heredoc_tmp.txt", F_OK) != -1)
+		unlink("minishell_heredoc_tmp.txt");
+}

@@ -20,5 +20,7 @@ extern t_master	g_master;
 void	ft_exit(int argc, char **argv);
 void	ft_error_exit(char *str, int error);
 void	ft_cleanup_exit(void);
+void	remove_tmpfile(void);
+
 
 #endif

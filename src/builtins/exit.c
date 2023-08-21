@@ -78,6 +78,7 @@ void	ft_error_exit(char *str, int error)
 
 void	ft_exit(int argc, char **argv)
 {
+	remove_tmpfile();
 	if (argc > 1)
 		check_numeric_arguments(argc, argv);
 	free_executable();
