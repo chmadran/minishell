@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 14:19:58 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 16:50:16 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,11 @@ typedef struct s_master
 /* lexer.c */
 int		launch_lexer(char *line_read, t_token **token_list);
 int		launch_parser(t_token **token_list);
+
+/* lexer_spaces.c */
+char	*trim_spaces(const char *str, size_t start, size_t end);
+int		count_new_spaces(char *data, int len);
+char	*add_spaces_between_ops(char *data, int len);
 
 /* lexer_utils.c */
 int		is_empty_filename(t_exec *exec);

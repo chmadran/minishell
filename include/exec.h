@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 11:41:01 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 18:07:10 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,7 @@ int		launch_heredoc(t_exec *exec);
 /* heredoc_utils.c*/
 void	add_tmp_file(t_exec *exec, int heredoc_tkn);
 void	clean_args(t_exec *exec, int heredoc_index);
-int	check_heredoc(char **argv, int *position);
-
-
-
-
+int		check_heredoc(char **argv, int *position);
 
 /* redir_utils.c*/
 int		clean_argv(t_exec *exec);
