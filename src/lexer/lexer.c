@@ -144,8 +144,6 @@ static char *add_spaces_between_ops(const char *data)
     return (new_data);
 }
 
-
-
 static int	manage_token(char *line_read, t_token **token_lst)
 {
 	size_t			i;
@@ -156,7 +154,7 @@ static int	manage_token(char *line_read, t_token **token_lst)
 
 	i = 0;
 	type = check_token_type(line_read[i], line_read, &i);
-	line_read =  add_spaces_between_ops(line_read);
+	line_read = add_spaces_between_ops(line_read);
 	if (start_operator(type) == EXIT_FAILURE)
 	{
 		free(line_read);
@@ -169,7 +167,7 @@ static int	manage_token(char *line_read, t_token **token_lst)
 		while (line_read[i] && type == T_COMMAND)
 			type = check_token_type(line_read[++i], line_read, &i);
 		data = trim_spaces(line_read, j, i - 1);
-		tmp =  add_spaces_between_ops(data);
+		tmp = add_spaces_between_ops(data);
 		free(data);
 		data = tmp;
 		create_token_node(T_COMMAND, data, token_lst);
