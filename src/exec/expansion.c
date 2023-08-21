@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:42:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 11:00:12 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 13:40:04 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,6 @@ static char	*extract_expansion_name(char *str)
 	if (str[i] == '?')
 	{
 		name = ft_strdup("?");
-		if (!name)
-		{
-			free_executable();
-			ft_error_exit("ft_strdup (extract_expansion_name)", ENOMEM);
-		}
 		return (name);
 	}
 	if (ft_isdigit(str[i]))
@@ -42,11 +37,6 @@ static char	*extract_expansion_name(char *str)
 			|| str[i] == '_' || ft_isdigit(str[i])))
 		i++;
 	name = ft_strndup(str + 1, i - 1);
-	if (!name)
-	{
-		free_executable();
-		ft_error_exit("ft_strndup (extract_expansion_name)", ENOMEM);
-	}
 	return (name);
 }
 

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 11:45:56 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 13:43:54 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,7 @@ void	child_process_execution(t_master *master, t_token *token, t_exec *exec,
 			close(exec->old_pipefd[0]);
 		if (exec->old_pipefd[1] != -1)
 			close(exec->old_pipefd[1]);
-		ft_cleanup_exit();
-		free_executable();
+		ft_free_child();
 		exit(master->exit_status);
 	}
 }

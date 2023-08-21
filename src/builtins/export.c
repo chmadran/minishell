@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 12:00:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 12:38:34 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 13:37:30 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,15 +78,11 @@ int	export_local_var(int *array_size, char *argv)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_export(int argc, char **argv)
+int	check_export(int argc, char **argv, int array_size)
 {
-	int		i;
-	int		array_size;
-	char	*equals_location;
+	int	i;
 
 	i = 0;
-	equals_location = NULL;
-	array_size = ft_array_size(g_master.export_envp);
 	g_master.export_envp = ft_sort_array(array_size, g_master.export_envp);
 	if (argc == 1)
 		return (print_export(g_master.export_envp));
@@ -95,16 +91,33 @@ int	ft_export(int argc, char **argv)
 		if (check_equals(argv[i]) || check_event(argv[i], 0)
 			|| check_option(argv[i], 1))
 			return (EXIT_FAILURE);
-		equals_location = ft_strchr(argv[i], '=');
-		if (equals_location && *(equals_location + 1))
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	ft_export(int argc, char **argv)
+{
+	int		i;
+	int		array_size;
+	char	*equals_location;
+
+	i = 0;
+	array_size = ft_array_size(g_master.export_envp);
+	if (check_export(argc, argv, array_size) == EXIT_SUCCESS)
+	{
+		while (++i < argc)
 		{
-			if (export_var(argv[i], equals_location))
-				return (EXIT_FAILURE);
-		}
-		else if (ft_strlen(argv[i]))
-		{
-			if (export_local_var(&array_size, argv[i]))
-				return (EXIT_FAILURE);
+			equals_location = ft_strchr(argv[i], '=');
+			if (equals_location && *(equals_location + 1))
+			{
+				if (export_var(argv[i], equals_location))
+					return (EXIT_FAILURE);
+			}
+			else if (ft_strlen(argv[i]))
+			{
+				if (export_local_var(&array_size, argv[i]))
+					return (EXIT_FAILURE);
+			}
 		}
 	}
 	return (EXIT_SUCCESS);

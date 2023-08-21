@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 12:27:39 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 13:45:42 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,5 +129,6 @@ void	free_token_list(t_token *token_list);
 void	remove_tmpfile(void);
 
 /* other_utils.c */
+void	ft_free_child(void);
 
 #endif
