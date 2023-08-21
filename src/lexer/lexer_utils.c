@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 17:27:12 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 14:19:22 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 14:36:55 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,17 @@
 int	is_clean(t_token **token_lst)
 {
 	t_token			*current;
+	int				error;
 	char			type;
 	const char		*ops[5] = {"|", "<", "<<", ">", ">>"};
 
 	type = T_COMMAND;
 	current = *token_lst;
+	error = check_more_than_two_op(current);
 	while (current && current->next)
 	{
 		if ((current->next->type == T_COMMAND && !ft_strlen(current->next->data)
-				&& current->type > T_COMMAND)
-			|| (check_more_than_two_op(current) != -1))
+				&& current->type > T_COMMAND) || (error != -1))
 		{
 			if (current->next->next && current->next->next->type > T_COMMAND)
 				type = *ops[current->next->next->type - 1];

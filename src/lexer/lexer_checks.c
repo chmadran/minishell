@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 09:48:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 14:19:00 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 14:39:26 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char	check_more_than_two_op(t_token *current)
 	{
 		if (ft_strchr(ops, current->data[i]))
 		{
-			if (i == 0 || current->data[i] == current->data[i - 1])
+			if ((i == 0) || current->data[i] == current->data[i - 1])
 				count++;
 			else
 			{
