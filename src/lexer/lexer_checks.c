@@ -84,7 +84,7 @@ int	is_heredoc_pipe(t_token **token_lst)
 	return (EXIT_SUCCESS);
 }
 
-int	check_more_than_two_op(t_token *current)
+char	check_more_than_two_op(t_token *current)
 {
 	int i;
 	int count;
@@ -101,17 +101,17 @@ int	check_more_than_two_op(t_token *current)
 			else
 			{
 				if (count == 1)
-					return (EXIT_FAILURE);
+					return (current->data[i]);
 				count = 1;
 			}
 			if (count > 2)
-				return (EXIT_FAILURE);
+				return (current->data[i]);
 		}
 		else
 			count = 0;
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (-1);
 }
 
 
@@ -121,15 +121,17 @@ int	is_clean(t_token **token_lst)
 	t_token			*current_cpy;
 	char			type = 0;
 	const char		*ops[5] = {"|", "<", "<<", ">", ">>"};
+	char	err_tkn;
 
 	current = *token_lst;
 	current_cpy = current;
 	
 	while (current_cpy)
 	{
-		if (check_more_than_two_op(current) == EXIT_FAILURE)
+		err_tkn = check_more_than_two_op(current);
+		if (err_tkn != -1)
 		{
-			printf(ESTR_UNEXP, type);
+			printf(ESTR_UNEXP, err_tkn);
 			g_master.exit_status = 2;
 			return (EXIT_FAILURE);
 		}

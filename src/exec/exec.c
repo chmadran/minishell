@@ -57,12 +57,12 @@ static t_builtin_type	find_arg_type(char *arg)
 static t_builtin_type	prepare_execution(t_master *master, t_token *token)
 {
 	master->exec = create_arguments(token);
+	launch_heredoc(master->exec);
 	launch_expansion(master->exec);
-	//print_data_builtins(master->exec);
-	// launch_redirection(master->exec);
-	//print_data_builtins(master->exec);
 	return (find_arg_type(master->exec->argv[0]));
 }
+
+
 
 void	launch_execution(t_master *master)
 {
@@ -80,6 +80,7 @@ void	launch_execution(t_master *master)
 	token = master->token_list;
 	while (token)
 	{
+		// check_syntax_token(token->data);
 		type = prepare_execution(master, token);
 		if (type == T_OTHERS)
 			type = prep_command_or_error(master->exec, type);

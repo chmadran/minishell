@@ -67,6 +67,9 @@ char	**env_list_to_array(t_env *env_list);
 /* redir.c*/
 int	launch_redirection(t_exec *exec);
 
+/* redir.c*/
+int	launch_heredoc(t_exec *exec);
+
 /* redir_utils.c*/
 int		clean_argv(t_exec *exec);
 int		clean_redir(t_exec *exec);
