@@ -80,7 +80,6 @@ void	launch_execution(t_master *master)
 	token = master->token_list;
 	while (token)
 	{
-		// check_syntax_token(token->data);
 		type = prepare_execution(master, token);
 		if (type == T_OTHERS)
 			type = prep_command_or_error(master->exec, type);
