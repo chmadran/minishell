@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 16:42:19 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 18:25:09 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/21 18:29:40 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,7 @@ static int	manage_token(char *line_read, t_token **token_lst)
 	i = 0;
 	type = check_token_type(line_read[i], line_read, &i);
 	if (start_operator(type) == EXIT_FAILURE)
-	{
-		free(line_read);
-		return (EXIT_FAILURE);
-	}
+		return (free(line_read), EXIT_FAILURE);
 	while (line_read[i])
 	{
 		j = i;
