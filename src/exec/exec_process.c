@@ -94,6 +94,7 @@ void	child_process_execution(t_master *master, t_token *token, t_exec *exec,
 			dup2(exec->pipefd[1], STDOUT_FILENO);
 			close(exec->pipefd[1]);
 		}
+		launch_redirection(master->exec);
 		if ((type == T_OTHERS && master->exec->pathname)
 			|| (type != T_ERROR && type != T_OTHERS))
 			execve_execute_command(master->exec, master->env_list, type);
@@ -124,6 +125,7 @@ void	parent_process_execution(t_token **token, t_exec *exec)
 			exec->old_pipefd[1] = exec->pipefd[1];
 			exec->first_cmd = false;
 		}
+
 		else
 			exec->first_cmd = true;
 		if ((*token)->next)

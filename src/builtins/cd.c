@@ -45,8 +45,8 @@ static int	update_env(t_env *env_list)
 
 static int	change_directory_and_update(t_env *env_list, char *path)
 {
-	if (path[0] == '/')
-		path++;
+	// if (path[0] == '/')
+	// 	path++;
 	if (chdir(path) == -1)
 	{
 		printf("minishell: cd: %s: No such file or directory\n", path);

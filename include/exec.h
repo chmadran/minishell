@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 16:11:05 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/09 08:47:19 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,16 @@ void	parent_process_execution(t_token **token, t_exec *exec);
 void	execve_execute_command(t_exec *exec, t_env *env_list,
 			t_builtin_type type);
 char	**env_list_to_array(t_env *env_list);
+
+/* redir.c*/
+int	launch_redirection(t_exec *exec);
+
+/* redir.c*/
+int	launch_heredoc(t_exec *exec);
+
+/* redir_utils.c*/
+int		clean_argv(t_exec *exec);
+int		clean_redir(t_exec *exec);
+int		check_redir(char **argv);
 
 #endif

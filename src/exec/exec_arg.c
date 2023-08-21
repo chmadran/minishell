@@ -32,7 +32,7 @@ char	*clean_arg(char *s)
 			backslash_count++;
 		i++;
 	}
-	news = calloc(1, ft_strlen(s) - backslash_count + 1);
+	news = ft_calloc(1, ft_strlen(s) - backslash_count + 1);
 	i = 0;
 	while (s[i])
 	{

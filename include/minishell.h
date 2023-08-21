@@ -26,6 +26,8 @@
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <fcntl.h>
+
 
 # define DEFAULT_PATH_1 "/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin"
 # define DEFAULT_PATH_2 ":/opt/homebrew/bin"
@@ -36,16 +38,12 @@
 # define EDSTR_UNEXP "minishell: syntax error: unexpected token '%c%c'\n"
 # define ESTR_OPSTART "minishell: syntax error near unexpected token 'newline'\n"
 
-# define OP 5
+# define OP 1
 
 typedef enum e_token_type
 {
 	T_COMMAND,
 	T_PIPE,
-	T_RED_IN,
-	T_D_RED_IN,
-	T_RED_OUT,
-	T_D_RED_OUT,
 }	t_token_type;
 
 typedef struct s_token

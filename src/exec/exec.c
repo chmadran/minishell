@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 15:15:36 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/09 08:53:27 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,16 @@ static t_builtin_type	find_arg_type(char *arg)
 	return (type);
 }
 
+
 static t_builtin_type	prepare_execution(t_master *master, t_token *token)
 {
 	master->exec = create_arguments(token);
+	launch_heredoc(master->exec);
 	launch_expansion(master->exec);
 	return (find_arg_type(master->exec->argv[0]));
 }
+
+
 
 void	launch_execution(t_master *master)
 {
@@ -84,7 +88,7 @@ void	launch_execution(t_master *master)
 			free_executable();
 			return ;
 		}
-		if (type != T_OTHERS && type != T_ERROR && master->token_count == 1)
+		if (type != T_OTHERS && type != T_ERROR && master->token_count == 1 && check_redir(master->exec->argv) == 0)
 		{
 			g_master.exit_status = execute_builtin(master->exec, type);
 			free_executable();
@@ -93,7 +97,7 @@ void	launch_execution(t_master *master)
 		if (token->next && token->next->type == T_PIPE)
 			pipe(exec.pipefd);
 		exec.pid = fork();
-		child_process_execution(master, token, &exec, type);
+		child_process_execution(master, token, &exec, type);		
 		parent_process_execution(&token, &exec);
 	}
 	if (!exec.first_cmd)
