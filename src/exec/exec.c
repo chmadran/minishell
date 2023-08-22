@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 14:02:02 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/22 10:16:27 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,14 +103,12 @@ void	launch_execution(t_master *master)
 		if (token->next && token->next->type == T_PIPE)
 			pipe(exec.pipefd);
 		exec.pid = fork();
+		(signal(SIGINT, &child_sigint), signal(SIGQUIT, &child_sigint));
 		child_process_execution(master, token, &exec, type);
 		parent_process_execution(&token, &exec);
 	}
 	if (!exec.first_cmd)
-	{
-		close(exec.old_pipefd[0]);
-		close(exec.old_pipefd[1]);
-	}
+		(close(exec.old_pipefd[0]), close(exec.old_pipefd[1]));
 	while ((waitpid(exec.pid, &status, 0)) > 0)
 		if (WIFEXITED(status) && master->exit_status != 127)
 			master->exit_status = WEXITSTATUS(status);

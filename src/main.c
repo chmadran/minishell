@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 15:32:48 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 15:22:26 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/22 10:06:45 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,20 @@
 #include "exec.h"
 
 t_master	g_master;
+
+void	child_sigint(int signal)
+{
+	if (signal == SIGINT)
+	{
+		(void)signal;
+		write(1, "\n", 1);
+	}
+	else if (signal == SIGQUIT)
+	{
+		(void)signal;
+		write(2, "Quit (core dumped)\n", 19);
+	}
+}
 
 static void	handle_sigint(int signum)
 {
