@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avallet <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:09:47 by avallet           #+#    #+#             */
-/*   Updated: 2023/08/21 17:09:50 by avallet          ###   ########.fr       */
+/*   Updated: 2023/08/22 09:34:46 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	add_tmp_file(t_exec *exec, int heredoc_tkn)
 	i = 1;
 	j = 0;
 	new_argv = NULL;
-	if (ft_strcmp(exec->argv[0], "cat") == 0 && heredoc_tkn == 1)
+	if (ft_strcmp(exec->argv[0], "cat") == 0 && heredoc_tkn == 1
+		&& (!exec->argv[1] || ft_strcmp(exec->argv[1], ">") == 0))
 	{
 		new_argv = (char **)malloc(sizeof(char *) * (exec->argc + 2));
 		if (!new_argv)
@@ -33,14 +34,11 @@ void	add_tmp_file(t_exec *exec, int heredoc_tkn)
 		new_argv[j++] = ft_strdup("cat");
 		new_argv[j++] = ft_strdup("minishell_heredoc_tmp.txt");
 		while (exec->argv[i])
-		{
-			new_argv[j] = exec->argv[i];
-			i++;
-			j++;
-		}
+			new_argv[j++] = ft_strdup(exec->argv[i++]);
 		new_argv[j] = NULL;
-		free_double_ptr(exec->argv);
-		exec->argv = new_argv;
+		free_double_ptr(g_master.exec->argv);
+		g_master.exec->argv = new_argv;
+		g_master.exec->argc += 1;
 	}
 }
 
