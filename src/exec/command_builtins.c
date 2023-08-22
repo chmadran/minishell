@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:13:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 15:14:38 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/22 15:01:36 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,14 @@ int	prepare_command(t_master *master, t_exec *exec)
 			if (is_directory(exec->argv[0]))
 			{
 				printf("minishell: %s: Is a directory\n", exec->argv[0]);
-				master->exit_status = 126;
-				return (EXIT_FAILURE);
+				return (master->exit_status = 126, EXIT_FAILURE);
 			}
 			exec->pathname = ft_strdup(exec->argv[0]);
+		}
+		else if (access(exec->argv[0], F_OK) == 0)
+		{
+			printf("minishell: %s: Permission denied\n", exec->argv[0]);
+			return (master->exit_status = 126, EXIT_FAILURE);
 		}
 		else
 		{

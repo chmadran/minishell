@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/22 10:16:27 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/22 13:59:35 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	prepare_type_execution(t_master *master, t_builtin_type type)
 	if (type != T_OTHERS && type != T_ERROR && master->token_count == 1
 		&& check_redir(master->exec->argv) == 0)
 	{
-		master->exit_status = execute_builtin(master->exec, type);
+		execute_builtin(master->exec, type);
 		free_executable();
 		return (EXIT_FAILURE);
 	}

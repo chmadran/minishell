@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 12:00:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 13:37:30 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/22 15:00:16 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,8 @@ int	ft_export(int argc, char **argv)
 				if (export_var(argv[i], equals_location))
 					return (EXIT_FAILURE);
 			}
-			else if (ft_strlen(argv[i]))
+			else if (ft_strlen(argv[i])
+				&& is_valid_variable_name(argv[i], argv[i]))
 			{
 				if (export_local_var(&array_size, argv[i]))
 					return (EXIT_FAILURE);

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:47:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 15:19:11 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/22 14:28:54 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,11 @@ static long long	update_exit_value(char *arg)
 	long long	value;
 
 	value = ft_llatoi(arg);
-	if (value > LLONG_MAX || value < LLONG_MIN)
-	{
-		printf("minishell: exit: %s: numeric argument required\n", arg);
-		return (2);
-	}
 	if (value < 0)
 		return ((value % 256 + 256) % 256);
 	else if (value > 255)
 		return (value % 256);
-	return (0);
+	return (value);
 }
 
 void	check_numeric_arguments(int argc, char **argv)
@@ -84,5 +79,5 @@ void	ft_exit(int argc, char **argv)
 	free_executable();
 	ft_cleanup_exit();
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
-	exit(EXIT_SUCCESS);
+	exit(g_master.exit_status);
 }

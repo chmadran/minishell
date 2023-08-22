@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 13:27:54 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 15:24:50 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/22 15:00:41 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ long long	ft_llatoi(const char *str)
 	i = 0;
 	res = 0;
 	sign = 1;
+	if (ft_strcmp(str, "-9223372036854775809") == 0
+		|| ft_strcmp(str, "9223372036854775808") == 0)
+		return (2);
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
 	if (str[i] == '-' || str[i] == '+')

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:44:01 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 12:27:11 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/22 14:58:40 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,25 @@
 
 int	check_equals(char *str)
 {
+	int	i;
+
+	i = -1;
 	if (str[0] == '=')
 	{
 		printf("minishell: export: '%s': not a valid identifier\n", str);
 		g_master.exit_status = 1;
 		return (EXIT_FAILURE);
+	}
+	while (str[++i])
+	{
+		if (str[i] == '=')
+			return (EXIT_SUCCESS);
+		if (!ft_isalnum(str[i]) && str[i] != '=')
+		{
+			printf("minishell: export: '%c': not a valid identifier\n", str[i]);
+			g_master.exit_status = 1;
+			return (EXIT_FAILURE);
+		}
 	}
 	return (EXIT_SUCCESS);
 }
