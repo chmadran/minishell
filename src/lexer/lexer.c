@@ -125,6 +125,5 @@ int	launch_lexer(char *line_read, t_token **token_list)
 		return (EXIT_FAILURE);
 	}
 	ft_token_count(token_list);
-	print_token_list(*token_list);
 	return (EXIT_SUCCESS);
 }

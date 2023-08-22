@@ -95,6 +95,7 @@ typedef struct s_master
 	char	**export_envp;
 	int		exit_status;
 	int		token_count;
+	int		flag_expan;
 }	t_master;
 
 /* lexer.c */

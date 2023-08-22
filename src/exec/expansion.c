@@ -69,9 +69,53 @@ static void	process_expansion_replace(t_exec *exec, char *substr_start,
 	free(value);
 }
 
-void	launch_expansion(t_exec *exec)
+void	realocate_argv(t_exec *exec, int i)
+{
+	int		j;
+	char	*new_av;
+	size_t	k;
+
+	j = 0;
+	k = 0;
+	new_av = malloc(sizeof(char) * (ft_strlen(exec->argv[i])));
+	while (k < ft_strlen(exec->argv[i]))
+	{
+		if (exec->argv[i][k] == '$' && exec->argv[i][k + 1] == '\'')
+		{
+			k += 2;
+			continue ;
+		}
+		if (exec->argv[i][k] == '\'')
+		{
+			k++;
+			continue ;
+		}
+		new_av[j++] = exec->argv[i][k++];
+	}		
+	new_av[j] = '\0';
+	free(exec->argv[i]);
+	exec->argv[i] = ft_strdup(new_av);
+	free(new_av);
+}
+
+static	void	execute_process_exp(t_exec *exec, int i, int j)
 {
 	char	*substr_start;
+
+	if ((j == 0 && exec->argv[i][j + 1])
+		|| (j != 0 && exec->argv[i][j - 1] != '\\'))
+	{
+		substr_start = ft_strdup(exec->argv[i] + j);
+		if (is_valid_name(substr_start) == 0)
+			process_expansion_replace(exec, substr_start, i,
+				exec->argv[i]);
+		else
+			free(substr_start);
+	}
+}
+
+void	launch_expansion(t_exec *exec)
+{
 	size_t	i;
 	size_t	j;
 
@@ -81,18 +125,17 @@ void	launch_expansion(t_exec *exec)
 		j = -1;
 		while (exec->argv[i][++j])
 		{
-			if (exec->argv[i][j] == '$')
+			if (exec->argv[i][j] == '\'')
 			{
-				if ((j == 0 && exec->argv[i][j + 1])
-					|| (j != 0 && exec->argv[i][j - 1] != '\\'))
-				{
-					substr_start = ft_strdup(exec->argv[i] + j);
-					if (is_valid_name(substr_start) == 0)
-						process_expansion_replace(exec, substr_start, i,
-							exec->argv[i]);
-					else
-						free(substr_start);
-				}
+				realocate_argv(exec, i);
+				break ;
+			}
+			else if (exec->argv[i][j] == '$')
+			{
+				if (exec->argv[i][j] == '\'')
+					realocate_argv(exec, i);
+				else
+					execute_process_exp(exec, i, j);
 			}
 		}
 	}
