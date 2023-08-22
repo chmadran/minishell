@@ -136,5 +136,6 @@ void	remove_tmpfile(void);
 
 /* other_utils.c */
 void	ft_free_child(void);
+void	child_sigint(int signal);
 
 #endif
