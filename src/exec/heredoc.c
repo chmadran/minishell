@@ -53,6 +53,8 @@ static void	ft_here(char *limiter)
 		free(line);
 	}
 	close(tmp_file_fd);
+	ft_free_child();
+	exit(EXIT_SUCCESS);
 }
 
 static int	ft_exec_heredoc(t_exec *exec)
