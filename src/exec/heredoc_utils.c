@@ -25,8 +25,8 @@ void	add_tmp_file(t_exec *exec, int heredoc_tkn)
 	i = 1;
 	j = 0;
 	new_argv = NULL;
-	if (ft_strcmp(exec->argv[0], "cat") == 0 && heredoc_tkn == 1
-		&& (!exec->argv[1] || ft_strcmp(exec->argv[1], ">") == 0))
+	if (exec->argv[0] && (ft_strcmp(exec->argv[0], "cat") == 0 && heredoc_tkn == 1
+		&& (!exec->argv[1] || ft_strcmp(exec->argv[1], ">") == 0)))
 	{
 		new_argv = (char **)malloc(sizeof(char *) * (exec->argc + 2));
 		if (!new_argv)
@@ -36,9 +36,16 @@ void	add_tmp_file(t_exec *exec, int heredoc_tkn)
 		while (exec->argv[i])
 			new_argv[j++] = ft_strdup(exec->argv[i++]);
 		new_argv[j] = NULL;
-		free_double_ptr(g_master.exec->argv);
+		if (g_master.exec->argv)
+			free_double_ptr(g_master.exec->argv);
 		g_master.exec->argv = new_argv;
 		g_master.exec->argc += 1;
+	}
+	if (!g_master.exec->argv[0] && heredoc_tkn == 1)
+	{
+		g_master.exec->argv[0] = ft_strdup("cat");
+		g_master.exec->argv[1] = ft_strdup("minishell_heredoc_tmp.txt");
+		g_master.exec->argc = 2;
 	}
 }
 

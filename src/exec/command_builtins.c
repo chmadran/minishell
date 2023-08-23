@@ -84,7 +84,7 @@ int	prepare_command(t_master *master, t_exec *exec)
 			printf("minishell: %s: Permission denied\n", exec->argv[0]);
 			return (master->exit_status = 126, EXIT_FAILURE);
 		}
-		else
+		else if (!ft_strchr(exec->argv[0], '>') && !ft_strchr(exec->argv[0], '<'))
 		{
 			printf("minishell: %s: command not found\n", exec->argv[0]);
 			master->exit_status = 127;
