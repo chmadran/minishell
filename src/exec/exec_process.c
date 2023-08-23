@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 13:43:54 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/23 15:02:02 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,56 +80,45 @@ void	execve_execute_command(t_exec *exec, t_env *env_list,
 void	child_process_execution(t_master *master, t_token *token, t_exec *exec,
 			t_builtin_type type)
 {
-	if (master->exit_status != 127 && exec->pid == 0)
+	exec = master->exec;
+	if (master->pid == 0)
 	{
-		if (!exec->first_cmd)
-		{
-			close(exec->old_pipefd[1]);
-			dup2(exec->old_pipefd[0], STDIN_FILENO);
-			close(exec->old_pipefd[0]);
-		}
+		dup2(master->tmp_fd, STDIN_FILENO);
+		close(master->tmp_fd);
 		if (token->next && token->next->type == T_PIPE)
 		{
-			close(exec->pipefd[0]);
-			dup2(exec->pipefd[1], STDOUT_FILENO);
-			close(exec->pipefd[1]);
+			close(master->pipefd[0]);
+			dup2(master->pipefd[1], STDOUT_FILENO);
+			close(master->pipefd[1]);
+		}
+		else if (!master->first_cmd)
+		{
+			close(master->pipefd[1]);
+			dup2(master->pipefd[0], STDIN_FILENO);
+			close(master->pipefd[0]);
 		}
 		launch_redirection(master->exec);
-		if ((type == T_OTHERS && master->exec->pathname)
-			|| (type != T_ERROR && type != T_OTHERS))
-			execve_execute_command(master->exec, master->env_list, type);
-		if (exec->old_pipefd[0] != -1)
-			close(exec->old_pipefd[0]);
-		if (exec->old_pipefd[1] != -1)
-			close(exec->old_pipefd[1]);
+		execve_execute_command(master->exec, master->env_list, type);
 		ft_free_child();
 		exit(master->exit_status);
 	}
 }
 
-void	parent_process_execution(t_token **token, t_exec *exec)
+void	parent_process_execution(t_master *master, t_token **token,
+	t_exec *exec)
 {
-	if (exec->pid != 0)
+	exec = master->exec;
+	if (master->pid != 0)
 	{
-		if (exec->old_pipefd[0] != -1 && exec->old_pipefd[1] != -1)
-		{
-			close(exec->old_pipefd[0]);
-			close(exec->old_pipefd[1]);
-			exec->old_pipefd[0] = -1;
-			exec->old_pipefd[1] = -1;
-		}
 		if ((*token)->next && (*token)->next->type == T_PIPE)
-		{
-			exec->old_pipefd[0] = exec->pipefd[0];
-			exec->old_pipefd[1] = exec->pipefd[1];
-			exec->first_cmd = false;
-		}
+			master->first_cmd = false;
 		else
-			exec->first_cmd = true;
+			master->first_cmd = true;
+		close(master->tmp_fd);
 		if ((*token)->next)
 			*token = (*token)->next->next;
 		else
-			*token = (*token)->next;
+			*token = NULL;
 		free_executable();
 	}
 }

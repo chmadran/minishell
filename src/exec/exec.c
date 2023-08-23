@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/22 13:59:35 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/23 15:00:49 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,8 @@ static int	prepare_type_execution(t_master *master, t_builtin_type type)
 static t_builtin_type	prepare_execution(t_master *master, t_token *token,
 	t_exec *exec)
 {
-	exec->pipefd[0] = -1;
-	exec->pipefd[1] = -1;
-	exec->old_pipefd[0] = -1;
-	exec->old_pipefd[1] = -1;
-	exec->pid = -1;
-	exec->first_cmd = true;
+	(void)exec;
+	(void)token;
 	master->exec = create_arguments(token);
 	launch_heredoc(master->exec);
 	launch_expansion(master->exec);
@@ -89,27 +85,35 @@ static t_builtin_type	prepare_execution(t_master *master, t_token *token,
 
 void	launch_execution(t_master *master)
 {
-	t_exec			exec;
+	t_exec			*exec;
 	int				status;
 	t_token			*token;
 	t_builtin_type	type;
 
+	exec = NULL;
 	token = master->token_list;
+	master->pipefd[0] = -1;
+	master->pipefd[1] = -1;
+	master->pid = -1;
+	master->first_cmd = true;
+	master->tmp_fd = dup(STDIN_FILENO);
 	while (token)
 	{
-		type = prepare_execution(master, token, &exec);
+		type = prepare_execution(master, token, exec);
 		if (prepare_type_execution(master, type) == EXIT_FAILURE)
 			return ;
 		if (token->next && token->next->type == T_PIPE)
-			pipe(exec.pipefd);
-		exec.pid = fork();
+			pipe(master->pipefd);
+		master->pid = fork();
 		(signal(SIGINT, &child_sigint), signal(SIGQUIT, &child_sigint));
-		child_process_execution(master, token, &exec, type);
-		parent_process_execution(&token, &exec);
+		child_process_execution(master, token, exec, type);
+		parent_process_execution(master, &token, exec);
 	}
-	if (!exec.first_cmd)
-		(close(exec.old_pipefd[0]), close(exec.old_pipefd[1]));
-	while ((waitpid(exec.pid, &status, 0)) > 0)
+	if (master->pipefd[0] != -1)
+		close(master->pipefd[0]);
+	if (master->pipefd[1] != -1)
+		close(master->pipefd[1]);
+	while (waitpid(0, &status, 0) != -1)
 		if (WIFEXITED(status) && master->exit_status != 127)
 			master->exit_status = WEXITSTATUS(status);
 }

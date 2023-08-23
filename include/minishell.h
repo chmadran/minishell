@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 16:50:16 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/23 15:02:23 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,6 @@ typedef struct s_exec
 	char		**argv;
 	char		*pathname;
 	t_token		*token;
-	pid_t		pid;
-	int			pipefd[2];
-	int			old_pipefd[2];
-	bool		first_cmd;
 }	t_exec;
 
 typedef struct s_env
@@ -96,6 +92,10 @@ typedef struct s_master
 	int		exit_status;
 	int		token_count;
 	int		flag_expan;
+	pid_t	pid;
+	int		pipefd[2];
+	int		tmp_fd;
+	bool	first_cmd;
 }	t_master;
 
 /* lexer.c */
