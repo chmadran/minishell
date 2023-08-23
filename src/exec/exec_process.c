@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/23 15:02:02 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/23 17:03:32 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ void	child_process_execution(t_master *master, t_token *token, t_exec *exec,
 			dup2(master->pipefd[0], STDIN_FILENO);
 			close(master->pipefd[0]);
 		}
-		launch_redirection(master->exec);
-		execve_execute_command(master->exec, master->env_list, type);
+		if (launch_redirection(master->exec) > 0)
+			execve_execute_command(master->exec, master->env_list, type);
 		ft_free_child();
 		exit(master->exit_status);
 	}

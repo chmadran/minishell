@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 11:47:13 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/23 17:51:26 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ int	check_redir(char **argv)
 				return (1);
 			else if (argv[i][j] == '>')
 			{
+				if (i == 0)
+					return (0);
 				if (argv[i][j + 1] && argv[i][j + 1] == '>')
 					return (3);
 				else
@@ -100,5 +102,5 @@ int	check_redir(char **argv)
 		}
 		i++;
 	}
-	return (0);
+	return (-1);
 }
