@@ -63,7 +63,7 @@ static int	prepare_type_execution(t_master *master, t_builtin_type type)
 		return (EXIT_FAILURE);
 	}
 	if (type != T_OTHERS && type != T_ERROR && master->token_count == 1
-		&& check_redir(master->exec->argv) == 0)
+		&& check_redir(master->exec->argv) == -1)
 	{
 		execute_builtin(master->exec, type);
 		free_executable();
