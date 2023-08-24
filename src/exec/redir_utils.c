@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/23 17:51:26 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/24 11:46:51 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,27 +54,6 @@ int	clean_argv(t_exec *exec)
 	return (EXIT_SUCCESS);
 }
 
-int	clean_redir(t_exec *exec)
-{
-	int	i;
-	int	j;
-
-	i = find_redirection(exec->argv);
-	if (i == -1)
-		return (EXIT_FAILURE);
-	j = i + 1;
-	free(exec->argv[i]);
-	exec->argv[i] = NULL;
-	while (exec->argv[j])
-	{
-		exec->argv[j - 1] = exec->argv[j];
-		exec->argv[exec->argc - 1] = NULL;
-		exec->argc--;
-		j++;
-	}
-	return (EXIT_SUCCESS);
-}
-
 int	check_redir(char **argv)
 {
 	int	i;
@@ -91,10 +70,15 @@ int	check_redir(char **argv)
 				return (1);
 			else if (argv[i][j] == '>')
 			{
-				if (i == 0)
-					return (0);
 				if (argv[i][j + 1] && argv[i][j + 1] == '>')
-					return (3);
+				{
+					if (i == 0)
+						return (4);
+					else
+						return (3);
+				}
+				if (i == 0)
+					return (5);
 				else
 					return (2);
 			}
