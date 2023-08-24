@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/23 15:00:49 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/24 10:45:39 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	prepare_type_execution(t_master *master, t_builtin_type type)
 		return (EXIT_FAILURE);
 	}
 	if (type != T_OTHERS && type != T_ERROR && master->token_count == 1
-		&& check_redir(master->exec->argv) == 0)
+		&& check_redir(master->exec->argv) == -1)
 	{
 		execute_builtin(master->exec, type);
 		free_executable();
@@ -113,7 +113,7 @@ void	launch_execution(t_master *master)
 		close(master->pipefd[0]);
 	if (master->pipefd[1] != -1)
 		close(master->pipefd[1]);
-	while (waitpid(0, &status, 0) != -1)
+	while (waitpid(master->pid, &status, 0) != -1)
 		if (WIFEXITED(status) && master->exit_status != 127)
 			master->exit_status = WEXITSTATUS(status);
 }

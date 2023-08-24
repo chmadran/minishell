@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/23 15:02:02 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/24 13:48:46 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	execve_execute_command(t_exec *exec, t_env *env_list,
 		execve(exec->pathname, exec->argv, envp);
 	else
 	{
-		g_master.exit_status = execute_builtin(exec, type);
+		execute_builtin(exec, type);
 		free_double_ptr(envp);
 		return ;
 	}
@@ -80,7 +80,10 @@ void	execve_execute_command(t_exec *exec, t_env *env_list,
 void	child_process_execution(t_master *master, t_token *token, t_exec *exec,
 			t_builtin_type type)
 {
+	int	count_r;
+
 	exec = master->exec;
+	count_r = count_redir(exec);
 	if (master->pid == 0)
 	{
 		dup2(master->tmp_fd, STDIN_FILENO);
@@ -97,8 +100,14 @@ void	child_process_execution(t_master *master, t_token *token, t_exec *exec,
 			dup2(master->pipefd[0], STDIN_FILENO);
 			close(master->pipefd[0]);
 		}
-		launch_redirection(master->exec);
-		execve_execute_command(master->exec, master->env_list, type);
+		if (count_r == 0)
+			execve_execute_command(master->exec, master->env_list, type);
+		while (count_r > 0)
+		{
+			launch_redirection(exec);
+			execve_execute_command(master->exec, master->env_list, type);
+			count_r = count_redir(exec);
+		}
 		ft_free_child();
 		exit(master->exit_status);
 	}

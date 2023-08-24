@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 11:50:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 11:54:45 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/23 17:37:02 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ static void	ft_here(char *limiter)
 		exit(EXIT_FAILURE);
 	while (1)
 	{
-		signal(SIGQUIT, SIG_IGN);
-		signal(SIGINT, &ft_here_sig);
 		line = readline("> ");
 		if (ft_strncmp(line, limiter, ft_strlen(limiter) + 1) == 0)
 		{
@@ -72,6 +70,7 @@ static int	ft_exec_heredoc(t_exec *exec)
 	else
 		limiter = &exec->argv[redir][position + 2];
 	pid = fork();
+	(signal(SIGQUIT, SIG_IGN), signal(SIGINT, &ft_here_sig));
 	if (pid == 0)
 		ft_here(limiter);
 	waitpid(pid, &g_master.exit_status, 0);

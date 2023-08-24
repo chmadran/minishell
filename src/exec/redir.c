@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/09 08:50:08 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/24 14:08:38 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,57 @@
 #include "env.h"
 #include "exec.h"
 
-static int	open_and_dup(t_exec *exec, int flags, int std_type)
+static int	open_and_dup(t_exec *exec, int flags, int std_type, int redir)
 {
 	int	fd;
+	int	file;
 
-	fd = open(exec->argv[exec->argc - 1], flags, 0644);
+	file = find_redirection(exec->argv);
+	fd = open(exec->argv[file + 1], flags, 0644);
 	if (fd < 0)
 		return (-1);
-	dup2(fd, std_type);
+	if (redir < 4)
+		dup2(fd, std_type);
 	close(fd);
 	return (0);
+}
+
+int	count_redir(t_exec *exec)
+{
+	int	i;
+	int	j;
+	int	count;
+
+	i = 0;
+	j = 0;
+	count = 0;
+	while (exec->argv[i])
+	{
+		j = 0;
+		while (exec->argv[i][j])
+		{
+			if (exec->argv[i][j] == '<' || exec->argv[i][j] == '>')
+				count++;
+			j++;
+		}
+		i++;
+	}
+	return (count);
 }
 
 int	launch_redirection(t_exec *exec)
 {
 	int	redir;
 
-	redir = 0;
 	redir = check_redir(exec->argv);
+	if (redir == -1)
+		return (0);
 	if (redir == 1)
-		open_and_dup(exec, O_RDONLY, STDIN_FILENO);
-	else if (redir == 2)
-		open_and_dup(exec, O_WRONLY | O_CREAT | O_TRUNC, STDOUT_FILENO);
-	else if (redir == 3)
-		open_and_dup(exec, O_WRONLY | O_CREAT | O_APPEND, STDOUT_FILENO);
+		open_and_dup(exec, O_RDONLY, STDIN_FILENO, redir);
+	else if (redir == 2 || redir == 4)
+		open_and_dup(exec, O_WRONLY | O_CREAT | O_TRUNC, STDOUT_FILENO, redir);
+	else if (redir == 3 || redir == 5)
+		open_and_dup(exec, O_WRONLY | O_CREAT | O_APPEND, STDOUT_FILENO, redir);
 	clean_argv(exec);
-	return (0);
+	return (1);
 }
