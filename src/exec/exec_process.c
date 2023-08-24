@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/24 13:48:46 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/24 17:17:45 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,17 @@ void	parent_process_execution(t_master *master, t_token **token,
 	t_exec *exec)
 {
 	exec = master->exec;
-	if (master->pid != 0)
+	if (master->pid > 0)
 	{
+		master->child_pid[master->count_pid++] = master->pid;
 		if ((*token)->next && (*token)->next->type == T_PIPE)
 			master->first_cmd = false;
 		else
 			master->first_cmd = true;
 		close(master->tmp_fd);
+		if (master->pipefd[1] != -1)
+			close(master->pipefd[1]);
+		master->tmp_fd = master->pipefd[0];
 		if ((*token)->next)
 			*token = (*token)->next->next;
 		else
