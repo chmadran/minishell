@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/24 13:21:14 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/24 14:11:02 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ int	find_redirection(char **argv)
 
 int	clean_argv(t_exec *exec)
 {
-	int	i;
-	int j;
-	int k;
-	char **new_argv;
+	int		i;
+	int		j;
+	int		k;
+	char	**new_argv;
 
 	i = 0;
 	k = 0;
@@ -51,19 +51,11 @@ int	clean_argv(t_exec *exec)
 		return (EXIT_FAILURE);
 	new_argv = malloc(sizeof(char *) * (exec->argc + 1));
 	while (exec->argv[i] && i < j)
-	{
-		new_argv[k] = ft_strdup(exec->argv[i]);
-		i++;
-		k++;
-	}
+		new_argv[k++] = ft_strdup(exec->argv[i++]);
 	i = i + 2;
 	exec->argc = i;
 	while (exec->argv[i])
-	{
-		new_argv[k] = ft_strdup(exec->argv[i]);
-		i++;
-		k++;
-	}
+		new_argv[k++] = ft_strdup(exec->argv[i++]);
 	new_argv[k] = NULL;
 	free_double_ptr(exec->argv);
 	exec->argv = new_argv;
@@ -76,9 +68,9 @@ int	check_redir(char **argv)
 	int	i;
 	int	j;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	while (argv[i])
+	while (argv[++i])
 	{
 		j = 0;
 		while (argv[i][j])
@@ -101,7 +93,6 @@ int	check_redir(char **argv)
 			}
 			j++;
 		}
-		i++;
 	}
 	return (-1);
 }

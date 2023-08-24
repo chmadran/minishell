@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/24 13:38:02 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/24 14:08:38 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 static int	open_and_dup(t_exec *exec, int flags, int std_type, int redir)
 {
 	int	fd;
-	int file;
+	int	file;
 
 	file = find_redirection(exec->argv);
 	fd = open(exec->argv[file + 1], flags, 0644);
@@ -31,11 +31,11 @@ static int	open_and_dup(t_exec *exec, int flags, int std_type, int redir)
 	return (0);
 }
 
-int		count_redir(t_exec *exec)
+int	count_redir(t_exec *exec)
 {
 	int	i;
 	int	j;
-	int count;
+	int	count;
 
 	i = 0;
 	j = 0;

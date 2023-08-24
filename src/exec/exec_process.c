@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/24 13:37:23 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/24 13:48:46 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	execve_execute_command(t_exec *exec, t_env *env_list,
 		execve(exec->pathname, exec->argv, envp);
 	else
 	{
-		g_master.exit_status = execute_builtin(exec, type);
+		execute_builtin(exec, type);
 		free_double_ptr(envp);
 		return ;
 	}
