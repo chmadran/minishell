@@ -69,10 +69,14 @@ static void	process_expansion_replace(t_exec *exec, char *substr_start,
 	free(value);
 }
 
-void	realocate_argv(t_exec *exec, int i, size_t k, int j)
+void	realocate_argv(t_exec *exec, int i)
 {
+	int		j;
 	char	*new_av;
+	size_t	k;
 
+	j = 0;
+	k = 0;
 	new_av = malloc(sizeof(char) * (ft_strlen(exec->argv[i])));
 	while (k < ft_strlen(exec->argv[i]))
 	{
@@ -84,8 +88,7 @@ void	realocate_argv(t_exec *exec, int i, size_t k, int j)
 		if (exec->argv[i][k] == '\'')
 		{
 			k++;
-			if (!(exec->argv[i][k] == '$' && exec->argv[i][k + 1] == '\''))
-				continue ;
+			continue ;
 		}
 		new_av[j++] = exec->argv[i][k++];
 	}		
@@ -124,59 +127,16 @@ void	launch_expansion(t_exec *exec)
 		{
 			if (exec->argv[i][j] == '\'')
 			{
-				realocate_argv(exec, i, 0, 0);
+				realocate_argv(exec, i);
 				break ;
 			}
 			else if (exec->argv[i][j] == '$')
 			{
 				if (exec->argv[i][j] == '\'')
-					realocate_argv(exec, i, 0, 0);
+					realocate_argv(exec, i);
 				else
 					execute_process_exp(exec, i, j);
 			}
 		}
 	}
 }
-
-// void	redefine_argv(t_exec *exec)
-// {
-// 	int	i;
-// 	int	j;
-// 	int	k;
-// 	int m = 0;
-// 	char **new_av;
-
-// 	i = 0;
-// 	j = 0;
-// 	k = 0;
-// 	new_av = (char **)malloc(sizeof(char *) * (exec->argc + 2));
-// 	while (exec->argv[i][k])
-// 	{
-// 		k = 0;
-// 		while (exec->argv[i][k])
-// 		{
-// 			if (exec->argv[i][k] == '\'' && exec->argv[i][k + 1] == '$')
-// 			{
-// 				printf("COUCOU");
-// 				m = 1;
-
-// 			}
-// 			k++;
-// 		}
-// 		if (m == 1)
-// 		{
-// 			new_av[j++] = ft_strdup(exec->argv[i]);
-// 			m = 0
-// 		}
-// 		new_av[j++] = ft_strdup(exec->argv[i++]);
-// 	}
-// 	new_av[j] = NULL;
-// 	j = 0;
-// 	while (new_av[j])
-// 	{
-// 		printf("NEWTAB AV[I] = %s\n", new_av[j]);
-// 		j++;
-// 	}
-// 	free_double_ptr(new_av);
-
-// }
