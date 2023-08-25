@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/24 14:11:02 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/25 13:49:38 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,8 @@ int	check_redir(char **argv)
 
 	i = -1;
 	j = 0;
-
-	while (argv[++i])
 	rline_av = ft_spe_split(g_master.line_read, ' ', 0, 0);
+	while (argv[++i])
 	{
 		j = 0;
 		while (argv[i][j])
