@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 16:47:52 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/25 11:12:15 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/25 11:41:00 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ int	count_new_spaces(char *data, int len)
 	{
 		if (ft_strchr(ops, data[i]))
 		{
-			if (i > 0 && ft_isalnum(data[i - 1]))
+			if (i > 0 && !ft_isspace(data[i - 1]) && data[i - 1] != '<' && data[i - 1] != '>')
 				add_spaces++;
 			i++;
-			if (data[i] && ft_isalnum(data[i]))
+			if (data[i] && !ft_isspace(data[i]) && data[i] != '<' && data[i] != '>')
 				add_spaces++;
 		}
 		i++;
@@ -81,10 +81,10 @@ char	*add_spaces_between_ops(char *data, int len)
 	{
 		if (ft_strchr(ops, data[i]))
 		{
-			if (i > 0 && data[i -1] && ft_isalnum(data[i - 1]))
+			if (i > 0 && data[i -1] && !ft_isspace(data[i - 1]) && data[i - 1] != '<' && data[i - 1] != '>')
 				new_data[j++] = ' ';
 			new_data[j++] = data[i++];
-			if (data[i] && ft_isalnum(data[i]))
+			if (data[i] && !ft_isspace(data[i]) && data[i] != '<' && data[i] != '>')
 				new_data[j++] = ' ';
 		}
 		else
