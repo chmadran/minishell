@@ -9,12 +9,12 @@
 /*   Updated: 2023/08/25 11:44:15 by avallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "minishell.h"
 #include "libft.h"
 #include "exit.h"
 #include "env.h"
 #include "exec.h"
+
 static char	**ft_free(char **str)
 {
 	char	**original_str;
@@ -77,19 +77,15 @@ static char	*ft_wd(const char *s, char c)
 	return (word);
 }
 
-char	**ft_spe_split(char const *s, char c)
+char	**ft_spe_split(char const *s, char c, size_t i, size_t idx)
 {
-	size_t	i;
-	size_t	idx;
 	char	**str;
 
 	if (!s)
 		return (NULL);
-	i = 0;
 	str = malloc(sizeof(char *) * (ft_ct_strings(s, c) + 1));
 	if (!str)
 		return (NULL);
-	idx = 0;
 	while (s[idx])
 	{
 		while (s[idx] && (ft_check_separator(s[idx], c)

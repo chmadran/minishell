@@ -53,7 +53,6 @@ static t_builtin_type	find_arg_type(char *arg)
 	return (type);
 }
 
-
 static int	prepare_type_execution(t_master *master, t_builtin_type type)
 {
 	if (type == T_OTHERS)

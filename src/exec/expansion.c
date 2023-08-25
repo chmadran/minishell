@@ -133,7 +133,7 @@ void	launch_expansion(t_exec *exec)
 	size_t	j;
 	char	**readline_av;
 
-	readline_av = ft_spe_split(g_master.line_read, ' ');
+	readline_av = ft_spe_split(g_master.line_read, ' ', 0, 0);
 	i = -1;
 	while (exec->argv[++i])
 	{

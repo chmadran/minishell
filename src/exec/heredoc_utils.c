@@ -16,7 +16,7 @@
 #include "env.h"
 #include "exec.h"
 
-void	add_tmp_file(t_exec *exec, int heredoc_tkn)
+void	add_tmp_file(t_exec *exec, int hdoc_tkn)
 {
 	int		i;
 	int		j;
@@ -25,8 +25,8 @@ void	add_tmp_file(t_exec *exec, int heredoc_tkn)
 	i = 1;
 	j = 0;
 	new_argv = NULL;
-	if (exec->argv[0] && (ft_strcmp(exec->argv[0], "cat") == 0 && heredoc_tkn == 1
-		&& (!exec->argv[1] || ft_strcmp(exec->argv[1], ">") == 0)))
+	if (exec->argv[0] && (ft_strcmp(exec->argv[0], "cat") == 0 && hdoc_tkn == 1
+			&& (!exec->argv[1] || ft_strcmp(exec->argv[1], ">") == 0)))
 	{
 		new_argv = (char **)malloc(sizeof(char *) * (exec->argc + 2));
 		if (!new_argv)
@@ -41,7 +41,7 @@ void	add_tmp_file(t_exec *exec, int heredoc_tkn)
 		g_master.exec->argv = new_argv;
 		g_master.exec->argc += 1;
 	}
-	if (!g_master.exec->argv[0] && heredoc_tkn == 1)
+	if (!g_master.exec->argv[0] && hdoc_tkn == 1)
 	{
 		g_master.exec->argv[0] = ft_strdup("cat");
 		g_master.exec->argv[1] = ft_strdup("minishell_heredoc_tmp.txt");
@@ -67,12 +67,12 @@ void	clean_args(t_exec *exec, int heredoc_index)
 
 int	check_heredoc(char **argv, int *position)
 {
-	int	i;
-	int	j;
-	char	**tab_readline;
+	int			i;
+	int			j;
+	char		**tab_readline;
 
 	i = 0;
-	tab_readline = ft_spe_split(g_master.line_read, ' ');
+	tab_readline = ft_spe_split(g_master.line_read, ' ', 0, 0);
 	i = 0;
 	while (argv[i])
 	{
