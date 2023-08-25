@@ -115,14 +115,19 @@ void	launch_expansion(t_exec *exec)
 {
 	size_t	i;
 	size_t	j;
+	char **readline_av;
+
+	readline_av = ft_spe_split(g_master.line_read, ' ');
+
 
 	i = -1;
 	while (exec->argv[++i])
 	{
+		printf("TOPRINT: %s\n", exec->argv[i]);
 		j = -1;
 		while (exec->argv[i][++j])
 		{
-			if (exec->argv[i][j] == '\'')
+			if (exec->argv[i][j] == '\'' && !(is_in_quotes(readline_av[i], j + 1)))
 			{
 				realocate_argv(exec, i, 0, 0);
 				break ;
@@ -136,47 +141,5 @@ void	launch_expansion(t_exec *exec)
 			}
 		}
 	}
+	free_double_ptr(readline_av);
 }
-
-// void	redefine_argv(t_exec *exec)
-// {
-// 	int	i;
-// 	int	j;
-// 	int	k;
-// 	int m = 0;
-// 	char **new_av;
-
-// 	i = 0;
-// 	j = 0;
-// 	k = 0;
-// 	new_av = (char **)malloc(sizeof(char *) * (exec->argc + 2));
-// 	while (exec->argv[i][k])
-// 	{
-// 		k = 0;
-// 		while (exec->argv[i][k])
-// 		{
-// 			if (exec->argv[i][k] == '\'' && exec->argv[i][k + 1] == '$')
-// 			{
-// 				printf("COUCOU");
-// 				m = 1;
-
-// 			}
-// 			k++;
-// 		}
-// 		if (m == 1)
-// 		{
-// 			new_av[j++] = ft_strdup(exec->argv[i]);
-// 			m = 0
-// 		}
-// 		new_av[j++] = ft_strdup(exec->argv[i++]);
-// 	}
-// 	new_av[j] = NULL;
-// 	j = 0;
-// 	while (new_av[j])
-// 	{
-// 		printf("NEWTAB AV[I] = %s\n", new_av[j]);
-// 		j++;
-// 	}
-// 	free_double_ptr(new_av);
-
-// }

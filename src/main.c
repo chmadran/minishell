@@ -69,6 +69,8 @@ int	main(void)
 			add_history(g_master.line_read);
 			if (launch_lexer(g_master.line_read, &g_master.token_list))
 				continue ;
+			printf("PEPE: %s\n", &g_master.token_list->data[0]);
+
 			launch_execution(&g_master);
 			free_token_list(g_master.token_list);
 			free(g_master.line_read);

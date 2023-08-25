@@ -75,21 +75,26 @@ int	clean_redir(t_exec *exec)
 	return (EXIT_SUCCESS);
 }
 
+
 int	check_redir(char **argv)
 {
-	int	i;
-	int	j;
+	int		i;
+	size_t	j;
+	char 	**readline_av;
 
 	i = 0;
 	j = 0;
+	readline_av = ft_spe_split(g_master.line_read, ' ');
 	while (argv[i])
 	{
 		j = 0;
 		while (argv[i][j])
 		{
-			if (argv[i][j] == '<')
-				return (1);
-			else if (argv[i][j] == '>')
+			if (argv[i][j] == '<' && !(is_in_quotes(readline_av[i], j + 1)))
+			{
+				return (1);	
+			}
+			else if (argv[i][j] == '>' && !(is_in_quotes(readline_av[i], j + 1)))
 			{
 				if (argv[i][j + 1] && argv[i][j + 1] == '>')
 					return (3);
@@ -100,5 +105,6 @@ int	check_redir(char **argv)
 		}
 		i++;
 	}
+	free_double_ptr(readline_av);
 	return (0);
 }
