@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/23 15:02:02 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/25 10:20:54 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	execve_execute_command(t_exec *exec, t_env *env_list,
 		execve(exec->pathname, exec->argv, envp);
 	else
 	{
-		g_master.exit_status = execute_builtin(exec, type);
+		execute_builtin(exec, type);
 		free_double_ptr(envp);
 		return ;
 	}
@@ -80,7 +80,10 @@ void	execve_execute_command(t_exec *exec, t_env *env_list,
 void	child_process_execution(t_master *master, t_token *token, t_exec *exec,
 			t_builtin_type type)
 {
+	int	count_r;
+
 	exec = master->exec;
+	count_r = count_redir(exec);
 	if (master->pid == 0)
 	{
 		dup2(master->tmp_fd, STDIN_FILENO);
@@ -97,8 +100,19 @@ void	child_process_execution(t_master *master, t_token *token, t_exec *exec,
 			dup2(master->pipefd[0], STDIN_FILENO);
 			close(master->pipefd[0]);
 		}
-		launch_redirection(master->exec);
-		execve_execute_command(master->exec, master->env_list, type);
+		if (count_r == 0)
+			execve_execute_command(master->exec, master->env_list, type);
+		while (count_r > 0)
+		{
+			if (launch_redirection(exec) == EXIT_FAILURE)
+			{
+				close(master->pipefd[1]);
+				g_master.exit_status = 1;
+				break ;
+			}
+			execve_execute_command(master->exec, master->env_list, type);
+			count_r = count_redir(exec);
+		}
 		ft_free_child();
 		exit(master->exit_status);
 	}
@@ -108,13 +122,17 @@ void	parent_process_execution(t_master *master, t_token **token,
 	t_exec *exec)
 {
 	exec = master->exec;
-	if (master->pid != 0)
+	if (g_master.exit_status != 127 && master->pid > 0)
 	{
+		master->child_pid[master->count_pid++] = master->pid;
 		if ((*token)->next && (*token)->next->type == T_PIPE)
 			master->first_cmd = false;
 		else
 			master->first_cmd = true;
 		close(master->tmp_fd);
+		if (master->pipefd[1] != -1)
+			close(master->pipefd[1]);
+		master->tmp_fd = master->pipefd[0];
 		if ((*token)->next)
 			*token = (*token)->next->next;
 		else

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/23 15:02:23 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/25 09:39:49 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@
 # define ESTR_OPSTART "minishell: syntax error near unexpected token 'newline'\n"
 
 # define OP 1
+
+# define MAX_NB_CHILD_PIDS 10
 
 typedef enum e_token_type
 {
@@ -93,9 +95,11 @@ typedef struct s_master
 	int		token_count;
 	int		flag_expan;
 	pid_t	pid;
+	pid_t	child_pid[MAX_NB_CHILD_PIDS];
 	int		pipefd[2];
 	int		tmp_fd;
 	bool	first_cmd;
+	int		count_pid;
 }	t_master;
 
 /* lexer.c */
@@ -106,6 +110,7 @@ int		launch_parser(t_token **token_list);
 char	*trim_spaces(const char *str, size_t start, size_t end);
 int		count_new_spaces(char *data, int len);
 char	*add_spaces_between_ops(char *data, int len);
+char	*add_spaces_after_pipe(char *data);
 
 /* lexer_utils.c */
 int		is_empty_filename(t_exec *exec);

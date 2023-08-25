@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:42:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 13:40:04 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/25 11:14:26 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,29 @@ static char	*extract_expansion_name(char *str)
 	return (name);
 }
 
+static void	replace_argv(t_exec *exec, int i)
+{
+	int		j;
+	char	**new_argv;
+
+	j = 0;
+	new_argv = malloc(sizeof(char *) * (exec->argc));
+	while(j < i)
+	{
+		new_argv[j] = exec->argv[j];
+		j++;
+	}
+	while (exec->argv[i + 1])
+	{
+		new_argv[j] = ft_strdup(exec->argv[i + 1]);
+		i++;
+		j++;
+	}
+	new_argv[j] = NULL;
+	free_double_ptr(exec->argv);
+	exec->argv = new_argv;
+}
+
 static void	process_expansion_replace(t_exec *exec, char *substr_start,
 		size_t i, char *str)
 {
@@ -61,9 +84,14 @@ static void	process_expansion_replace(t_exec *exec, char *substr_start,
 	}
 	else
 		value = get_env_value(g_master.env_list, name, 1);
-	new_str = create_new_string(substr_start, name, value, str);
-	free(exec->argv[i]);
-	exec->argv[i] = new_str;
+	if (value)
+	{
+		new_str = create_new_string(substr_start, name, value, str);
+		free(exec->argv[i]);
+		exec->argv[i] = new_str;
+	}
+	else
+		replace_argv(exec, i);
 	free(substr_start);
 	free(name);
 	free(value);
@@ -127,7 +155,7 @@ bool	single_quotes(const char *line_read, size_t j)
 	return (inside_single_quotes);
 }
 
-void	launch_expansion(t_exec *exec)
+int	launch_expansion(t_exec *exec)
 {
 	size_t	i;
 	size_t	j;
@@ -147,7 +175,10 @@ void	launch_expansion(t_exec *exec)
 				else
 					execute_process_exp(exec, i, j);
 			}
+			if (!exec->argv[0])
+				return (EXIT_FAILURE);
 		}
 	}
 	free_double_ptr(readline_av);
+  return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 16:47:52 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 18:16:05 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/25 11:41:00 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ int	count_new_spaces(char *data, int len)
 	{
 		if (ft_strchr(ops, data[i]))
 		{
-			if (i > 0 && ft_isalnum(data[i - 1]))
+			if (i > 0 && !ft_isspace(data[i - 1]) && data[i - 1] != '<' && data[i - 1] != '>')
 				add_spaces++;
 			i++;
-			if (data[i] && ft_isalnum(data[i]))
+			if (data[i] && !ft_isspace(data[i]) && data[i] != '<' && data[i] != '>')
 				add_spaces++;
 		}
 		i++;
@@ -81,7 +81,52 @@ char	*add_spaces_between_ops(char *data, int len)
 	{
 		if (ft_strchr(ops, data[i]))
 		{
-			if (i > 0 && data[i - 1] && ft_isalnum(data[i - 1]) && !is_in_quotes(data, i))
+			if (i > 0 && data[i -1] && !ft_isspace(data[i - 1]) && data[i - 1] != '<' && data[i - 1] != '>' && !is_in_quotes(data, i))
+				new_data[j++] = ' ';
+			new_data[j++] = data[i++];
+			if (data[i] && !ft_isspace(data[i]) && data[i] != '<' && data[i] != '>')
+				new_data[j++] = ' ';
+		}
+		else
+			new_data[j++] = data[i++];
+	}
+	new_data[j] = '\0';
+	return (free(g_master.line_read), new_data);
+}
+
+
+char	*add_spaces_after_pipe(char *data)
+{
+	int		i;
+	int		j;
+	int		new_spaces;
+	int		len;
+	char	*new_data;
+
+	i = 0;
+	j = 0;
+	new_spaces = 0;
+	len = ft_strlen(data);
+	new_data = NULL;
+	while (data[i])
+	{
+		if (ft_strncmp(&data[i], "|", 1) == 0)
+		{
+			if (i > 0 && data[i - 1] && ft_isalnum(data[i - 1]))
+				new_spaces++;
+			i++;
+			if (data[i] && ft_isalnum(data[i]))
+				new_spaces++;
+		}
+		i++;
+	}
+	new_data = (char *)malloc(sizeof(char) * len + new_spaces + 1);
+	i = 0;
+	while (data[i])
+	{
+		if (ft_strncmp(&data[i], "|", 1) == 0)
+		{
+			if (i > 0 && data[i -1] && ft_isalnum(data[i - 1]))
 				new_data[j++] = ' ';
 			new_data[j++] = data[i++];
 			if (data[i] && ft_isalnum(data[i]) && !is_in_quotes(data, i))
@@ -94,3 +139,4 @@ char	*add_spaces_between_ops(char *data, int len)
 
 	return (free(g_master.line_read), new_data);
 }
+

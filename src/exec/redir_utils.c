@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 11:47:13 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/24 14:11:02 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "env.h"
 #include "exec.h"
 
-static int	find_redirection(char **argv)
+int	find_redirection(char **argv)
 {
 	int	i;
 	int	j;
@@ -39,39 +39,27 @@ static int	find_redirection(char **argv)
 
 int	clean_argv(t_exec *exec)
 {
-	int	i;
+	int		i;
+	int		j;
+	int		k;
+	char	**new_argv;
 
-	i = find_redirection(exec->argv);
-	if (i == -1)
+	i = 0;
+	k = 0;
+	j = find_redirection(exec->argv);
+	if (j == -1)
 		return (EXIT_FAILURE);
-	exec->argc = i + 1;
+	new_argv = malloc(sizeof(char *) * (exec->argc + 1));
+	while (exec->argv[i] && i < j)
+		new_argv[k++] = ft_strdup(exec->argv[i++]);
+	i = i + 2;
+	exec->argc = i;
 	while (exec->argv[i])
-	{
-		free(exec->argv[i]);
-		exec->argv[i] = NULL;
-		i++;
-	}
-	return (EXIT_SUCCESS);
-}
-
-int	clean_redir(t_exec *exec)
-{
-	int	i;
-	int	j;
-
-	i = find_redirection(exec->argv);
-	if (i == -1)
-		return (EXIT_FAILURE);
-	j = i + 1;
-	free(exec->argv[i]);
-	exec->argv[i] = NULL;
-	while (exec->argv[j])
-	{
-		exec->argv[j - 1] = exec->argv[j];
-		exec->argv[exec->argc - 1] = NULL;
-		exec->argc--;
-		j++;
-	}
+		new_argv[k++] = ft_strdup(exec->argv[i++]);
+	new_argv[k] = NULL;
+	free_double_ptr(exec->argv);
+	exec->argv = new_argv;
+	exec->argc = k;
 	return (EXIT_SUCCESS);
 }
 
@@ -81,10 +69,11 @@ int	check_redir(char **argv)
 	size_t	j;
 	char	**rline_av;
 
-	i = 0;
+	i = -1;
 	j = 0;
+
+	while (argv[++i])
 	rline_av = ft_spe_split(g_master.line_read, ' ', 0, 0);
-	while (argv[i])
 	{
 		j = 0;
 		while (argv[i][j])
@@ -96,14 +85,20 @@ int	check_redir(char **argv)
 			else if (argv[i][j] == '>' && !(is_in_quotes(rline_av[i], j + 1)))
 			{
 				if (argv[i][j + 1] && argv[i][j + 1] == '>')
-					return (3);
+				{
+					if (i == 0)
+						return (4);
+					else
+						return (3);
+				}
+				if (i == 0)
+					return (5);
 				else
 					return (2);
 			}
 			j++;
 		}
-		i++;
 	}
 	free_double_ptr(rline_av);
-	return (0);
+	return (-1);
 }

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:03:13 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 14:58:35 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/24 13:27:42 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_echo(int argc, char **argv)
 		is_option = flag_check(argv[i]);
 	while (argv[i] && flag_check(argv[i]))
 		i++;
-	while (argv[i])
+	while (argv[i] && ft_strcmp(argv[i], "<") && ft_strcmp(argv[i], ">"))
 	{
 		ft_putstr_fd(argv[i], STDOUT_FILENO);
 		if (argv[i + 1])

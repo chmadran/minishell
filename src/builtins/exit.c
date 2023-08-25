@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:47:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/22 14:28:54 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/24 11:16:08 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,6 @@ void	ft_exit(int argc, char **argv)
 		check_numeric_arguments(argc, argv);
 	free_executable();
 	ft_cleanup_exit();
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	ft_putstr_fd("exit\n", STDERR_FILENO);
 	exit(g_master.exit_status);
 }
