@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 12:00:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/22 15:00:16 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/25 13:17:05 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ static int	export_var(char *var_str, char *equals_location)
 	return (EXIT_SUCCESS);
 }
 
-static char	**add_back_envp_var(int arraySize, char *argv, char **envp)
+static char	**add_back_envp_var(char *argv, char **envp)
 {
 	int		i;
 	char	**new_array;
 
 	i = 0;
-	new_array = malloc((arraySize + 2) * sizeof(char *));
+	new_array = malloc((g_master.size_export_envp + 2) * sizeof(char *));
 	if (!new_array)
 		return (NULL);
 	while (envp[i])
@@ -64,17 +64,16 @@ static char	**add_back_envp_var(int arraySize, char *argv, char **envp)
 	return (new_array);
 }
 
-int	export_local_var(int *array_size, char *argv)
+int	export_local_var(char *argv)
 {
 	char	**new_array;
 
-	new_array = add_back_envp_var(*array_size, argv,
-			g_master.export_envp);
+	new_array = add_back_envp_var(argv, g_master.export_envp);
 	if (!new_array)
 		return (EXIT_FAILURE);
 	free_double_ptr(g_master.export_envp);
 	g_master.export_envp = new_array;
-	array_size++;
+	g_master.size_export_envp++;
 	return (EXIT_SUCCESS);
 }
 
@@ -98,12 +97,12 @@ int	check_export(int argc, char **argv, int array_size)
 int	ft_export(int argc, char **argv)
 {
 	int		i;
-	int		array_size;
+	//int		array_size;
 	char	*equals_location;
 
 	i = 0;
-	array_size = ft_array_size(g_master.export_envp);
-	if (check_export(argc, argv, array_size) == EXIT_SUCCESS)
+	g_master.size_export_envp = ft_array_size(g_master.export_envp);
+	if (check_export(argc, argv, g_master.size_export_envp) == EXIT_SUCCESS)
 	{
 		while (++i < argc)
 		{
@@ -113,10 +112,10 @@ int	ft_export(int argc, char **argv)
 				if (export_var(argv[i], equals_location))
 					return (EXIT_FAILURE);
 			}
-			else if (ft_strlen(argv[i])
+			if (ft_strlen(argv[i])
 				&& is_valid_variable_name(argv[i], argv[i]))
 			{
-				if (export_local_var(&array_size, argv[i]))
+				if (export_local_var(argv[i]))
 					return (EXIT_FAILURE);
 			}
 		}

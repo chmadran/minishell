@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/25 10:20:54 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/25 15:02:20 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	child_process_execution(t_master *master, t_token *token, t_exec *exec,
 		{
 			if (launch_redirection(exec) == EXIT_FAILURE)
 			{
-				close(master->pipefd[1]);
+				//close(master->pipefd[1]);
 				g_master.exit_status = 1;
 				break ;
 			}

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/25 13:49:38 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/25 15:03:00 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,26 @@ int	find_redirection(char **argv)
 {
 	int	i;
 	int	j;
+	char	**rline_av;
 
 	i = 0;
 	j = 0;
+	rline_av = ft_spe_split(g_master.line_read, ' ', 0, 0);
 	while (argv[i])
 	{
 		j = 0;
 		while (argv[i][j])
 		{
-			if (argv[i][j] == '<' || argv[i][j] == '>')
+			if ((argv[i][j] == '<' || argv[i][j] == '>') && !(is_in_quotes(rline_av[i], j + 1)))
+			{
+				free_double_ptr(rline_av);
 				return (i);
+			}
 			j++;
 		}
 		i++;
 	}
+	free_double_ptr(rline_av);
 	return (-1);
 }
 
@@ -79,6 +85,7 @@ int	check_redir(char **argv)
 		{
 			if (argv[i][j] == '<' && !(is_in_quotes(rline_av[i], j + 1)))
 			{
+				free_double_ptr(rline_av);
 				return (1);
 			}
 			else if (argv[i][j] == '>' && !(is_in_quotes(rline_av[i], j + 1)))

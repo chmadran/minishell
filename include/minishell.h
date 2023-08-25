@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/25 09:39:49 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/25 13:05:40 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_master
 	t_exec	*exec;
 	char	*line_read;
 	char	**export_envp;
+	int		size_export_envp;
 	int		exit_status;
 	int		token_count;
 	int		flag_expan;

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/25 10:16:05 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/25 15:02:11 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static int	open_and_dup(t_exec *exec, int flags, int std_type, int redir)
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(exec->argv[file + 1], STDERR_FILENO);
 		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		g_master.exit_status = 2;
 		return (-1);
 	}
 	if (redir < 4)
