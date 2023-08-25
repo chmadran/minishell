@@ -65,19 +65,24 @@ int	clean_argv(t_exec *exec)
 
 int	check_redir(char **argv)
 {
-	int	i;
-	int	j;
+	int		i;
+	size_t	j;
+	char	**rline_av;
 
 	i = -1;
 	j = 0;
+
 	while (argv[++i])
+	rline_av = ft_spe_split(g_master.line_read, ' ', 0, 0);
 	{
 		j = 0;
 		while (argv[i][j])
 		{
-			if (argv[i][j] == '<')
+			if (argv[i][j] == '<' && !(is_in_quotes(rline_av[i], j + 1)))
+			{
 				return (1);
-			else if (argv[i][j] == '>')
+			}
+			else if (argv[i][j] == '>' && !(is_in_quotes(rline_av[i], j + 1)))
 			{
 				if (argv[i][j + 1] && argv[i][j + 1] == '>')
 				{
@@ -94,5 +99,6 @@ int	check_redir(char **argv)
 			j++;
 		}
 	}
+	free_double_ptr(rline_av);
 	return (-1);
 }

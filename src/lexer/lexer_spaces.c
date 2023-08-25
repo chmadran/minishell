@@ -81,7 +81,7 @@ char	*add_spaces_between_ops(char *data, int len)
 	{
 		if (ft_strchr(ops, data[i]))
 		{
-			if (i > 0 && data[i -1] && !ft_isspace(data[i - 1]) && data[i - 1] != '<' && data[i - 1] != '>')
+			if (i > 0 && data[i -1] && !ft_isspace(data[i - 1]) && data[i - 1] != '<' && data[i - 1] != '>' && !is_in_quotes(data, i))
 				new_data[j++] = ' ';
 			new_data[j++] = data[i++];
 			if (data[i] && !ft_isspace(data[i]) && data[i] != '<' && data[i] != '>')
@@ -129,13 +129,14 @@ char	*add_spaces_after_pipe(char *data)
 			if (i > 0 && data[i -1] && ft_isalnum(data[i - 1]))
 				new_data[j++] = ' ';
 			new_data[j++] = data[i++];
-			if (data[i] && ft_isalnum(data[i]))
+			if (data[i] && ft_isalnum(data[i]) && !is_in_quotes(data, i))
 				new_data[j++] = ' ';
 		}
 		else
 			new_data[j++] = data[i++];
 	}
 	new_data[j] = '\0';
+
 	return (free(g_master.line_read), new_data);
 }
 

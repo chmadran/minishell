@@ -13,6 +13,8 @@
 #include "minishell.h"
 #include "libft.h"
 #include "exit.h"
+#include "env.h"
+#include "exec.h"
 
 int	end_op(t_token **token_lst)
 {

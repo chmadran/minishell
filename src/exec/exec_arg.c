@@ -58,7 +58,7 @@ void	split_args(char *s, char **argv)
 		arg = allocate_memory_for_arg(s);
 		while (*s && *s != ' ')
 		{
-			if (*s == '\"')
+			if (*s == '\"' || *s == '\'')
 				s = handle_quoted_argument(s, &arg);
 			else
 				s = handle_unquoted_argument(s, &arg);

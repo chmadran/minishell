@@ -72,7 +72,7 @@ int		find_redirection(char **argv);
 /* heredoc.c*/
 int		launch_heredoc(t_exec *exec);
 /* heredoc_utils.c*/
-void	add_tmp_file(t_exec *exec, int heredoc_tkn);
+void	add_tmp_file(t_exec *exec, int hdoc_tkn);
 void	clean_args(t_exec *exec, int heredoc_index);
 int		check_heredoc(char **argv, int *position);
 
@@ -80,5 +80,8 @@ int		check_heredoc(char **argv, int *position);
 int		clean_argv(t_exec *exec);
 int		clean_redir(t_exec *exec);
 int		check_redir(char **argv);
+
+/* g_master_utils */
+char	**ft_spe_split(char const *s, char c, size_t i, size_t idx);
 
 #endif
