@@ -13,6 +13,8 @@
 #include "minishell.h"
 #include "libft.h"
 #include "exit.h"
+#include "env.h"
+#include "exec.h"
 
 int	end_op(t_token **token_lst)
 {
@@ -103,10 +105,22 @@ static void	ft_token_count(t_token **token_lst)
 	g_master.token_count = count;
 }
 
+// char	*reallocate_dollar(char *str)
+// {
+// 	char	*new_line;
+// 	int		doll_counter;
+// 	int		i;
+
+// 	i = 0;
+
+// 	return (new_line);
+// }
+
 int	launch_lexer(char *line_read, t_token **token_list)
 {
 	int	len;
 
+	// line_read = reallocate_dollar(line_read);
 	len = count_new_spaces(line_read, ft_strlen(line_read));
 	if ((ft_strlen(line_read) <= 2 && check_start(line_read))
 		|| unclosed_quotes(line_read))

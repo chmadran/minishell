@@ -79,7 +79,7 @@ int		clean_argv(t_exec *exec);
 int		clean_redir(t_exec *exec);
 int		check_redir(char **argv);
 
-/* A faire */
-char **ft_spe_split(char const *s, char c);
+/* g_master_utils */
+char	**ft_spe_split(char const *s, char c);
 
 #endif

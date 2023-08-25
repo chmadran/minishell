@@ -51,7 +51,7 @@ char	*handle_quoted_argument(char *s, char **arg)
 {
 	char	quote;
 	char	*start;
-
+	
 	quote = *s++;
 	start = s;
 	while (*s)
