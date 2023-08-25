@@ -72,6 +72,7 @@ int	check_redir(char **argv)
 	i = -1;
 	j = 0;
 	rline_av = ft_spe_split(g_master.line_read, ' ', 0, 0);
+
 	while (argv[++i])
 	{
 		j = 0;

@@ -81,7 +81,11 @@ int	check_heredoc(char **argv, int *position)
 		{
 			if (ft_strncmp(&argv[i][j], "<<", 2) == 0)
 			{
-				if (is_in_quotes(tab_readline[i], j))
+				if (is_in_quotes(tab_readline[i], j + 1))
+				{
+					free_double_ptr(tab_readline);
+					return (-1);
+				}
 					return (-1);
 				*position = j;
 				return (i);
