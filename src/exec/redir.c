@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/24 14:08:38 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/25 10:16:05 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,12 @@ static int	open_and_dup(t_exec *exec, int flags, int std_type, int redir)
 	file = find_redirection(exec->argv);
 	fd = open(exec->argv[file + 1], flags, 0644);
 	if (fd < 0)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(exec->argv[file + 1], STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 		return (-1);
+	}
 	if (redir < 4)
 		dup2(fd, std_type);
 	close(fd);
@@ -62,11 +67,17 @@ int	launch_redirection(t_exec *exec)
 	if (redir == -1)
 		return (0);
 	if (redir == 1)
-		open_and_dup(exec, O_RDONLY, STDIN_FILENO, redir);
+	{
+		if (open_and_dup(exec, O_RDONLY, STDIN_FILENO, redir) == -1)
+		{
+			clean_argv(exec);
+			return (EXIT_FAILURE);
+		}
+	}
 	else if (redir == 2 || redir == 4)
 		open_and_dup(exec, O_WRONLY | O_CREAT | O_TRUNC, STDOUT_FILENO, redir);
 	else if (redir == 3 || redir == 5)
 		open_and_dup(exec, O_WRONLY | O_CREAT | O_APPEND, STDOUT_FILENO, redir);
 	clean_argv(exec);
-	return (1);
+	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/24 17:17:45 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/25 10:20:54 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,12 @@ void	child_process_execution(t_master *master, t_token *token, t_exec *exec,
 			execve_execute_command(master->exec, master->env_list, type);
 		while (count_r > 0)
 		{
-			launch_redirection(exec);
+			if (launch_redirection(exec) == EXIT_FAILURE)
+			{
+				close(master->pipefd[1]);
+				g_master.exit_status = 1;
+				break ;
+			}
 			execve_execute_command(master->exec, master->env_list, type);
 			count_r = count_redir(exec);
 		}
@@ -117,7 +122,7 @@ void	parent_process_execution(t_master *master, t_token **token,
 	t_exec *exec)
 {
 	exec = master->exec;
-	if (master->pid > 0)
+	if (g_master.exit_status != 127 && master->pid > 0)
 	{
 		master->child_pid[master->count_pid++] = master->pid;
 		if ((*token)->next && (*token)->next->type == T_PIPE)

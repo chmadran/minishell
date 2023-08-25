@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/24 17:51:31 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/25 11:14:09 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,10 @@ static t_builtin_type	prepare_execution(t_master *master, t_token *token,
 	(void)token;
 	master->exec = create_arguments(token);
 	launch_heredoc(master->exec);
-	launch_expansion(master->exec);
+	if (launch_expansion(master->exec) == EXIT_FAILURE)
+		return (T_ERROR);
+	if (!master->exec->argv[0])
+		return (T_ERROR);
 	return (find_arg_type(master->exec->argv[0]));
 }
 
@@ -117,7 +120,7 @@ void	launch_execution(t_master *master)
 	{
 		type = prepare_execution(master, token, exec);
 		if (prepare_type_execution(master, type) == EXIT_FAILURE)
-			return ;
+			return ;	
 		if (token->next && token->next->type == T_PIPE)
 			pipe(master->pipefd);
 		master->pid = fork();

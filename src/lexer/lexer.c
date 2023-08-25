@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 16:42:19 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 18:29:40 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/25 09:47:30 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,9 @@ static int	manage_token(char *line_read, t_token **token_lst)
 		j = i;
 		type = check_token_type(line_read[i], line_read, &i);
 		while (line_read[i] && type == T_COMMAND)
+		{
 			type = check_token_type(line_read[++i], line_read, &i);
+		}
 		data = trim_spaces(line_read, j, i - 1);
 		create_token_node(T_COMMAND, data, token_lst);
 		if (type != T_COMMAND)
@@ -114,6 +116,8 @@ int	launch_lexer(char *line_read, t_token **token_list)
 	if (check_directory(line_read))
 		return (EXIT_FAILURE);
 	line_read = add_spaces_between_ops(line_read, len);
+	g_master.line_read = line_read;
+	line_read = add_spaces_after_pipe(line_read);
 	g_master.line_read = line_read;
 	if (manage_token(line_read, token_list))
 		return (EXIT_FAILURE);
