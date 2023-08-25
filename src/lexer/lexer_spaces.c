@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 16:47:52 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/25 11:41:00 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/25 14:01:50 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*add_spaces_between_ops(char *data, int len)
 		return (NULL);
 	while (data[i])
 	{
-		if (ft_strchr(ops, data[i]))
+		if (ft_strchr(ops, data[i]) && !is_in_quotes(data, i))
 		{
 			if (i > 0 && data[i -1] && !ft_isspace(data[i - 1]) && data[i - 1] != '<' && data[i - 1] != '>')
 				new_data[j++] = ' ';
@@ -129,13 +129,14 @@ char	*add_spaces_after_pipe(char *data)
 			if (i > 0 && data[i -1] && ft_isalnum(data[i - 1]))
 				new_data[j++] = ' ';
 			new_data[j++] = data[i++];
-			if (data[i] && ft_isalnum(data[i]))
+			if (data[i] && ft_isalnum(data[i]) && !is_in_quotes(data, i))
 				new_data[j++] = ' ';
 		}
 		else
 			new_data[j++] = data[i++];
 	}
 	new_data[j] = '\0';
+
 	return (free(g_master.line_read), new_data);
 }
 

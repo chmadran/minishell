@@ -139,26 +139,39 @@ static	void	execute_process_exp(t_exec *exec, int i, int j)
 	}
 }
 
+bool	single_quotes(const char *line_read, size_t j)
+{
+	size_t	i;
+	bool	inside_single_quotes;
+
+	i = 0;
+	inside_single_quotes = false;
+	while (line_read[i] && i < j)
+	{
+		if (line_read[i] == '\'')
+			inside_single_quotes = !inside_single_quotes;
+		i++;
+	}
+	return (inside_single_quotes);
+}
+
 int	launch_expansion(t_exec *exec)
 {
 	size_t	i;
 	size_t	j;
+	char	**readline_av;
 
+	readline_av = ft_spe_split(g_master.line_read, ' ', 0, 0);
 	i = -1;
 	while (exec->argv[++i])
 	{
 		j = -1;
 		while (exec->argv[i][++j])
 		{
-			if (exec->argv[i][j] == '\'')
+			if (exec->argv[i][j] == '$')
 			{
-				realocate_argv(exec, i, 0, 0);
-				break ;
-			}
-			else if (exec->argv[i][j] == '$')
-			{
-				if (exec->argv[i][j] == '\'')
-					realocate_argv(exec, i, 0, 0);
+				if ((single_quotes(readline_av[i], j + 1)))
+					j++;
 				else
 					execute_process_exp(exec, i, j);
 			}
@@ -166,5 +179,6 @@ int	launch_expansion(t_exec *exec)
 				return (EXIT_FAILURE);
 		}
 	}
-	return (EXIT_SUCCESS);
+	free_double_ptr(readline_av);
+  return (EXIT_SUCCESS);
 }
