@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 17:53:58 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 11:30:32 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/28 13:29:36 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ int	print_export(char **envp)
 		split_name_value(envp[i], &name, &value);
 		if (value)
 		{
-			printf("export %s=\"%s\"\n", name, value);
+			printf("declare -x %s=\"%s\"\n", name, value);
 			free(value);
 		}
 		else
 		{
-			printf("export %s=\"\"\n", name);
+			printf("declare -x %s=\"\"\n", name);
 		}
 		free(name);
 		i++;
@@ -99,19 +99,19 @@ void	print_environement_var(t_env *env_list, char *name)
 // 	printf("---------------------------------------------\n\n\n");
 // }
 
-void	print_data_builtins(t_exec	*current)
-{
-	int	i;
+// void	print_data_builtins(t_exec	*current)
+// {
+// 	int	i;
 
-	i = 0;
-	printf("------ARGUMENTS ENVOYES EN EXECUTION-----------\n");
-	printf("| %-15s | %-25s |\n", "Int ARGC", "Char **ARGV");
-	printf("-----------------------------------------------\n");
-	printf("| %-15d | %-25s |\n", current->argc, current->argv[i++]);
-	while (current->argv[i])
-	{
-		printf("| %-15s | %-25s |\n", " ", current->argv[i]);
-		i++;
-	}
-	printf("-----------------------------------------------\n\n\n");
-}
+// 	i = 0;
+// 	printf("------ARGUMENTS ENVOYES EN EXECUTION-----------\n");
+// 	printf("| %-15s | %-25s |\n", "Int ARGC", "Char **ARGV");
+// 	printf("-----------------------------------------------\n");
+// 	printf("| %-15d | %-25s |\n", current->argc, current->argv[i++]);
+// 	while (current->argv[i])
+// 	{
+// 		printf("| %-15s | %-25s |\n", " ", current->argv[i]);
+// 		i++;
+// 	}
+// 	printf("-----------------------------------------------\n\n\n");
+// }
