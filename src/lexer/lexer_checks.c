@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 09:48:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 18:28:16 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/28 13:32:17 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,27 @@ int	check_directory(char *str)
 			g_master.exit_status = 127;
 			return (EXIT_FAILURE);
 		}
+		if (access(str, F_OK) == 0)
+		{
+			printf("minishell: %s: Permission denied\n", str);
+			g_master.exit_status = 126;
+			return (EXIT_FAILURE);
+		}
 	}
 	if (is_directory(str))
 	{
-		printf("minishell: %s: Is a directory\n", str);
-		g_master.exit_status = 126;
-		return (EXIT_FAILURE);
+		if (str[0] == '/' || (str[0] == '.'))
+		{
+			printf("minishell: %s: Is a directory\n", str);
+			g_master.exit_status = 126;
+			return (EXIT_FAILURE);
+		}
+		else
+		{
+			printf("minishell: %s: command not found\n", str);
+			g_master.exit_status = 127;
+			return (EXIT_FAILURE);
+		}
 	}
 	return (EXIT_SUCCESS);
 }

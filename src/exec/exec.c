@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/25 11:14:09 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/28 13:33:33 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static int	prep_command_or_error(t_exec *exec, t_builtin_type type)
 		free_executable();
 		ft_exit(exec->argc, exec->argv);
 	}
+	if (check_directory(exec->argv[0]) == EXIT_FAILURE)
+		return (T_ERROR);
 	return (prepare_command(&g_master, exec));
 }
 
