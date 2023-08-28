@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:47:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/24 11:16:08 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/28 12:11:28 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	ft_cleanup_exit(void)
 	rl_clear_history();
 	free_environment_list(g_master.env_list);
 	free_double_ptr(g_master.export_envp);
+	free_double_ptr(g_master.readline_av);
 	free_token_list(g_master.token_list);
 	free(g_master.line_read);
 }

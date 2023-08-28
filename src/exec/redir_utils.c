@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/25 15:03:00 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/28 12:09:18 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ int	check_redir(char **argv)
 		{
 			if (argv[i][j] == '<' && !(is_in_quotes(g_master.readline_av[i], j + 1)))
 			{
-				free_double_ptr(rline_av);
 				return (1);
 			}
 			else if (argv[i][j] == '>' && !(is_in_quotes(g_master.readline_av[i], j + 1)))
