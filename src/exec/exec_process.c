@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/25 18:45:53 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/28 13:47:36 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	child_process_execution(t_master *master, t_token *token, t_exec *exec,
 		{
 			g_master.exit_status = 1;
 			ft_free_child();
-			exit(master->exit_status);
+			exit(g_master.exit_status);
 		}
 		execve_execute_command(master->exec, master->env_list, type);
 		ft_free_child();
