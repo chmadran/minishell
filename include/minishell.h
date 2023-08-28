@@ -90,6 +90,7 @@ typedef struct s_master
 	t_token	*token_list;
 	t_exec	*exec;
 	char	*line_read;
+	char	**readline_av;
 	char	**export_envp;
 	int		exit_status;
 	int		token_count;

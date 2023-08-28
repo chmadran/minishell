@@ -168,9 +168,7 @@ int	launch_expansion(t_exec *exec)
 {
 	size_t	i;
 	size_t	j;
-	char	**readline_av;
 
-	readline_av = ft_spe_split(g_master.line_read, ' ', 0, 0);
 	i = -1;
 	while (exec->argv[++i])
 	{
@@ -179,18 +177,14 @@ int	launch_expansion(t_exec *exec)
 		{
 			if (exec->argv[i][j] == '$')
 			{
-				if ((single_quotes(readline_av[i], j + 1)))
+				if ((single_quotes(g_master.readline_av[i], j + 1)))
 					j++;
 				else
 					execute_process_exp(exec, i, j);
 			}
 			if (!exec->argv[0])
-			{
-				free_double_ptr(readline_av);
 				return (EXIT_FAILURE);
-			}
 		}
 	}
-	free_double_ptr(readline_av);
   return (EXIT_SUCCESS);
 }

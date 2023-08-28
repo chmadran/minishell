@@ -69,10 +69,8 @@ int	check_heredoc(char **argv, int *position)
 {
 	int			i;
 	int			j;
-	char		**tab_readline;
 
 	i = 0;
-	tab_readline = ft_spe_split(g_master.line_read, ' ', 0, 0);
 	i = 0;
 	while (argv[i])
 	{
@@ -81,11 +79,7 @@ int	check_heredoc(char **argv, int *position)
 		{
 			if (ft_strncmp(&argv[i][j], "<<", 2) == 0)
 			{
-				if (is_in_quotes(tab_readline[i], j + 1))
-				{
-					free_double_ptr(tab_readline);
-					return (-1);
-				}
+				if (is_in_quotes(g_master.readline_av[i], j + 1))
 					return (-1);
 				*position = j;
 				return (i);
@@ -94,6 +88,5 @@ int	check_heredoc(char **argv, int *position)
 		}
 		i++;
 	}
-	free_double_ptr(tab_readline);
 	return (-1);
 }
