@@ -99,19 +99,19 @@ void	print_environement_var(t_env *env_list, char *name)
 // 	printf("---------------------------------------------\n\n\n");
 // }
 
-// void	print_data_builtins(t_exec	*current)
-// {
-// 	int	i;
+void	print_data_builtins(t_exec	*current)
+{
+	int	i;
 
-// 	i = 0;
-// 	printf("------ARGUMENTS ENVOYES EN EXECUTION-----------\n");
-// 	printf("| %-15s | %-25s |\n", "Int ARGC", "Char **ARGV");
-// 	printf("-----------------------------------------------\n");
-// 	printf("| %-15d | %-25s |\n", current->argc, current->argv[i++]);
-// 	while (current->argv[i])
-// 	{
-// 		printf("| %-15s | %-25s |\n", " ", current->argv[i]);
-// 		i++;
-// 	}
-// 	printf("-----------------------------------------------\n\n\n");
-// }
+	i = 0;
+	printf("------ARGUMENTS ENVOYES EN EXECUTION-----------\n");
+	printf("| %-15s | %-25s |\n", "Int ARGC", "Char **ARGV");
+	printf("-----------------------------------------------\n");
+	printf("| %-15d | %-25s |\n", current->argc, current->argv[i++]);
+	while (current->argv[i])
+	{
+		printf("| %-15s | %-25s |\n", " ", current->argv[i]);
+		i++;
+	}
+	printf("-----------------------------------------------\n\n\n");
+}

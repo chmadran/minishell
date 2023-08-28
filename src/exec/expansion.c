@@ -40,28 +40,29 @@ static char	*extract_expansion_name(char *str)
 	return (name);
 }
 
-static void	replace_argv(t_exec *exec, int i)
-{
-	int		j;
-	char	**new_argv;
+// static void	replace_argv(t_exec *exec, int i)
+// {
+// 	int		j;
+// 	char	**new_argv;
 
-	j = 0;
-	new_argv = malloc(sizeof(char *) * (exec->argc));
-	while(j < i)
-	{
-		new_argv[j] = exec->argv[j];
-		j++;
-	}
-	while (exec->argv[i + 1])
-	{
-		new_argv[j] = ft_strdup(exec->argv[i + 1]);
-		i++;
-		j++;
-	}
-	new_argv[j] = NULL;
-	free_double_ptr(exec->argv);
-	exec->argv = new_argv;
-}
+// 	j = 0;
+// 	new_argv = malloc(sizeof(char *) * (exec->argc));
+// 	while(j < i)
+// 	{
+// 		new_argv[j] = exec->argv[j];
+// 		j++;
+// 	}
+// 	while (exec->argv[i + 1])
+// 	{
+// 		new_argv[j] = ft_strdup(exec->argv[i + 1]);
+// 		i++;
+// 		j++;
+// 	}
+// 	new_argv[j] = NULL;
+
+// 	free_double_ptr(exec->argv);
+// 	exec->argv = new_argv;
+// }
 
 static void	process_expansion_replace(t_exec *exec, char *substr_start,
 		size_t i, char *str)
@@ -71,6 +72,7 @@ static void	process_expansion_replace(t_exec *exec, char *substr_start,
 	char	*new_str;
 
 	name = extract_expansion_name(substr_start);
+	value =  NULL;
 	if (substr_start[1] == '?')
 	{
 		value = ft_itoa(g_master.exit_status);
@@ -91,7 +93,14 @@ static void	process_expansion_replace(t_exec *exec, char *substr_start,
 		exec->argv[i] = new_str;
 	}
 	else
-		replace_argv(exec, i);
+	{
+		// replace_argv(exec, i);
+		new_str = create_new_string(substr_start, name, value, str);
+		free(exec->argv[i]);
+		exec->argv[i] = new_str;
+	}
+
+
 	free(substr_start);
 	free(name);
 	free(value);
@@ -159,9 +168,7 @@ int	launch_expansion(t_exec *exec)
 {
 	size_t	i;
 	size_t	j;
-	char	**readline_av;
-
-	readline_av = ft_spe_split(g_master.line_read, ' ', 0, 0);
+	
 	i = -1;
 	while (exec->argv[++i])
 	{
@@ -170,7 +177,7 @@ int	launch_expansion(t_exec *exec)
 		{
 			if (exec->argv[i][j] == '$')
 			{
-				if ((single_quotes(readline_av[i], j + 1)))
+				if ((single_quotes(g_master.readline_av[i], j + 1)))
 					j++;
 				else
 					execute_process_exp(exec, i, j);
@@ -179,6 +186,5 @@ int	launch_expansion(t_exec *exec)
 				return (EXIT_FAILURE);
 		}
 	}
-	free_double_ptr(readline_av);
   return (EXIT_SUCCESS);
 }

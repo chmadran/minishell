@@ -64,6 +64,7 @@ int	main(void)
 			ft_putstr_fd("exit\n", STDOUT_FILENO);
 			break ;
 		}
+		g_master.readline_av = ft_spe_split(g_master.line_read, ' ', 0, 0);
 		if (ft_strlen(g_master.line_read))
 		{
 			add_history(g_master.line_read);
@@ -72,6 +73,7 @@ int	main(void)
 			launch_execution(&g_master);
 			free_token_list(g_master.token_list);
 			free(g_master.line_read);
+			free_double_ptr(g_master.readline_av);
 		}
 		remove_tmpfile();
 	}
