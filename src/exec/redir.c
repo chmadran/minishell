@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/28 13:35:17 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/28 13:43:29 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,13 @@ int	launch_redirection(t_exec *exec)
 	if (redir == -1)
 			return (0);
 	redir_count = count_redir(exec);
+	if (redir == -1)
+			return (0);
 	while (redir_count > 0)
 	{
+		redir = check_redir(exec->argv);
+		if (redir == -1)
+			return (EXIT_SUCCESS);
 		if (redir == 1)
 		{
 			if (open_and_dup(exec, O_RDONLY, STDIN_FILENO, redir) == -1)
