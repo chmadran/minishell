@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 16:47:52 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/25 14:01:50 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/28 14:39:46 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*add_spaces_between_ops(char *data, int len)
 
 	i = 0;
 	j = 0;
-	new_data = (char *)malloc(sizeof(char) * len + 1);
+	new_data = (char *)malloc(sizeof(char) * len + 2);
 	if (!new_data)
 		return (NULL);
 	while (data[i])

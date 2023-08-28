@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/25 13:05:40 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/28 14:24:25 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ typedef struct s_master
 	int		tmp_fd;
 	bool	first_cmd;
 	int		count_pid;
+	int		redir_fd_in;
+	int		redir_fd_out;
 }	t_master;
 
 /* lexer.c */
