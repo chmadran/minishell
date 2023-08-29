@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 15:26:02 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 18:08:42 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ char			**ft_sort_array(int argc, char **argv);
 
 /*command_builtins.c*/
 char			*search_pathname_command(char *command);
-char			**search_paths_commands(void);
 
 /*exec_utils.c*/
 

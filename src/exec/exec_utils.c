@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 10:37:01 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 10:42:37 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 17:22:10 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void	wait_all_processes(t_master *master)
 	while (i < master->count_pid)
 	{
 		waitpid(master->child_pid[i], &status, 0);
-		if (WIFEXITED(status) && master->exit_status != 127)
-			master->exit_status = WEXITSTATUS(status);
+		if (WIFEXITED(status) && g_master.exit_status != 127)
+			g_master.exit_status = WEXITSTATUS(status);
 		master->child_pid[i] = -1;
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 15:19:13 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 16:43:45 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,17 @@ void	launch_execution(t_master *master)
 	{
 		type = prepare_execution(master, token, exec);
 		if (prepare_type_execution(master, type) == EXIT_FAILURE)
-			return ;
+		{
+			if (token->next && token->next->type == T_PIPE)
+			{
+				g_master.exit_status = 0;
+				token = token->next->next;
+				continue ;
+			}
+			else
+				return ;
+		}
+		g_master.exit_status = 0;
 		if (token->next && token->next->type == T_PIPE)
 			pipe(master->pipefd);
 		master->pid = fork();

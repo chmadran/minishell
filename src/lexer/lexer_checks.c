@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 09:48:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 12:11:38 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 17:26:27 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ int	check_directory(char *str)
 			return (printf(FILENAME_ARG), g_master.exit_status = 2, 1);
 		if (str[1] == '.' && !str[2])
 			return (printf(COMMAND), g_master.exit_status = 127, 1);
-		if (access(str, F_OK) == 0)
+		if (access(str, F_OK) == 0 && access(str, X_OK) == -1)
+		{
 			return (printf(PERMISSION, str), g_master.exit_status = 126, 1);
+		}
 	}
 	if (is_directory(str))
 	{

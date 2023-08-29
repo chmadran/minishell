@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:13:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 11:27:48 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 18:08:17 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,40 +16,34 @@
 #include "env.h"
 #include "exec.h"
 #include "utils.h"
+#include <sys/stat.h>
 
-char	**search_paths_commands(void)
+char	*search_pathname_command(char *command)
 {
+	int		i;
+	char	*temp;
+	char	**paths;
 	t_env	*current;
+	char	*pathname;
 
 	current = g_master.env_list;
 	while (current && current->name && ft_strcmp(current->name, "PATH"))
 		current = current->next;
 	if (!current || !current->value)
-		return (ft_split(DEFAULT_PATH_1 DEFAULT_PATH_2, ':'));
-	else
-		return (ft_split(current->value, ':'));
-	return (NULL);
-}
-
-char	*search_pathname_command(char *command)
-{
-	int		i;
-	char	*temp_command;
-	char	**paths;
-	char	*pathname;
-
-	i = 0;
-	temp_command = ft_strjoin("/", command);
-	paths = search_paths_commands();
-	while (paths[i])
+		return (NULL);
+	paths = ft_split(current->value, ':');
+	i = -1;
+	while (paths[++i])
 	{
-		pathname = ft_strjoin(paths[i], temp_command);
-		if (access(pathname, X_OK) == 0)
-			return (free(temp_command), free_double_ptr(paths), pathname);
+		temp = ft_strjoin("/", command);
+		pathname = ft_strjoin(paths[i], temp);
+		free(temp);
+		if (!access(pathname, X_OK))
+			return (free_double_ptr(paths), pathname);
 		free(pathname);
-		i++;
 	}
-	return (free(temp_command), free_double_ptr(paths), NULL);
+	free_double_ptr(paths);
+	return (NULL);
 }
 
 int	is_directory(char *path)
@@ -68,12 +62,16 @@ int	is_directory(char *path)
 
 int	prepare_command(t_master *master, t_exec *exec)
 {
-	if (access(exec->argv[0], X_OK) == 0 && exec->argv[1])
+	struct stat	s;
+	
+	if (access(exec->argv[0], X_OK) == 0)
 	{
-		if (is_directory(exec->argv[0]))
+		stat(exec->argv[0], &s);
+		if (S_ISDIR(s.st_mode))
 		{
 			printf("minishell: %s: Is a directory\n", exec->argv[0]);
-			return (master->exit_status = 126, EXIT_FAILURE);
+			g_master.exit_status = 126;
+			return (T_ERROR);
 		}
 		exec->pathname = ft_strdup(exec->argv[0]);
 	}

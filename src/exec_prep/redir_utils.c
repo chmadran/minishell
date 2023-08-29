@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 12:02:43 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 16:28:02 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,17 +66,17 @@ int	count_redir(t_exec *exec)
 
 int	check_redir_return(int identifier, int i)
 {
-	if (i == 0)
+	if (identifier == 1)
 	{
-		if (identifier == 1)
+		if (i == 0)
 			return (4);
 		else
-			return (5);
-	}
-	else
-	{
-		if (identifier == 2)
 			return (3);
+	}
+	else if (identifier == 2)
+	{
+		if (i == 0)
+			return (5);
 		else
 			return (2);
 	}
