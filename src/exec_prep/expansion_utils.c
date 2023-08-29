@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 16:02:09 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 10:45:28 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 15:28:04 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "exec.h"
 #include "utils.h"
 
-bool	single_quotes(const char *line_read, size_t j)
+bool	inside_single_quotes(const char *line_read, size_t j)
 {
 	size_t	i;
 	bool	inside_single_quotes;
@@ -40,62 +40,52 @@ int	is_valid_name(char *str)
 	return (EXIT_SUCCESS);
 }
 
-static size_t	calculate_len(char *value)
+size_t	calculate_len(char *value, t_token *token)
 {
-	size_t	i;
-	size_t	j;
-
-	i = -1;
-	while (g_master.exec->argv[++i])
-	{
-		j = -1;
-		while (g_master.exec->argv[i][++j])
-		{
-			if (g_master.exec->argv[i][j] == '$')
-			{
-				if (value)
-					return (ft_strlen(g_master.exec->argv[i])
-						+ ft_strlen(value) + 1);
-				else
-					return (ft_strlen(g_master.exec->argv[i]) + 1);
-			}
-		}
-	}
+	if (value)
+		return (ft_strlen(token->data)
+			+ ft_strlen(value) + 1);
+	else
+		return (ft_strlen(token->data) + 1);
 	return (-1);
 }
 
-static char	*allocate_new_string(size_t len, char *name)
+char	*extract_expansion_name(char *str)
 {
-	char	*new_str;
+	size_t	i;
+	char	*name;
 
-	new_str = malloc(len);
-	if (!new_str)
+	i = 1;
+	name = NULL;
+	if (str[i] == '?')
 	{
-		free(name);
-		free_executable();
-		ft_error_exit("malloc (allocate_new_string)", ENOMEM);
-		exit(EXIT_FAILURE);
+		name = ft_strdup("?");
+		return (name);
 	}
-	return (new_str);
+	if (ft_isdigit(str[i]))
+	{
+		name = ft_strndup(&str[i], 1);
+		return (name);
+	}
+	while (str[i] && str[i] != '$' && !ft_isspace(str[i]) && (ft_isalpha(str[i])
+			|| str[i] == '_' || ft_isdigit(str[i])))
+		i++;
+	name = ft_strndup(str + 1, i - 1);
+	return (name);
 }
 
 char	*create_new_string(char *substr_start, char *name, char *value,
-		char *str)
+		char *str, t_token *token)
 {
 	char	*new_str;
 	size_t	len;
 
-	len = calculate_len(value);
-	new_str = allocate_new_string(len, name);
+	len = calculate_len(value, token);
+	new_str = malloc(len);
 	if (value)
 	{
 		ft_strlcpy(new_str, str, ft_strlen(str) - ft_strlen(substr_start) + 1);
 		ft_strlcat(new_str, value, len);
-		ft_strlcat(new_str, substr_start + ft_strlen(name) + 1, len);
-	}
-	else
-	{
-		ft_strlcpy(new_str, str, ft_strlen(str) - ft_strlen(substr_start) + 1);
 		ft_strlcat(new_str, substr_start + ft_strlen(name) + 1, len);
 	}
 	return (new_str);

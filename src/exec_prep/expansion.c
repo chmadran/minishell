@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:42:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 11:43:06 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 15:24:45 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,32 +17,8 @@
 #include "exec.h"
 #include "utils.h"
 
-static char	*extract_expansion_name(char *str)
-{
-	size_t	i;
-	char	*name;
-
-	i = 1;
-	name = NULL;
-	if (str[i] == '?')
-	{
-		name = ft_strdup("?");
-		return (name);
-	}
-	if (ft_isdigit(str[i]))
-	{
-		name = ft_strndup(&str[i], 1);
-		return (name);
-	}
-	while (str[i] && str[i] != '$' && !ft_isspace(str[i]) && (ft_isalpha(str[i])
-			|| str[i] == '_' || ft_isdigit(str[i])))
-		i++;
-	name = ft_strndup(str + 1, i - 1);
-	return (name);
-}
-
-static void	process_expansion_replace(t_exec *exec, char *substr_start,
-		size_t i, char *str)
+static void	process_expansion_replace(char *substr_start, char *str,
+	t_token *token, int i)
 {
 	char	*name;
 	char	*value;
@@ -56,84 +32,60 @@ static void	process_expansion_replace(t_exec *exec, char *substr_start,
 		value = get_env_value(g_master.env_list, name, 1);
 	if (value)
 	{
-		new_str = create_new_string(substr_start, name, value, str);
-		free(exec->argv[i]);
-		exec->argv[i] = new_str;
+		new_str = create_new_string(substr_start, name, value, str, token);
+		free(token->data);
+		token->data = new_str;
 	}
+	else if (i == 0)
+		erase_token_data(token, name);
 	else
-	{
-		new_str = create_new_string(substr_start, name, value, str);
-		free(exec->argv[i]);
-		exec->argv[i] = new_str;
-	}
-	free(substr_start);
+		replace_name(token, name, i);
 	free(name);
 	free(value);
 }
 
-void	realocate_argv(t_exec *exec, int i, size_t k, int j)
+void	launch_replace(char *arg, int i, t_token *token)
 {
-	char	*new_av;
-
-	new_av = malloc(sizeof(char) * (ft_strlen(exec->argv[i])));
-	while (k < ft_strlen(exec->argv[i]))
-	{
-		if (exec->argv[i][k] == '$' && exec->argv[i][k + 1] == '\'')
-		{
-			k += 2;
-			continue ;
-		}
-		if (exec->argv[i][k] == '\'')
-		{
-			k++;
-			if (!(exec->argv[i][k] == '$' && exec->argv[i][k + 1] == '\''))
-				continue ;
-		}
-		new_av[j++] = exec->argv[i][k++];
-	}		
-	new_av[j] = '\0';
-	free(exec->argv[i]);
-	exec->argv[i] = ft_strdup(new_av);
-	free(new_av);
+	if (is_valid_name(&arg[i]) == EXIT_SUCCESS)
+		process_expansion_replace(&arg[i], arg, token, i);
+	else
+		return ;
 }
 
-static	void	execute_process_exp(t_exec *exec, int i, int j)
+void	search_expansion(t_token *token)
 {
-	char	*substr_start;
+	int	i;
 
-	if ((j == 0 && exec->argv[i][j + 1])
-		|| (j != 0 && exec->argv[i][j - 1] != '\\'))
+	i = 0;
+	while (token->data[i])
 	{
-		substr_start = ft_strdup(exec->argv[i] + j);
-		if (is_valid_name(substr_start) == 0)
-			process_expansion_replace(exec, substr_start, i,
-				exec->argv[i]);
-		else
-			free(substr_start);
+		if (token->data[i] == '$' && !inside_single_quotes(token->data, i))
+		{
+			launch_replace(token->data, i, token);
+			if (!token->data)
+				return ;
+		}
+		i++;
 	}
 }
 
-int	launch_expansion(t_exec *exec)
+int	launch_expansion(void)
 {
-	size_t	i;
-	size_t	j;
+	t_token	*token;
+	t_token	*head;
 
-	i = -1;
-	while (exec->argv[++i])
+	token = g_master.token_list;
+	head = g_master.token_list;
+	while (token)
 	{
-		j = -1;
-		while (exec->argv[i][++j])
+		if (token->type == T_COMMAND)
 		{
-			if (exec->argv[i][j] == '$')
-			{
-				if ((single_quotes(g_master.readline_av[i], j + 1)))
-					j++;
-				else
-					execute_process_exp(exec, i, j);
-			}
-			if (!exec->argv[0])
-				return (EXIT_FAILURE);
+			if (token->data)
+				search_expansion(token);
+			if (!token->data)
+				return (g_master.exit_status = 0, EXIT_FAILURE);
 		}
+		token = token->next;
 	}
 	return (EXIT_SUCCESS);
 }

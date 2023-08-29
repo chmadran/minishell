@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 11:51:43 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 15:26:02 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,18 @@ char			*handle_quoted_argument(char *s, char **arg);
 char			*handle_unquoted_argument(char *s, char **arg);
 
 /* expansion.c & expansion_utils.c*/
-int				launch_expansion(t_exec *exec);
+int				launch_expansion(void);
+char			*extract_expansion_name(char *str);
 char			*create_new_string(char *substr_start, char *name, char *value,
-					char *str);
+					char *str, t_token *token);
+bool			inside_single_quotes(const char *line_read, size_t j);
 int				is_valid_name(char *str);
 bool			single_quotes(const char *line_read, size_t j);
+
+/* expansion_mem.c */
+
+void			erase_token_data(t_token *token, char *name);
+void			replace_name(t_token *token, char *name, int i);
 
 /* command_builtins.c */
 int				is_directory(char *path);

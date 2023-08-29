@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 11:51:23 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 15:19:13 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ static t_builtin_type	prepare_execution(t_master *master, t_token *token,
 	(void)token;
 	master->exec = create_arguments(token);
 	launch_heredoc(master->exec);
-	if (launch_expansion(master->exec) == EXIT_FAILURE)
-		return (T_ERROR);
 	if (!master->exec->argv[0])
 		return (T_ERROR);
 	return (find_arg_type(master->exec->argv[0]));
@@ -76,6 +74,8 @@ void	launch_execution(t_master *master)
 	exec = NULL;
 	token = master->token_list;
 	init_pids();
+	if (launch_expansion() == EXIT_FAILURE)
+		return ;
 	while (token)
 	{
 		type = prepare_execution(master, token, exec);
@@ -88,9 +88,7 @@ void	launch_execution(t_master *master)
 		child_process_execution(master, token, exec, type);
 		parent_process_execution(master, &token, exec);
 	}
-	if (master->pipefd[0] != -1)
-		close(master->pipefd[0]);
-	if (master->pipefd[1] != -1)
-		close(master->pipefd[1]);
+	fd_close(master->pipefd[0]);
+	fd_close(master->pipefd[1]);
 	wait_all_processes(master);
 }
