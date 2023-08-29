@@ -14,6 +14,7 @@
 #include "env.h"
 #include "exit.h"
 #include "libft.h"
+#include "utils.h"
 
 static long long	update_exit_value(char *arg)
 {

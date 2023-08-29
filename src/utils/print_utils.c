@@ -13,6 +13,7 @@
 #include "minishell.h"
 #include "libft.h"
 #include "env.h"
+#include "utils.h"
 
 static void	split_name_value(char *envp, char **name, char **value)
 {

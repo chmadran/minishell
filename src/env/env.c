@@ -15,6 +15,7 @@
 #include "exec.h"
 #include "exit.h"
 #include "libft.h"
+#include "utils.h"
 
 static char	*update_shlvl(char *value, char *name)
 {
