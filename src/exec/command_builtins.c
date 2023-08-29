@@ -70,8 +70,7 @@ int	prepare_command(t_master *master, t_exec *exec)
 		if (S_ISDIR(s.st_mode))
 		{
 			printf("minishell: %s: Is a directory\n", exec->argv[0]);
-			g_master.exit_status = 126;
-			return (T_ERROR);
+			return (g_master.exit_status = 126, T_ERROR);
 		}
 		exec->pathname = ft_strdup(exec->argv[0]);
 	}
@@ -84,8 +83,7 @@ int	prepare_command(t_master *master, t_exec *exec)
 		&& !ft_strchr(exec->argv[0], '<'))
 	{
 		printf("minishell: %s: command not found\n", exec->argv[0]);
-		master->exit_status = 127;
-		return (T_ERROR);
+		return (master->exit_status = 127, T_ERROR);
 	}
 	return (T_OTHERS);
 }

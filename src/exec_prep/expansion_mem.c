@@ -66,3 +66,21 @@ void	replace_name(t_token *token, char *name, int i)
 		token->data = new_arg;
 	}
 }
+
+t_string	*fill_string(t_string *s_elt, char *name, char *sb_start, char *str)
+{
+	s_elt->substr_start = ft_strdup(sb_start);
+	s_elt->name = ft_strdup(name);
+	s_elt->str = ft_strdup(str);
+	return (s_elt);
+}
+
+void	free_string(t_string *s_elt, char *name, char *value)
+{
+	free(s_elt->substr_start);
+	free(s_elt->name);
+	free(s_elt->str);
+	free(s_elt);
+	free(name);
+	free(value);
+}

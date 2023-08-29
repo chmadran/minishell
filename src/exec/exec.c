@@ -96,7 +96,7 @@ void	launch_execution(t_master *master)
 		master->pid = fork();
 		(signal(SIGINT, &child_sigint), signal(SIGQUIT, &child_sigint));
 		child_process_execution(master, token, exec, type);
-		parent_process_execution(master, &token, exec);
+		parent_process_execution(master, &token);
 	}
 	fd_close(master->pipefd[0]);
 	fd_close(master->pipefd[1]);
