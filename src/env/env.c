@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:27:12 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/29 15:37:18 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 18:23:22 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,4 +109,5 @@ void	manage_environment(t_env **env_list)
 		environ++;
 	}
 	g_master.export_envp = env_list_to_array(g_master.env_list);
+	g_master.size_export_envp = ft_array_size(g_master.export_envp);
 }

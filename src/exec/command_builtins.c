@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:13:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 18:08:17 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 18:47:23 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	is_directory(char *path)
 int	prepare_command(t_master *master, t_exec *exec)
 {
 	struct stat	s;
-	
+
 	if (access(exec->argv[0], X_OK) == 0)
 	{
 		stat(exec->argv[0], &s);

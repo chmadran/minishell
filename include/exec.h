@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 18:08:42 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 18:35:50 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int				ft_env(void);
 int				ft_export(int argc, char **argv);
 int				ft_pwd(char **argv);
 int				ft_unset(int argc, char **argv);
+void			unset_from_export_env(char *argv);
 
 /* builtins_utils */
 int				check_equals(char *str);
