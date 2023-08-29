@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 09:48:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/28 13:32:17 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 12:11:38 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,38 +20,18 @@ int	check_directory(char *str)
 	if (str[0] == '.')
 	{
 		if (!str[1])
-		{
-			printf("minishell: .: filename argument required\n");
-			g_master.exit_status = 2;
-			return (EXIT_FAILURE);
-		}
+			return (printf(FILENAME_ARG), g_master.exit_status = 2, 1);
 		if (str[1] == '.' && !str[2])
-		{
-			printf("minishell: ..: command not found\n");
-			g_master.exit_status = 127;
-			return (EXIT_FAILURE);
-		}
+			return (printf(COMMAND), g_master.exit_status = 127, 1);
 		if (access(str, F_OK) == 0)
-		{
-			printf("minishell: %s: Permission denied\n", str);
-			g_master.exit_status = 126;
-			return (EXIT_FAILURE);
-		}
+			return (printf(PERMISSION, str), g_master.exit_status = 126, 1);
 	}
 	if (is_directory(str))
 	{
 		if (str[0] == '/' || (str[0] == '.'))
-		{
-			printf("minishell: %s: Is a directory\n", str);
-			g_master.exit_status = 126;
-			return (EXIT_FAILURE);
-		}
+			return (printf(DIRECTORY, str), g_master.exit_status = 126, 1);
 		else
-		{
-			printf("minishell: %s: command not found\n", str);
-			g_master.exit_status = 127;
-			return (EXIT_FAILURE);
-		}
+			return (printf(COMMAND_STR, str), g_master.exit_status = 127, 1);
 	}
 	return (EXIT_SUCCESS);
 }

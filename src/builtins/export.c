@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 12:00:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/25 13:17:05 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 10:30:02 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "exit.h"
 #include "env.h"
 #include "exec.h"
+#include "utils.h"
 
 static int	export_var(char *var_str, char *equals_location)
 {
@@ -97,7 +98,6 @@ int	check_export(int argc, char **argv, int array_size)
 int	ft_export(int argc, char **argv)
 {
 	int		i;
-	//int		array_size;
 	char	*equals_location;
 
 	i = 0;

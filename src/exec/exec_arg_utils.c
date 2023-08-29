@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:28:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/24 14:32:01 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 10:29:42 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "exit.h"
 #include "env.h"
 #include "exec.h"
+#include "utils.h"
 
 size_t	count_spaces(char *str)
 {

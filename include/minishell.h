@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/28 14:24:25 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 11:29:47 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,12 @@ int		launch_parser(t_token **token_list);
 /* lexer_spaces.c */
 char	*trim_spaces(const char *str, size_t start, size_t end);
 int		count_new_spaces(char *data, int len);
-char	*add_spaces_between_ops(char *data, int len);
+char	*add_spaces_between_ops(char *data, int len, const char	*ops);
 char	*add_spaces_after_pipe(char *data);
+
+/* lexer_spaces_utils.c */
+int		count_new_spaces(char *data, int len);
+int		count_new_spaces_pipe(char *data, int len);
 
 /* lexer_utils.c */
 int		is_empty_filename(t_exec *exec);
@@ -129,23 +133,5 @@ int		check_start(char *str);
 int		is_heredoc_pipe(t_token **token_lst);
 int		is_clean(t_token **token_lst);
 int		unclosed_quotes(const char *line_read);
-
-/* print_utils.c */
-int		print_export(char **envp);
-void	print_data_builtins(t_exec	*current);
-void	print_environement_var(t_env *env_list, char *name);
-void	print_environement_list(t_env *env_list);
-void	print_token_list(t_token *token_list);
-
-/* free_utils.c */
-void	free_double_ptr(char **str);
-void	free_executable(void);
-void	free_environment_list(t_env *env);
-void	free_token_list(t_token *token_list);
-void	remove_tmpfile(void);
-
-/* other_utils.c */
-void	ft_free_child(void);
-void	child_sigint(int signal);
 
 #endif

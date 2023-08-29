@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/28 13:33:33 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 11:51:23 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "exit.h"
 #include "env.h"
 #include "exec.h"
+#include "utils.h"
 
 static int	prep_command_or_error(t_exec *exec, t_builtin_type type)
 {
@@ -27,32 +28,10 @@ static int	prep_command_or_error(t_exec *exec, t_builtin_type type)
 	}
 	if (check_directory(exec->argv[0]) == EXIT_FAILURE)
 		return (T_ERROR);
-	return (prepare_command(&g_master, exec));
-}
-
-static t_builtin_type	find_arg_type(char *arg)
-{
-	size_t					i;
-	t_builtin_type			type;
-	const char				*builtins[8] = {"cd", "echo", "env", "exit", "pwd",
-		"unset", "export", "exit"};
-	const t_builtin_type	types[8] = {T_CD, T_ECHO, T_ENV, T_EXIT, T_PWD,
-		T_UNSET, T_EXPORT, T_EXIT};
-
-	if (!arg || !arg[0])
-		return (T_ERROR);
-	i = 0;
-	type = T_OTHERS;
-	while (i < 8 && *builtins[i])
-	{
-		if (!ft_strcmp(builtins[i], arg))
-		{
-			type = types[i];
-			break ;
-		}
-		i++;
-	}
-	return (type);
+	exec->pathname = search_pathname_command(exec->argv[0]);
+	if (!exec->pathname)
+		return (prepare_command(&g_master, exec));
+	return (T_OTHERS);
 }
 
 static int	prepare_type_execution(t_master *master, t_builtin_type type)
@@ -88,22 +67,6 @@ static t_builtin_type	prepare_execution(t_master *master, t_token *token,
 	return (find_arg_type(master->exec->argv[0]));
 }
 
-void	wait_all_processes(t_master *master)
-{
-	int	i;
-	int	status;
-
-	i = 0;
-	while (i < master->count_pid)
-	{
-		waitpid(master->child_pid[i], &status, 0);
-		if (WIFEXITED(status) && master->exit_status != 127)
-			master->exit_status = WEXITSTATUS(status);
-		master->child_pid[i] = -1;
-		i++;
-	}
-}
-
 void	launch_execution(t_master *master)
 {
 	t_exec			*exec;
@@ -112,17 +75,12 @@ void	launch_execution(t_master *master)
 
 	exec = NULL;
 	token = master->token_list;
-	master->pipefd[0] = -1;
-	master->pipefd[1] = -1;
-	master->pid = -1;
-	master->count_pid = 0;
-	master->first_cmd = true;
-	master->tmp_fd = dup(STDIN_FILENO);
+	init_pids();
 	while (token)
 	{
 		type = prepare_execution(master, token, exec);
 		if (prepare_type_execution(master, type) == EXIT_FAILURE)
-			return ;	
+			return ;
 		if (token->next && token->next->type == T_PIPE)
 			pipe(master->pipefd);
 		master->pid = fork();

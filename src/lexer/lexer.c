@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 16:42:19 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/25 09:47:30 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 11:05:28 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "exit.h"
 #include "env.h"
 #include "exec.h"
+#include "utils.h"
 
 int	end_op(t_token **token_lst)
 {
@@ -77,9 +78,7 @@ static int	manage_token(char *line_read, t_token **token_lst)
 		j = i;
 		type = check_token_type(line_read[i], line_read, &i);
 		while (line_read[i] && type == T_COMMAND)
-		{
 			type = check_token_type(line_read[++i], line_read, &i);
-		}
 		data = trim_spaces(line_read, j, i - 1);
 		create_token_node(T_COMMAND, data, token_lst);
 		if (type != T_COMMAND)
@@ -109,7 +108,8 @@ static void	ft_token_count(t_token **token_lst)
 
 int	launch_lexer(char *line_read, t_token **token_list)
 {
-	int	len;
+	int			len;
+	const char	ops[] = "<>&";
 
 	len = count_new_spaces(line_read, ft_strlen(line_read));
 	if ((ft_strlen(line_read) <= 2 && check_start(line_read))
@@ -117,10 +117,11 @@ int	launch_lexer(char *line_read, t_token **token_list)
 		return (EXIT_FAILURE);
 	if (check_directory(line_read))
 		return (EXIT_FAILURE);
-	line_read = add_spaces_between_ops(line_read, len);
+	line_read = add_spaces_between_ops(line_read, len, ops);
 	g_master.line_read = line_read;
 	line_read = add_spaces_after_pipe(line_read);
 	g_master.line_read = line_read;
+	g_master.readline_av = ft_spe_split(g_master.line_read, ' ', 0, 0);
 	if (manage_token(line_read, token_list))
 		return (EXIT_FAILURE);
 	if ((is_heredoc_pipe(token_list)) || (is_clean(token_list))

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 16:02:09 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 11:44:34 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 10:45:28 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,23 @@
 #include "exit.h"
 #include "env.h"
 #include "exec.h"
+#include "utils.h"
+
+bool	single_quotes(const char *line_read, size_t j)
+{
+	size_t	i;
+	bool	inside_single_quotes;
+
+	i = 0;
+	inside_single_quotes = false;
+	while (line_read[i] && i < j)
+	{
+		if (line_read[i] == '\'')
+			inside_single_quotes = !inside_single_quotes;
+		i++;
+	}
+	return (inside_single_quotes);
+}
 
 int	is_valid_name(char *str)
 {

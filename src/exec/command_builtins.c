@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:13:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/25 11:33:14 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 11:27:48 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 #include "exit.h"
 #include "env.h"
 #include "exec.h"
+#include "utils.h"
 
-static char	**search_paths_commands(void)
+char	**search_paths_commands(void)
 {
 	t_env	*current;
 
@@ -30,7 +31,7 @@ static char	**search_paths_commands(void)
 	return (NULL);
 }
 
-static char	*search_pathname_command(char *command)
+char	*search_pathname_command(char *command)
 {
 	int		i;
 	char	*temp_command;
@@ -67,29 +68,26 @@ int	is_directory(char *path)
 
 int	prepare_command(t_master *master, t_exec *exec)
 {
-	exec->pathname = search_pathname_command(exec->argv[0]);
-	if (!exec->pathname)
+	if (access(exec->argv[0], X_OK) == 0 && exec->argv[1])
 	{
-		if (access(exec->argv[0], X_OK) == 0 && exec->argv[1])
+		if (is_directory(exec->argv[0]))
 		{
-			if (is_directory(exec->argv[0]))
-			{
-				printf("minishell: %s: Is a directory\n", exec->argv[0]);
-				return (master->exit_status = 126, EXIT_FAILURE);
-			}
-			exec->pathname = ft_strdup(exec->argv[0]);
-		}
-		else if (access(exec->argv[0], F_OK) == 0 && exec->argv[1])
-		{
-			printf("minishell: %s: Permission denied\n", exec->argv[0]);
+			printf("minishell: %s: Is a directory\n", exec->argv[0]);
 			return (master->exit_status = 126, EXIT_FAILURE);
 		}
-		else if (!ft_strchr(exec->argv[0], '>') && !ft_strchr(exec->argv[0], '<'))
-		{
-			printf("minishell: %s: command not found\n", exec->argv[0]);
-			master->exit_status = 127;
-			return (T_ERROR);
-		}
+		exec->pathname = ft_strdup(exec->argv[0]);
+	}
+	else if (access(exec->argv[0], F_OK) == 0 && exec->argv[1])
+	{
+		printf("minishell: %s: Permission denied\n", exec->argv[0]);
+		return (master->exit_status = 126, EXIT_FAILURE);
+	}
+	else if (!ft_strchr(exec->argv[0], '>')
+		&& !ft_strchr(exec->argv[0], '<'))
+	{
+		printf("minishell: %s: command not found\n", exec->argv[0]);
+		master->exit_status = 127;
+		return (T_ERROR);
 	}
 	return (T_OTHERS);
 }

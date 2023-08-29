@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 15:32:48 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/22 10:06:45 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 10:22:26 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int	main(void)
 			ft_putstr_fd("exit\n", STDOUT_FILENO);
 			break ;
 		}
-		g_master.readline_av = ft_spe_split(g_master.line_read, ' ', 0, 0);
 		if (ft_strlen(g_master.line_read))
 		{
 			add_history(g_master.line_read);
@@ -74,10 +73,9 @@ int	main(void)
 			free_token_list(g_master.token_list);
 			free(g_master.line_read);
 			free_double_ptr(g_master.readline_av);
+			remove_tmpfile();
 		}
-		remove_tmpfile();
 	}
-	free_environment_list(g_master.env_list);
-	free_double_ptr(g_master.export_envp);
+	ft_free_main();
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:42:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/25 11:14:26 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 11:43:06 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "exit.h"
 #include "env.h"
 #include "exec.h"
+#include "utils.h"
 
 static char	*extract_expansion_name(char *str)
 {
@@ -40,30 +41,6 @@ static char	*extract_expansion_name(char *str)
 	return (name);
 }
 
-// static void	replace_argv(t_exec *exec, int i)
-// {
-// 	int		j;
-// 	char	**new_argv;
-
-// 	j = 0;
-// 	new_argv = malloc(sizeof(char *) * (exec->argc));
-// 	while(j < i)
-// 	{
-// 		new_argv[j] = exec->argv[j];
-// 		j++;
-// 	}
-// 	while (exec->argv[i + 1])
-// 	{
-// 		new_argv[j] = ft_strdup(exec->argv[i + 1]);
-// 		i++;
-// 		j++;
-// 	}
-// 	new_argv[j] = NULL;
-
-// 	free_double_ptr(exec->argv);
-// 	exec->argv = new_argv;
-// }
-
 static void	process_expansion_replace(t_exec *exec, char *substr_start,
 		size_t i, char *str)
 {
@@ -72,18 +49,9 @@ static void	process_expansion_replace(t_exec *exec, char *substr_start,
 	char	*new_str;
 
 	name = extract_expansion_name(substr_start);
-	value =  NULL;
+	value = NULL;
 	if (substr_start[1] == '?')
-	{
 		value = ft_itoa(g_master.exit_status);
-		if (!value)
-		{
-			free(name);
-			free_executable();
-			ft_error_exit("ft_itoa (process_expansion)", ENOMEM);
-			exit(EXIT_FAILURE);
-		}
-	}
 	else
 		value = get_env_value(g_master.env_list, name, 1);
 	if (value)
@@ -94,13 +62,10 @@ static void	process_expansion_replace(t_exec *exec, char *substr_start,
 	}
 	else
 	{
-		// replace_argv(exec, i);
 		new_str = create_new_string(substr_start, name, value, str);
 		free(exec->argv[i]);
 		exec->argv[i] = new_str;
 	}
-
-
 	free(substr_start);
 	free(name);
 	free(value);
@@ -148,27 +113,11 @@ static	void	execute_process_exp(t_exec *exec, int i, int j)
 	}
 }
 
-bool	single_quotes(const char *line_read, size_t j)
-{
-	size_t	i;
-	bool	inside_single_quotes;
-
-	i = 0;
-	inside_single_quotes = false;
-	while (line_read[i] && i < j)
-	{
-		if (line_read[i] == '\'')
-			inside_single_quotes = !inside_single_quotes;
-		i++;
-	}
-	return (inside_single_quotes);
-}
-
 int	launch_expansion(t_exec *exec)
 {
 	size_t	i;
 	size_t	j;
-	
+
 	i = -1;
 	while (exec->argv[++i])
 	{
@@ -186,5 +135,5 @@ int	launch_expansion(t_exec *exec)
 				return (EXIT_FAILURE);
 		}
 	}
-  return (EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }

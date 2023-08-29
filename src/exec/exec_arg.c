@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:24:07 by chmadran          #+#    #+#             */
-/*   Updated: 2023/07/26 18:16:42 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 10:33:03 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,32 @@
 #include "exit.h"
 #include "env.h"
 #include "exec.h"
+#include "utils.h"
+
+t_builtin_type	find_arg_type(char *arg)
+{
+	size_t					i;
+	t_builtin_type			type;
+	const char				*builtins[8] = {"cd", "echo", "env", "exit", "pwd",
+		"unset", "export", "exit"};
+	const t_builtin_type	types[8] = {T_CD, T_ECHO, T_ENV, T_EXIT, T_PWD,
+		T_UNSET, T_EXPORT, T_EXIT};
+
+	if (!arg || !arg[0])
+		return (T_ERROR);
+	i = 0;
+	type = T_OTHERS;
+	while (i < 8 && *builtins[i])
+	{
+		if (!ft_strcmp(builtins[i], arg))
+		{
+			type = types[i];
+			break ;
+		}
+		i++;
+	}
+	return (type);
+}
 
 char	*clean_arg(char *s)
 {

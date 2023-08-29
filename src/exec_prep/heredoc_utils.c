@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:09:47 by avallet           #+#    #+#             */
-/*   Updated: 2023/08/22 09:34:46 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 10:29:29 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,17 @@
 #include "exit.h"
 #include "env.h"
 #include "exec.h"
+#include "utils.h"
+
+void	add_tmp_file_just_cat(int hdoc_tkn)
+{
+	if (!g_master.exec->argv[0] && hdoc_tkn == 1)
+	{
+		g_master.exec->argv[0] = ft_strdup("cat");
+		g_master.exec->argv[1] = ft_strdup("minishell_heredoc_tmp.txt");
+		g_master.exec->argc = 2;
+	}
+}
 
 void	add_tmp_file(t_exec *exec, int hdoc_tkn)
 {
@@ -41,12 +52,8 @@ void	add_tmp_file(t_exec *exec, int hdoc_tkn)
 		g_master.exec->argv = new_argv;
 		g_master.exec->argc += 1;
 	}
-	if (!g_master.exec->argv[0] && hdoc_tkn == 1)
-	{
-		g_master.exec->argv[0] = ft_strdup("cat");
-		g_master.exec->argv[1] = ft_strdup("minishell_heredoc_tmp.txt");
-		g_master.exec->argc = 2;
-	}
+	else
+		add_tmp_file_just_cat(hdoc_tkn);
 }
 
 void	clean_args(t_exec *exec, int heredoc_index)
