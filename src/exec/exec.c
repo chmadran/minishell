@@ -102,4 +102,5 @@ void	launch_execution(t_master *master)
 	signal(SIGINT, SIG_IGN);
 	wait_all_processes(master);
 	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
 }
