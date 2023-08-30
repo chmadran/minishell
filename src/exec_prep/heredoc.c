@@ -42,9 +42,9 @@ static void	ft_here(char *limiter)
 	while (1)
 	{
 		line = readline("> ");
-		line = search_expansion_heredoc(line);
 		if (!line)
 			continue ;
+		line = search_expansion_heredoc(line);
 		if (ft_strncmp(line, limiter, ft_strlen(limiter) + 1) == 0)
 		{
 			free(line);

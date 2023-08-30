@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 09:48:24 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 17:26:27 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 09:28:18 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	check_start(char *str)
 	{
 		if (str[1] && !ft_isalpha(str[1]) && str[1] != ' ')
 			printf(EDSTR_UNEXP, str[0], str[1]);
-		else
+		else if (str[0] != ' ')
 			printf(ESTR_UNEXP, str[0]);
 		g_master.exit_status = 2;
 		return (EXIT_FAILURE);
