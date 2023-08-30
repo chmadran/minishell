@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 10:37:01 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 17:22:10 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 14:19:52 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	wait_all_processes(t_master *master)
 	int	status;
 
 	i = 0;
+	status = 0;
 	while (i < master->count_pid)
 	{
 		waitpid(master->child_pid[i], &status, 0);

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 19:09:33 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 14:50:01 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void			parent_process_execution(t_master *master, t_token **token);
 void			execve_execute_command(t_exec *exec, t_env *env_list,
 					t_builtin_type type);
 /* heredoc.c*/
-int				launch_heredoc(t_exec *exec);
+int				launch_heredoc(t_exec *exec, t_master *master);
 /* heredoc_utils.c*/
 void			add_tmp_file(t_exec *exec, int hdoc_tkn);
 void			clean_args(t_exec *exec, int heredoc_index);
@@ -112,6 +112,6 @@ int				check_redir(char **argv);
 char			**ft_spe_split(char const *s, char c, size_t i, size_t idx);
 
 /* lexer_utils */
-int				end_op(t_token **token_lst);
+int				end_op(char *line_read);
 
 #endif

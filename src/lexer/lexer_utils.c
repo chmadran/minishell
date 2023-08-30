@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 17:27:12 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/21 14:36:55 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 14:50:23 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,20 +98,26 @@ void	create_token_node(t_token_type type, char *data, t_token **token_list)
 	}
 }
 
-int	end_op(t_token **token_lst)
+int	end_op(char *line_read)
 {
-	t_token			*current;
+	int			i;
+	int			j;
+	const char	*ops[5] = {"|", "<", ">"};
 
-	current = *token_lst;
-	while (current)
+	i = 0;
+	j = 0;
+	while (line_read[i])
+			i++;
+	i--;
+	while (ops[j])
 	{
-		if (current->type != T_COMMAND && !current->next)
+		if (ft_strcmp(&line_read[i], ops[j]) == 0)
 		{
-			printf("syntax error near unexpected token \n");
+			printf(ESTR_UNEXP, line_read[i]);
 			g_master.exit_status = 2;
 			return (EXIT_FAILURE);
 		}
-		current = current->next;
+		j++;
 	}
 	return (EXIT_SUCCESS);
 }

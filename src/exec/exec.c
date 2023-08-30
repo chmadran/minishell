@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 16:43:45 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 14:23:39 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static t_builtin_type	prepare_execution(t_master *master, t_token *token,
 	(void)exec;
 	(void)token;
 	master->exec = create_arguments(token);
-	launch_heredoc(master->exec);
 	if (!master->exec->argv[0])
 		return (T_ERROR);
 	return (find_arg_type(master->exec->argv[0]));
@@ -72,6 +71,8 @@ static void	token_exec(t_master *master, t_token **token, t_exec *exec)
 	while (*token)
 	{
 		type = prepare_execution(master, *token, exec);
+		if (launch_heredoc(master->exec, master) == EXIT_FAILURE)
+			return ;
 		if (prepare_type_execution(master, type) == EXIT_FAILURE)
 		{
 			if ((*token)->next && (*token)->next->type == T_PIPE)
@@ -86,8 +87,8 @@ static void	token_exec(t_master *master, t_token **token, t_exec *exec)
 		g_master.exit_status = 0;
 		if ((*token)->next && (*token)->next->type == T_PIPE)
 			pipe(master->pipefd);
-		master->pid = fork();
 		(signal(SIGINT, &child_sigint), signal(SIGQUIT, &child_sigint));
+		master->pid = fork();
 		child_process_execution(master, *token, exec, type);
 		parent_process_execution(master, token);
 	}
@@ -106,5 +107,7 @@ void	launch_execution(t_master *master)
 	token_exec(master, &token, exec);
 	fd_close(master->pipefd[0]);
 	fd_close(master->pipefd[1]);
+	signal(SIGINT, SIG_IGN);
 	wait_all_processes(master);
+	signal(SIGINT, handle_sigint);
 }

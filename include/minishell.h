@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 11:29:47 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 13:20:48 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ typedef struct s_master
 	int		count_pid;
 	int		redir_fd_in;
 	int		redir_fd_out;
+	int		heredoc_sigint;
+	int		heredoc_tmp_file_fd;
 }	t_master;
 
 /* lexer.c */
@@ -140,5 +142,8 @@ int		check_start(char *str);
 int		is_heredoc_pipe(t_token **token_lst);
 int		is_clean(t_token **token_lst);
 int		unclosed_quotes(const char *line_read);
+
+void	child_sigint(int signal);
+void	handle_sigint(int signum);
 
 #endif

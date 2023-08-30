@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 15:32:48 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 17:17:27 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 14:24:57 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,20 @@ void	child_sigint(int signal)
 	}
 }
 
-static void	handle_sigint(int signum)
+void	handle_sigint(int signal)
 {
-	if (signum == SIGINT)
+	if (signal == SIGINT)
 	{
-		g_master.exit_status = 130;
-		rl_replace_line("", 0);
-		ft_putstr_fd("^C\n", 1);
+		printf("\n");
 		rl_on_new_line();
+		rl_replace_line("", 1);
 		rl_redisplay();
+		g_master.exit_status = 130;
 	}
 }
 
 static void	manage_signals(void)
 {
-	rl_catch_signals = 0;
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 }

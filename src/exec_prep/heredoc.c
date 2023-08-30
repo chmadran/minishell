@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 11:50:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 19:19:58 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 14:19:05 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,17 @@
 #include "exec.h"
 #include "utils.h"
 
-static void	ft_here_sig(int signal)
+void	child_sigint_heredoc(int signal)
 {
 	if (signal == SIGINT)
-		exit(1);
-}
-
-static void	ft_child_sig(int signal)
-{
-	if (signal == SIGINT)
-		printf("\n");
+	{
+		write(1, "\n", 1);
+		ft_free_child();
+		rl_on_new_line();
+		exit(130);
+	}
+	if (signal == SIGQUIT)
+		ft_putstr_fd("\b\b  \b\b", 2);
 }
 
 static void	ft_here(char *limiter)
@@ -38,19 +39,20 @@ static void	ft_here(char *limiter)
 	tmp_file_fd = open(tmp_filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (tmp_file_fd == -1)
 		exit(EXIT_FAILURE);
+	g_master.heredoc_tmp_file_fd = tmp_file_fd;
 	loop_ft_here(tmp_file_fd, limiter);
-	close(tmp_file_fd);
+	fd_close(g_master.heredoc_tmp_file_fd);
 	ft_free_child();
 	exit(EXIT_SUCCESS);
 }
 
-static int	ft_exec_heredoc(t_exec *exec)
+static int	ft_exec_heredoc(t_exec *exec, t_master *master)
 {
 	char	*limiter;
-	int		pid;
 	int		position;
 	int		redir;
 
+	g_master.count_pid = 0;
 	redir = check_heredoc(exec->argv, &position);
 	if (redir == -1)
 		return (-1);
@@ -58,17 +60,19 @@ static int	ft_exec_heredoc(t_exec *exec)
 		limiter = exec->argv[redir + 1];
 	else
 		limiter = &exec->argv[redir][position + 2];
-	pid = fork();
-	(signal(SIGQUIT, SIG_IGN), signal(SIGINT, &ft_here_sig));
-	if (pid == 0)
+	(signal(SIGINT, &child_sigint_heredoc));
+	master->pid = fork();
+	if (master->pid == 0)
 		ft_here(limiter);
-	waitpid(pid, &g_master.exit_status, 0);
-	if (WIFEXITED(g_master.exit_status))
-		g_master.exit_status = WEXITSTATUS(g_master.exit_status);
+	if (master->pid > 0)
+		master->child_pid[master->count_pid++] = master->pid;
+	signal(SIGINT, SIG_IGN);
+	wait_all_processes(master);
+	signal(SIGINT, handle_sigint);
 	return (g_master.exit_status);
 }
 
-int	launch_heredoc(t_exec *exec)
+int	launch_heredoc(t_exec *exec, t_master *master)
 {
 	int	redir;
 	int	position;
@@ -79,12 +83,11 @@ int	launch_heredoc(t_exec *exec)
 	while (redir != -1)
 	{
 		heredoc_tkn = 1;
-		signal(SIGQUIT, &ft_child_sig);
-		signal(SIGINT, &ft_child_sig);
-		ft_exec_heredoc(exec);
+		if (ft_exec_heredoc(exec, master) > 0)
+			return (EXIT_FAILURE);
 		clean_args(exec, redir);
 		redir = check_heredoc(exec->argv, &position);
 	}
 	add_tmp_file(exec, heredoc_tkn);
-	return (0);
+	return (EXIT_SUCCESS);
 }

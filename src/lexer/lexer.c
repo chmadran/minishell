@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 16:42:19 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/30 09:27:34 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 14:48:04 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	launch_lexer(char *line_read, t_token **token_list)
 	if ((ft_strlen(line_read) <= 2 && check_start(line_read))
 		|| unclosed_quotes(line_read))
 		return (EXIT_FAILURE);
-	if (check_directory(line_read) || is_only_spaces(line_read))
+	if (check_directory(line_read) || is_only_spaces(line_read) || end_op(line_read))
 		return (EXIT_FAILURE);
 	line_read = add_spaces_between_ops(line_read, len, ops);
 	g_master.line_read = line_read;
@@ -120,8 +120,7 @@ int	launch_lexer(char *line_read, t_token **token_list)
 	g_master.readline_av = ft_spe_split(g_master.line_read, ' ', 0, 0);
 	if (manage_token(line_read, token_list))
 		return (EXIT_FAILURE);
-	if ((is_heredoc_pipe(token_list)) || (is_clean(token_list))
-		|| end_op(token_list))
+	if ((is_heredoc_pipe(token_list)) || (is_clean(token_list)))
 	{
 		free_token_list(*token_list);
 		g_master.exit_status = 2;
