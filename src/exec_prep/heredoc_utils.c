@@ -106,7 +106,10 @@ void	loop_ft_here(int tmp_file_fd, char *limiter)
 	{
 		line = readline("> ");
 		if (!line)
-			continue ;
+		{
+			printf("minishell: warning: here-document at line 1 delimited by end-of-file (wanted `%s')", limiter);
+			child_sigint_heredoc(0);
+		}
 		line = search_expansion_heredoc(line);
 		if (ft_strncmp(line, limiter, ft_strlen(limiter) + 1) == 0)
 		{

@@ -24,10 +24,18 @@ void	child_sigint_heredoc(int signal)
 		write(1, "\n", 1);
 		ft_free_child();
 		rl_on_new_line();
+		g_master.exit_status = 130;
 		exit(130);
 	}
 	if (signal == SIGQUIT)
 		ft_putstr_fd("\b\b  \b\b", 2);
+	else
+	{
+		write(1, "\n", 1);
+		ft_free_child();
+		rl_on_new_line();
+		exit(-1);
+	}
 }
 
 static void	ft_here(char *limiter)
