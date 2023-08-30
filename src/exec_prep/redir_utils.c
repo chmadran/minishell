@@ -83,22 +83,86 @@ int	check_redir_return(int identifier, int i)
 	return (-1);
 }
 
+int	single_quote_counter(char *str, char c, int argv_char_count)
+{
+	int	i;
+	int	quotes_counter;
+	int	readline_chr_counter;
+
+	i = 0;
+	quotes_counter = 0;
+	readline_chr_counter = 0;
+
+	while (str[i])
+	{
+		if (str[i] == '\'')
+			quotes_counter++;
+		if (str[i] == c)
+			readline_chr_counter++;
+		if (readline_chr_counter == argv_char_count)
+			break ;
+		i++;
+	}
+	return (quotes_counter);
+
+}
+
+int	double_quote_counter(char *str, char c, int argv_char_count)
+{
+	int	i;
+	int	quotes_counter;
+	int	readline_chr_counter;
+
+	i = 0;
+	quotes_counter = 0;
+	readline_chr_counter = 0;
+
+	while (str[i])
+	{
+		if (str[i] == '\"')
+			quotes_counter++;
+		if (str[i] == c)
+			readline_chr_counter++;
+		if (readline_chr_counter == argv_char_count)
+			break ;
+		i++;
+	}
+	return (quotes_counter);
+
+}
+
+int	specific_char_counter(char *str, char c, int pos)
+{
+	int	count;
+	int	i;
+
+	count = 0;
+	i = 0;
+	while (i <= pos && str[i])
+	{
+		if (str[i] == c)
+			count++;
+		i++;
+	}
+	return (count);
+}
+
 int	check_redir(char **argv)
 {
 	int		i;
 	size_t	j;
+	int		pos;
 
+	pos = 0;
 	i = -1;
 	while (argv[++i])
 	{
 		j = 0;
 		while (argv[i][j])
 		{
-			if (argv[i][j] == '<'
-				&& !(is_in_quotes(g_master.readline_av[i], j + 1)))
-				return (1);
-			else if (argv[i][j] == '>'
-				&& !(is_in_quotes(g_master.readline_av[i], j + 1)))
+			if (argv[i][j] == '<' && (!(single_quote_counter(g_master.readline_av[i], argv[i][j], specific_char_counter(argv[i], argv[i][j], j)) % 2 != 0)) && (!(double_quote_counter(g_master.readline_av[i], argv[i][j], specific_char_counter(argv[i], argv[i][j], j)) % 2 != 0)))
+					return (1);
+			if (argv[i][j] == '>' && !(single_quote_counter(g_master.readline_av[i], argv[i][j], specific_char_counter(argv[i], argv[i][j], j)) % 2 != 0) && (!(double_quote_counter(g_master.readline_av[i], argv[i][j], specific_char_counter(argv[i], argv[i][j], j)) % 2 != 0)))
 			{
 				if (argv[i][j + 1] && argv[i][j + 1] == '>')
 					return (check_redir_return(1, i));
