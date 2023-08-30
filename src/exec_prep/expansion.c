@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:42:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/30 12:18:17 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 12:27:14 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,15 @@ static void	process_expansion_replace(char *substr_start, char *str,
 	free_string(s_elt, name, value);
 }
 
-void	launch_replace(char *arg, int i, t_token *token)
+int	launch_replace(char *arg, int i, t_token *token)
 {
 	if (is_valid_name(&arg[i]) == EXIT_SUCCESS)
+	{
 		process_expansion_replace(&arg[i], arg, token, i);
+		return (EXIT_SUCCESS);
+	}
 	else
-		return ;
+		return (EXIT_FAILURE);
 }
 
 void	search_expansion(t_token *token)
@@ -63,11 +66,13 @@ void	search_expansion(t_token *token)
 	{
 		if (token->data[i] == '$' && !inside_single_quotes(token->data, i) && token->data[i + 1])
 		{
-			launch_replace(token->data, i, token);
+			if (launch_replace(token->data, i, token) == EXIT_FAILURE)
+				i++;
 			if (!token->data || !token->data[i])
 				return ;
 		}
-		i++;
+		else
+			i++;
 	}
 }
 
