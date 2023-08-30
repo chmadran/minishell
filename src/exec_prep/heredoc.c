@@ -31,7 +31,6 @@ static void	ft_child_sig(int signal)
 
 static void	ft_here(char *limiter)
 {
-	char	*line;
 	char	*tmp_filename;
 	int		tmp_file_fd;
 
@@ -39,21 +38,7 @@ static void	ft_here(char *limiter)
 	tmp_file_fd = open(tmp_filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (tmp_file_fd == -1)
 		exit(EXIT_FAILURE);
-	while (1)
-	{
-		line = readline("> ");
-		if (!line)
-			continue ;
-		line = search_expansion_heredoc(line);
-		if (ft_strncmp(line, limiter, ft_strlen(limiter) + 1) == 0)
-		{
-			free(line);
-			break ;
-		}
-		write(tmp_file_fd, line, ft_strlen(line));
-		write(tmp_file_fd, "\n", 1);
-		free(line);
-	}
+	loop_ft_here(tmp_file_fd, limiter);
 	close(tmp_file_fd);
 	ft_free_child();
 	exit(EXIT_SUCCESS);

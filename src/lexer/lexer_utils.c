@@ -97,3 +97,21 @@ void	create_token_node(t_token_type type, char *data, t_token **token_list)
 		(*token_list)->last = new_node;
 	}
 }
+
+int	end_op(t_token **token_lst)
+{
+	t_token			*current;
+
+	current = *token_lst;
+	while (current)
+	{
+		if (current->type != T_COMMAND && !current->next)
+		{
+			printf("syntax error near unexpected token \n");
+			g_master.exit_status = 2;
+			return (EXIT_FAILURE);
+		}
+		current = current->next;
+	}
+	return (EXIT_SUCCESS);
+}

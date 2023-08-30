@@ -97,3 +97,24 @@ int	check_heredoc(char **argv, int *position)
 	}
 	return (-1);
 }
+
+void	loop_ft_here(int tmp_file_fd, char *limiter)
+{
+	char	*line;
+
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+			continue ;
+		line = search_expansion_heredoc(line);
+		if (ft_strncmp(line, limiter, ft_strlen(limiter) + 1) == 0)
+		{
+			free(line);
+			break ;
+		}
+		write(tmp_file_fd, line, ft_strlen(line));
+		write(tmp_file_fd, "\n", 1);
+		free(line);
+	}
+}

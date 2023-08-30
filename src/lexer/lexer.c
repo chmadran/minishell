@@ -17,24 +17,6 @@
 #include "exec.h"
 #include "utils.h"
 
-int	end_op(t_token **token_lst)
-{
-	t_token			*current;
-
-	current = *token_lst;
-	while (current)
-	{
-		if (current->type != T_COMMAND && !current->next)
-		{
-			printf("syntax error near unexpected token \n");
-			g_master.exit_status = 2;
-			return (EXIT_FAILURE);
-		}
-		current = current->next;
-	}
-	return (EXIT_SUCCESS);
-}
-
 static t_token_type	check_token_type(char c, const char *line_read, size_t *j)
 {
 	size_t				i;

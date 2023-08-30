@@ -17,7 +17,7 @@
 #include "exec.h"
 #include "utils.h"
 
-char	*create_new_string_heredoc(char *substr_start, char *name, char *value, char *str)
+char	*set_newstr_hdoc(char *substr_start, char *name, char *value, char *str)
 {
 	char	*new_str;
 	size_t	len;
@@ -58,7 +58,8 @@ char	*erase_name_heredoc(char *str, char *name)
 	return (new_arg);
 }
 
-static char	*process_expansion_replace_heredoc(char *substr_start, char *new_str, int i)
+static char	*process_expansion_replace_heredoc(char *substr_start,
+	char *new_str, int i)
 {
 	char	*name;
 	char	*value;
@@ -74,7 +75,7 @@ static char	*process_expansion_replace_heredoc(char *substr_start, char *new_str
 	else
 		value = get_env_value(g_master.env_list, name, 1);
 	if (value)
-		final_str = create_new_string_heredoc(substr_start, name, value, new_str);
+		final_str = set_newstr_hdoc(substr_start, name, value, new_str);
 	else
 		final_str = erase_name_heredoc(new_str, name);
 	free(name);
@@ -94,7 +95,8 @@ char	*search_expansion_heredoc(char *arg)
 	{
 		if (new_str[i] == '$' && !inside_single_quotes(new_str, i))
 		{
-			new_str = process_expansion_replace_heredoc(&new_str[i], new_str, i);
+			new_str = process_expansion_replace_heredoc(&new_str[i],
+					new_str, i);
 			if (!new_str || !new_str[0])
 				return (NULL);
 		}

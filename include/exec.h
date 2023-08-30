@@ -92,6 +92,7 @@ int				launch_heredoc(t_exec *exec);
 void			add_tmp_file(t_exec *exec, int hdoc_tkn);
 void			clean_args(t_exec *exec, int heredoc_index);
 int				check_heredoc(char **argv, int *position);
+void			loop_ft_here(int tmp_file_fd, char *limiter);
 
 /* heredoc_expansion.c*/
 char			*search_expansion_heredoc(char *arg);
@@ -109,5 +110,8 @@ int				check_redir(char **argv);
 
 /* g_master_utils */
 char			**ft_spe_split(char const *s, char c, size_t i, size_t idx);
+
+/* lexer_utils */
+int				end_op(t_token **token_lst);
 
 #endif
