@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 11:50:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 10:41:49 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/29 19:19:58 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ static void	ft_here(char *limiter)
 	while (1)
 	{
 		line = readline("> ");
+		if (!line)
+			continue ;
+		line = search_expansion_heredoc(line);
 		if (ft_strncmp(line, limiter, ft_strlen(limiter) + 1) == 0)
 		{
 			free(line);

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 16:42:19 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 11:05:28 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 09:27:34 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,20 @@ static void	ft_token_count(t_token **token_lst)
 	g_master.token_count = count;
 }
 
+static int	is_only_spaces(char *line_read)
+{
+	int	i;
+
+	i = 0;
+	while (line_read[i])
+	{
+		if (!ft_isspace(line_read[i]))
+			return (EXIT_SUCCESS);
+		i++;
+	}
+	return (EXIT_FAILURE);
+}
+
 int	launch_lexer(char *line_read, t_token **token_list)
 {
 	int			len;
@@ -115,7 +129,7 @@ int	launch_lexer(char *line_read, t_token **token_list)
 	if ((ft_strlen(line_read) <= 2 && check_start(line_read))
 		|| unclosed_quotes(line_read))
 		return (EXIT_FAILURE);
-	if (check_directory(line_read))
+	if (check_directory(line_read) || is_only_spaces(line_read))
 		return (EXIT_FAILURE);
 	line_read = add_spaces_between_ops(line_read, len, ops);
 	g_master.line_read = line_read;
