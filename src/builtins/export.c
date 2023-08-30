@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 12:00:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 18:43:17 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 17:11:54 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static char	**add_back_envp_var(char *argv, char **envp)
 	char	**new_array;
 
 	i = 0;
-	new_array = malloc((g_master.size_export_envp + 2) * sizeof(char *));
+	new_array = malloc((g_master.size_export_envp + 3) * sizeof(char *));
 	if (!new_array)
 		return (NULL);
 	while (envp[i])
@@ -74,7 +74,7 @@ int	export_local_var(char *argv, char *equals_location)
 		name = ft_strndup(argv, ft_strlen(argv) - ft_strlen(equals_location));
 	else
 		name = ft_strdup(argv);
-	unset_from_export_env(name);
+	unset_from_export_env(argv);
 	new_array = add_back_envp_var(argv, g_master.export_envp);
 	free_double_ptr(g_master.export_envp);
 	g_master.export_envp = new_array;
