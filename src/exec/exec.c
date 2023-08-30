@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/30 16:30:30 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 18:53:20 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ void	launch_execution(t_master *master)
 	if (launch_expansion() == EXIT_FAILURE)
 		return ;
 	token_exec(master, &token, exec);
-	fd_close(master->pipefd[0]);
-	fd_close(master->pipefd[1]);
+	fd_close(g_master.pipefd[0]);
+	fd_close(g_master.pipefd[1]);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	wait_all_processes(master);

@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 11:32:25 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 18:43:45 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,18 @@ void	execve_execute_command(t_exec *exec, t_env *env_list,
 
 void	launch_dup_child_process(t_master *master, t_token *token)
 {
+	(void)master;
 	if (token->next && token->next->type == T_PIPE)
 	{
-		close(master->pipefd[0]);
-		dup2(master->pipefd[1], STDOUT_FILENO);
-		close(master->pipefd[1]);
+		close(g_master.pipefd[0]);
+		dup2(g_master.pipefd[1], STDOUT_FILENO);
+		close(g_master.pipefd[1]);
 	}
-	else if (!master->first_cmd)
+	else if (!g_master.first_cmd)
 	{
-		close(master->pipefd[1]);
-		dup2(master->pipefd[0], STDIN_FILENO);
-		close(master->pipefd[0]);
+		close(g_master.pipefd[1]);
+		dup2(g_master.pipefd[0], STDIN_FILENO);
+		close(g_master.pipefd[0]);
 	}
 }
 
@@ -83,8 +84,8 @@ void	parent_process_execution(t_master *master, t_token **token)
 		else
 			master->first_cmd = true;
 		close(master->tmp_fd);
-		if (master->pipefd[1] != -1)
-			close(master->pipefd[1]);
+		if (g_master.pipefd[1] != -1)
+			close(g_master.pipefd[1]);
 		master->tmp_fd = master->pipefd[0];
 		if ((*token)->next)
 			*token = (*token)->next->next;

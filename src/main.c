@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 15:32:48 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/30 14:24:57 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 18:39:57 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	child_sigint(int signal)
 	{
 		(void)signal;
 		g_master.exit_status = 130;
-		write(1, "\n", 1);
+		write(2, "\n", 1);
 	}
 	else if (signal == SIGQUIT)
 	{
