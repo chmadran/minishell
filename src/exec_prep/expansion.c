@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:42:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 15:24:45 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 12:18:17 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ void	search_expansion(t_token *token)
 	i = 0;
 	while (token->data[i])
 	{
-		if (token->data[i] == '$' && !inside_single_quotes(token->data, i))
+		if (token->data[i] == '$' && !inside_single_quotes(token->data, i) && token->data[i + 1])
 		{
 			launch_replace(token->data, i, token);
-			if (!token->data)
+			if (!token->data || !token->data[i])
 				return ;
 		}
 		i++;

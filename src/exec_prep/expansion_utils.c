@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 16:02:09 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 15:28:04 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 12:02:29 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	inside_single_quotes(const char *line_read, size_t j)
 
 int	is_valid_name(char *str)
 {
-	if (!ft_isalpha(str[1]) && !ft_isdigit(str[1]) && str[1] != '?')
+	if (str[1] && !ft_isalpha(str[1]) && !ft_isdigit(str[1]) && str[1] != '?')
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
