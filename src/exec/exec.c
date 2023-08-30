@@ -100,6 +100,7 @@ void	launch_execution(t_master *master)
 	fd_close(master->pipefd[0]);
 	fd_close(master->pipefd[1]);
 	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	wait_all_processes(master);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
