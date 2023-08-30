@@ -113,5 +113,6 @@ char			**ft_spe_split(char const *s, char c, size_t i, size_t idx);
 
 /* lexer_utils */
 int				end_op(char *line_read);
+void			child_sigint_heredoc(int signal);
 
 #endif
