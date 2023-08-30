@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/30 14:23:39 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/30 16:30:30 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,10 @@ static void	token_exec(t_master *master, t_token **token, t_exec *exec)
 	{
 		type = prepare_execution(master, *token, exec);
 		if (launch_heredoc(master->exec, master) == EXIT_FAILURE)
+		{
+			free_executable();
 			return ;
+		}
 		if (prepare_type_execution(master, type) == EXIT_FAILURE)
 		{
 			if ((*token)->next && (*token)->next->type == T_PIPE)
