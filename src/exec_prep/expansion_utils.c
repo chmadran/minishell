@@ -74,8 +74,7 @@ char	*extract_expansion_name(char *str)
 	return (name);
 }
 
-char	*create_new_string(char *substr_start, char *name, char *value,
-		char *str, t_token *token)
+char	*create_new_string(t_string *s_elt, char *value, t_token *token)
 {
 	char	*new_str;
 	size_t	len;
@@ -84,9 +83,11 @@ char	*create_new_string(char *substr_start, char *name, char *value,
 	new_str = malloc(len);
 	if (value)
 	{
-		ft_strlcpy(new_str, str, ft_strlen(str) - ft_strlen(substr_start) + 1);
+		ft_strlcpy(new_str, s_elt->str,
+			ft_strlen(s_elt->str) - ft_strlen(s_elt->substr_start) + 1);
 		ft_strlcat(new_str, value, len);
-		ft_strlcat(new_str, substr_start + ft_strlen(name) + 1, len);
+		ft_strlcat(new_str,
+			s_elt->substr_start + ft_strlen(s_elt->name) + 1, len);
 	}
 	return (new_str);
 }

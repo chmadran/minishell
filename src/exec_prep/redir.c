@@ -91,11 +91,9 @@ int	launch_open_dup(int redir, t_exec *exec)
 
 int	launch_redirection(t_exec *exec)
 {
-	int	i;
 	int	redir;
 	int	redir_count;
 
-	i = -1;
 	redir = check_redir(exec->argv);
 	if (redir == -1)
 		return (0);

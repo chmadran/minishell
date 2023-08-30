@@ -57,8 +57,11 @@ char			*handle_unquoted_argument(char *s, char **arg);
 /* expansion.c & expansion_utils.c*/
 int				launch_expansion(void);
 char			*extract_expansion_name(char *str);
-char			*create_new_string(char *substr_start, char *name, char *value,
-					char *str, t_token *token);
+// char			*create_new_string(char *substr_start, char *name, char *value,
+// 					char *str, t_token *token);
+char			*create_new_string(t_string *s_elt, char *value,
+					t_token *token);
+
 bool			inside_single_quotes(const char *line_read, size_t j);
 int				is_valid_name(char *str);
 bool			single_quotes(const char *line_read, size_t j);
@@ -67,6 +70,9 @@ bool			single_quotes(const char *line_read, size_t j);
 
 void			erase_token_data(t_token *token, char *name);
 void			replace_name(t_token *token, char *name, int i);
+void			free_string(t_string *s_elt, char *name, char *value);
+t_string		*fill_string(t_string *s_elt, char *name,
+					char *sb_start, char *str);
 
 /* command_builtins.c */
 int				is_directory(char *path);
@@ -77,8 +83,7 @@ int				execute_builtin(t_exec *exec, t_builtin_type type);
 /* exec_process.c*/
 void			child_process_execution(t_master *master, t_token *token,
 					t_exec *exec, t_builtin_type type);
-void			parent_process_execution(t_master *master, t_token **token,
-					t_exec *exec);
+void			parent_process_execution(t_master *master, t_token **token);
 void			execve_execute_command(t_exec *exec, t_env *env_list,
 					t_builtin_type type);
 /* heredoc.c*/

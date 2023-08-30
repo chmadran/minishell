@@ -76,6 +76,13 @@ typedef struct s_exec
 	t_token		*token;
 }	t_exec;
 
+typedef struct s_string
+{
+	char		*substr_start;
+	char		*name;
+	char		*str;
+}	t_string;
+
 typedef struct s_env
 {
 	char			*name;

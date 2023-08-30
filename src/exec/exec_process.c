@@ -73,10 +73,8 @@ void	child_process_execution(t_master *master, t_token *token, t_exec *exec,
 	}
 }
 
-void	parent_process_execution(t_master *master, t_token **token,
-	t_exec *exec)
+void	parent_process_execution(t_master *master, t_token **token)
 {
-	exec = master->exec;
 	if (g_master.exit_status != 127 && master->pid > 0)
 	{
 		master->child_pid[master->count_pid++] = master->pid;
