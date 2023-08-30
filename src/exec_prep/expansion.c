@@ -64,7 +64,8 @@ void	search_expansion(t_token *token)
 	i = 0;
 	while (token->data[i])
 	{
-		if (token->data[i] == '$' && !inside_single_quotes(token->data, i) && token->data[i + 1])
+		if (token->data[i] == '$'
+			&& !inside_single_quotes(token->data, i) && token->data[i + 1])
 		{
 			if (launch_replace(token->data, i, token) == EXIT_FAILURE)
 				i++;

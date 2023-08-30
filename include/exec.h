@@ -40,6 +40,7 @@ char			*search_pathname_command(char *command);
 
 void			wait_all_processes(t_master *master);
 void			init_pids(void);
+int				prep_command_or_error(t_exec *exec, t_builtin_type type);
 
 /* exec_arg.c */
 void			launch_execution(t_master *master);
@@ -114,5 +115,11 @@ char			**ft_spe_split(char const *s, char c, size_t i, size_t idx);
 /* lexer_utils */
 int				end_op(char *line_read);
 void			child_sigint_heredoc(int signal);
+
+/* redir_utils2 */
+int				find_redirection(char **argv);
+int				spec_char_cnter(char *str, char c, int pos);
+int				double_q_cnter(char *str, char c, int argv_char_count);
+int				single_q_cntr(char *str, char c, int argv_char_count);
 
 #endif

@@ -17,23 +17,6 @@
 #include "exec.h"
 #include "utils.h"
 
-static int	prep_command_or_error(t_exec *exec, t_builtin_type type)
-{
-	if (type == T_ERROR)
-	{
-		printf("minishell: %s: command not found\n", exec->argv[0]);
-		g_master.exit_status = 127;
-		free_executable();
-		ft_exit(exec->argc, exec->argv);
-	}
-	if (check_directory(exec->argv[0]) == EXIT_FAILURE)
-		return (T_ERROR);
-	exec->pathname = search_pathname_command(exec->argv[0]);
-	if (!exec->pathname)
-		return (prepare_command(&g_master, exec));
-	return (T_OTHERS);
-}
-
 static int	prepare_type_execution(t_master *master, t_builtin_type type)
 {
 	if (type == T_OTHERS)
@@ -64,6 +47,18 @@ static t_builtin_type	prepare_execution(t_master *master, t_token *token,
 	return (find_arg_type(master->exec->argv[0]));
 }
 
+static void	execute_proc(t_master *master, t_token **token, t_exec *exec,
+	t_builtin_type type)
+{
+	g_master.exit_status = 0;
+	if ((*token)->next && (*token)->next->type == T_PIPE)
+		pipe(master->pipefd);
+	(signal(SIGINT, &child_sigint), signal(SIGQUIT, &child_sigint));
+	master->pid = fork();
+	child_process_execution(master, *token, exec, type);
+	parent_process_execution(master, token);
+}
+
 static void	token_exec(t_master *master, t_token **token, t_exec *exec)
 {
 	t_builtin_type	type;
@@ -87,13 +82,7 @@ static void	token_exec(t_master *master, t_token **token, t_exec *exec)
 			else
 				return ;
 		}
-		g_master.exit_status = 0;
-		if ((*token)->next && (*token)->next->type == T_PIPE)
-			pipe(master->pipefd);
-		(signal(SIGINT, &child_sigint), signal(SIGQUIT, &child_sigint));
-		master->pid = fork();
-		child_process_execution(master, *token, exec, type);
-		parent_process_execution(master, token);
+		execute_proc(master, token, exec, type);
 	}
 }
 

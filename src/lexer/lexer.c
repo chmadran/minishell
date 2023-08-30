@@ -111,7 +111,8 @@ int	launch_lexer(char *line_read, t_token **token_list)
 	if ((ft_strlen(line_read) <= 2 && check_start(line_read))
 		|| unclosed_quotes(line_read))
 		return (EXIT_FAILURE);
-	if (check_directory(line_read) || is_only_spaces(line_read) || end_op(line_read))
+	if (check_directory(line_read)
+		|| is_only_spaces(line_read) || end_op(line_read))
 		return (EXIT_FAILURE);
 	line_read = add_spaces_between_ops(line_read, len, ops);
 	g_master.line_read = line_read;

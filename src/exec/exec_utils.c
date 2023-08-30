@@ -17,6 +17,23 @@
 #include "exec.h"
 #include "utils.h"
 
+int	prep_command_or_error(t_exec *exec, t_builtin_type type)
+{
+	if (type == T_ERROR)
+	{
+		printf("minishell: %s: command not found\n", exec->argv[0]);
+		g_master.exit_status = 127;
+		free_executable();
+		ft_exit(exec->argc, exec->argv);
+	}
+	if (check_directory(exec->argv[0]) == EXIT_FAILURE)
+		return (T_ERROR);
+	exec->pathname = search_pathname_command(exec->argv[0]);
+	if (!exec->pathname)
+		return (prepare_command(&g_master, exec));
+	return (T_OTHERS);
+}
+
 void	wait_all_processes(t_master *master)
 {
 	int	i;
