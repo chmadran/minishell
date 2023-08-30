@@ -65,39 +65,45 @@ static t_builtin_type	prepare_execution(t_master *master, t_token *token,
 	return (find_arg_type(master->exec->argv[0]));
 }
 
-void	launch_execution(t_master *master)
+static void	token_exec(t_master *master, t_token **token, t_exec *exec)
 {
-	t_exec			*exec;
-	t_token			*token;
 	t_builtin_type	type;
 
-	exec = NULL;
-	token = master->token_list;
-	init_pids();
-	if (launch_expansion() == EXIT_FAILURE)
-		return ;
-	while (token)
+	while (*token)
 	{
-		type = prepare_execution(master, token, exec);
+		type = prepare_execution(master, *token, exec);
 		if (prepare_type_execution(master, type) == EXIT_FAILURE)
 		{
-			if (token->next && token->next->type == T_PIPE)
+			if ((*token)->next && (*token)->next->type == T_PIPE)
 			{
 				g_master.exit_status = 0;
-				token = token->next->next;
+				*token = (*token)->next->next;
 				continue ;
 			}
 			else
 				return ;
 		}
 		g_master.exit_status = 0;
-		if (token->next && token->next->type == T_PIPE)
+		if ((*token)->next && (*token)->next->type == T_PIPE)
 			pipe(master->pipefd);
 		master->pid = fork();
 		(signal(SIGINT, &child_sigint), signal(SIGQUIT, &child_sigint));
-		child_process_execution(master, token, exec, type);
-		parent_process_execution(master, &token, exec);
+		child_process_execution(master, *token, exec, type);
+		parent_process_execution(master, token);
 	}
+}
+
+void	launch_execution(t_master *master)
+{
+	t_exec			*exec;
+	t_token			*token;
+
+	exec = NULL;
+	token = master->token_list;
+	init_pids();
+	if (launch_expansion() == EXIT_FAILURE)
+		return ;
+	token_exec(master, &token, exec);
 	fd_close(master->pipefd[0]);
 	fd_close(master->pipefd[1]);
 	wait_all_processes(master);

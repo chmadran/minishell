@@ -20,11 +20,14 @@
 static void	process_expansion_replace(char *substr_start, char *str,
 	t_token *token, int i)
 {
-	char	*name;
-	char	*value;
-	char	*new_str;
+	char				*name;
+	char				*value;
+	char				*new_str;
+	t_string			*s_elt;
 
+	s_elt = malloc(sizeof(t_string));
 	name = extract_expansion_name(substr_start);
+	s_elt = fill_string(s_elt, name, substr_start, str);
 	value = NULL;
 	if (substr_start[1] == '?')
 		value = ft_itoa(g_master.exit_status);
@@ -32,7 +35,7 @@ static void	process_expansion_replace(char *substr_start, char *str,
 		value = get_env_value(g_master.env_list, name, 1);
 	if (value)
 	{
-		new_str = create_new_string(substr_start, name, value, str, token);
+		new_str = create_new_string(s_elt, value, token);
 		free(token->data);
 		token->data = new_str;
 	}
@@ -40,8 +43,7 @@ static void	process_expansion_replace(char *substr_start, char *str,
 		erase_token_data(token, name);
 	else
 		replace_name(token, name, i);
-	free(name);
-	free(value);
+	free_string(s_elt, name, value);
 }
 
 void	launch_replace(char *arg, int i, t_token *token)
@@ -72,10 +74,8 @@ void	search_expansion(t_token *token)
 int	launch_expansion(void)
 {
 	t_token	*token;
-	t_token	*head;
 
 	token = g_master.token_list;
-	head = g_master.token_list;
 	while (token)
 	{
 		if (token->type == T_COMMAND)
