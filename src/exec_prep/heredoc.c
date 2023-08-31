@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 11:50:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 13:50:08 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 14:25:58 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int	ft_exec_heredoc(t_exec *exec, t_master *master)
 	if (master->pid > 0)
 		master->child_pid[g_master.count_pid++] = master->pid;
 	signal(SIGINT, SIG_IGN);
-	wait_all_processes(master);
+	wait_all_processes();
 	signal(SIGINT, handle_sigint);
 	return (g_master.exit_status);
 }
