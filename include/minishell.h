@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/30 13:20:48 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 13:56:19 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 
 # define OP 1
 
-# define MAX_NB_CHILD_PIDS 10
+# define MAX_NB_CHILD_PIDS 1024
 
 typedef enum e_token_type
 {

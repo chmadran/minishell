@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 10:37:01 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/30 14:19:52 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 13:51:46 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,19 @@ int	prep_command_or_error(t_exec *exec, t_builtin_type type)
 	return (T_OTHERS);
 }
 
-void	wait_all_processes(t_master *master)
+void	wait_all_processes()
 {
 	int	i;
 	int	status;
 
 	i = 0;
 	status = 0;
-	while (i < master->count_pid)
+	while (i < g_master.count_pid)
 	{
-		waitpid(master->child_pid[i], &status, 0);
+		waitpid(g_master.child_pid[i], &status, 0);
 		if (WIFEXITED(status) && g_master.exit_status != 127)
 			g_master.exit_status = WEXITSTATUS(status);
-		master->child_pid[i] = -1;
+		g_master.child_pid[i] = -1;
 		i++;
 	}
 }

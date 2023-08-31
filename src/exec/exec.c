@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/30 18:53:20 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 14:04:49 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,18 @@
 
 static int	prepare_type_execution(t_master *master, t_builtin_type type)
 {
+	(void)master;
 	if (type == T_OTHERS)
-		type = prep_command_or_error(master->exec, type);
+		type = prep_command_or_error(g_master.exec, type);
 	if (type == T_ERROR)
 	{
 		free_executable();
 		return (EXIT_FAILURE);
 	}
-	if (type != T_OTHERS && type != T_ERROR && master->token_count == 1
-		&& check_redir(master->exec->argv) == -1)
+	if (type != T_OTHERS && type != T_ERROR && g_master.token_count == 1
+		&& check_redir(g_master.exec->argv) == -1)
 	{
-		execute_builtin(master->exec, type);
+		execute_builtin(g_master.exec, type);
 		free_executable();
 		return (EXIT_FAILURE);
 	}
@@ -39,12 +40,13 @@ static int	prepare_type_execution(t_master *master, t_builtin_type type)
 static t_builtin_type	prepare_execution(t_master *master, t_token *token,
 	t_exec *exec)
 {
+	(void)master;
 	(void)exec;
 	(void)token;
-	master->exec = create_arguments(token);
-	if (!master->exec->argv[0])
+	g_master.exec = create_arguments(token);
+	if (!g_master.exec->argv[0])
 		return (T_ERROR);
-	return (find_arg_type(master->exec->argv[0]));
+	return (find_arg_type(g_master.exec->argv[0]));
 }
 
 static void	execute_proc(t_master *master, t_token **token, t_exec *exec,
@@ -52,9 +54,9 @@ static void	execute_proc(t_master *master, t_token **token, t_exec *exec,
 {
 	g_master.exit_status = 0;
 	if ((*token)->next && (*token)->next->type == T_PIPE)
-		pipe(master->pipefd);
+		pipe(g_master.pipefd);
 	(signal(SIGINT, &child_sigint), signal(SIGQUIT, &child_sigint));
-	master->pid = fork();
+	g_master.pid = fork();
 	child_process_execution(master, *token, exec, type);
 	parent_process_execution(master, token);
 }
@@ -66,7 +68,7 @@ static void	token_exec(t_master *master, t_token **token, t_exec *exec)
 	while (*token)
 	{
 		type = prepare_execution(master, *token, exec);
-		if (launch_heredoc(master->exec, master) == EXIT_FAILURE)
+		if (launch_heredoc(g_master.exec, master) == EXIT_FAILURE)
 		{
 			free_executable();
 			return ;
@@ -92,7 +94,7 @@ void	launch_execution(t_master *master)
 	t_token			*token;
 
 	exec = NULL;
-	token = master->token_list;
+	token = g_master.token_list;
 	init_pids();
 	if (launch_expansion() == EXIT_FAILURE)
 		return ;
