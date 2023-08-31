@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 12:30:45 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/30 17:35:49 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 19:45:52 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,22 @@ static void	delete_i_from_export_envp(int i)
 void	unset_from_export_env(char *argv)
 {
 	int		i;
+	char	*name;
+	char	*equals_location;
 
 	i = -1;
 	while (g_master.export_envp[++i])
 	{
-		if (ft_strncmp(argv, g_master.export_envp[i], ft_strlen(argv)) == 0)
+		equals_location = ft_strchr(g_master.export_envp[i], '=');
+		name = ft_strndup(g_master.export_envp[i],
+				equals_location - g_master.export_envp[i]);
+		if (ft_strncmp(argv, g_master.export_envp[i], ft_strlen(name)) == 0)
 		{
 			delete_i_from_export_envp(i);
+			free(name);
 			return ;
 		}
+		free(name);
 	}
 }
 

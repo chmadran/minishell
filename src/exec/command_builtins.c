@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:13:21 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 18:47:23 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 19:59:20 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ int	prepare_command(t_master *master, t_exec *exec)
 		printf("minishell: %s: Permission denied\n", exec->argv[0]);
 		return (master->exit_status = 126, EXIT_FAILURE);
 	}
-	else if (!ft_strchr(exec->argv[0], '>')
-		&& !ft_strchr(exec->argv[0], '<'))
+	else if (ft_strncmp(exec->argv[0], ">", 1)
+		&& ft_strncmp(exec->argv[0], "<", 1))
 	{
 		printf("minishell: %s: command not found\n", exec->argv[0]);
 		return (master->exit_status = 127, T_ERROR);
