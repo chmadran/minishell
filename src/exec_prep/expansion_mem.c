@@ -72,28 +72,20 @@ int	replace_name(t_token *token, char *name, int i, bool heredoc_limiter)
 	return (EXIT_SUCCESS);
 }
 
-t_string	*fill_string(t_string *s_elt, char *sb_start, char *str)
+t_string	*fill_string(t_string *s_elt, char *name, char *sb_start, char *str)
 {
 	s_elt->substr_start = ft_strdup(sb_start);
+	s_elt->name = ft_strdup(name);
 	s_elt->str = ft_strdup(str);
-	s_elt->new_str = NULL;
-	s_elt->value = NULL;
-	s_elt->name = NULL;
 	return (s_elt);
 }
 
-void	free_string(t_string *s_elt)
+void	free_string(t_string *s_elt, char *name, char *value)
 {
-	if (s_elt->substr_start)
-		free(s_elt->substr_start);
-	if (s_elt->str)
-		free(s_elt->str);
-	if (s_elt->name)
-		free(s_elt->name);
-	if (s_elt->value)
-		free(s_elt->value);
-	if (s_elt->new_str)
-		free(s_elt->new_str);
-	if (s_elt)
-		free(s_elt);
+	free(s_elt->substr_start);
+	free(s_elt->name);
+	free(s_elt->str);
+	free(s_elt);
+	free(name);
+	free(value);
 }
