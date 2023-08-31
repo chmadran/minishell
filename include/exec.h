@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 14:24:41 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 15:40:34 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char			*handle_unquoted_argument(char *s, char **arg);
 int				launch_expansion(void);
 char			*extract_expansion_name(char *str);
 char			*create_new_string(t_string *s_elt, char *value,
-					t_token *token);
+					t_token *token, char *substr_start);
 
 bool			inside_single_quotes(const char *line_read, size_t j);
 int				is_valid_name(char *str);
@@ -71,10 +71,11 @@ int				erase_token_data(t_token *token, char *name,
 					bool heredoc_limiter);
 int				replace_name(t_token *token, char *name, int i,
 					bool heredoc_limiter);
-void			free_string(t_string *s_elt, char *name, char *value);
+void			free_string(t_string *s_elt);
 t_string		*fill_string(t_string *s_elt, char *name,
 					char *sb_start, char *str);
 bool			limiter_of_heredoc(char *argv, int i);
+t_string		*init_s_elt(char *str);
 
 /* command_builtins.c */
 int				is_directory(char *path);

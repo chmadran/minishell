@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 13:56:19 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 15:37:24 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ typedef struct s_exec
 
 typedef struct s_string
 {
-	char		*substr_start;
 	char		*name;
+	char		*value;
 	char		*str;
 }	t_string;
 

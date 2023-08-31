@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 16:02:09 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/30 12:02:29 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 15:38:17 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ char	*extract_expansion_name(char *str)
 	return (name);
 }
 
-char	*create_new_string(t_string *s_elt, char *value, t_token *token)
+char	*create_new_string(t_string *s_elt, char *value, t_token *token,
+	char *substr_start)
 {
 	char	*new_str;
 	size_t	len;
@@ -84,10 +85,9 @@ char	*create_new_string(t_string *s_elt, char *value, t_token *token)
 	if (value)
 	{
 		ft_strlcpy(new_str, s_elt->str,
-			ft_strlen(s_elt->str) - ft_strlen(s_elt->substr_start) + 1);
+			ft_strlen(s_elt->str) - ft_strlen(substr_start) + 1);
 		ft_strlcat(new_str, value, len);
-		ft_strlcat(new_str,
-			s_elt->substr_start + ft_strlen(s_elt->name) + 1, len);
+		ft_strlcat(new_str, substr_start + ft_strlen(s_elt->name) + 1, len);
 	}
 	return (new_str);
 }

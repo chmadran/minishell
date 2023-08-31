@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:42:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 15:14:17 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 15:40:02 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,33 +35,29 @@ static int	process_expansion_replace(char *substr_start, char *str,
 	t_token *token, int i)
 {
 	bool				heredoc_limiter;
-	char				*name;
-	char				*value;
 	char				*new_str;
 	int					ret;
 	t_string			*s_elt;
 
 	ret = 0;
-	s_elt = malloc(sizeof(t_string));
-	name = extract_expansion_name(substr_start);
-	s_elt = fill_string(s_elt, name, substr_start, str);
-	value = NULL;
+	s_elt = init_s_elt(str);
+	s_elt->name = extract_expansion_name(substr_start);
 	heredoc_limiter = limiter_of_heredoc(token->data, i);
-	if (substr_start[1] == '?')
-		value = ft_itoa(g_master.exit_status);
+	if (substr_start[1] && substr_start[1] == '?')
+		s_elt->value = ft_itoa(g_master.exit_status);
 	else
-		value = get_env_value(g_master.env_list, name, 1);
-	if (value)
+		s_elt->value = get_env_value(g_master.env_list, s_elt->name, 1);
+	if (s_elt->value)
 	{
-		new_str = create_new_string(s_elt, value, token);
+		new_str = create_new_string(s_elt, s_elt->value, token, substr_start);
 		free(token->data);
 		token->data = new_str;
 	}
 	else if (i == 0)
-		ret = erase_token_data(token, name, heredoc_limiter);
+		ret = erase_token_data(token, s_elt->name, heredoc_limiter);
 	else
-		ret = replace_name(token, name, i, heredoc_limiter);
-	free_string(s_elt, name, value);
+		ret = replace_name(token, s_elt->name, i, heredoc_limiter);
+	free_string(s_elt);
 	return (ret);
 }
 

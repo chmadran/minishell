@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:24:34 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 14:24:29 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 15:40:18 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,17 @@
 #include "env.h"
 #include "exec.h"
 #include "utils.h"
+
+t_string	*init_s_elt(char *str)
+{
+	t_string	*s_elt;
+
+	s_elt = malloc(sizeof(t_string));
+	s_elt->name = NULL;
+	s_elt->value = NULL;
+	s_elt->str = ft_strdup(str);
+	return (s_elt);
+}
 
 int	erase_token_data(t_token *token, char *name, bool heredoc_limiter)
 {
@@ -72,20 +83,13 @@ int	replace_name(t_token *token, char *name, int i, bool heredoc_limiter)
 	return (EXIT_SUCCESS);
 }
 
-t_string	*fill_string(t_string *s_elt, char *name, char *sb_start, char *str)
+void	free_string(t_string *s_elt)
 {
-	s_elt->substr_start = ft_strdup(sb_start);
-	s_elt->name = ft_strdup(name);
-	s_elt->str = ft_strdup(str);
-	return (s_elt);
-}
-
-void	free_string(t_string *s_elt, char *name, char *value)
-{
-	free(s_elt->substr_start);
-	free(s_elt->name);
-	free(s_elt->str);
+	if (s_elt->name)
+		free(s_elt->name);
+	if (s_elt->value)
+		free(s_elt->value);
+	if (s_elt->str)
+		free(s_elt->str);
 	free(s_elt);
-	free(name);
-	free(value);
 }
