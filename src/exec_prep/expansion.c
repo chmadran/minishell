@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:42:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 09:40:38 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 14:53:12 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ bool	limiter_of_heredoc(char	*argv, int i)
 	int		j;
 
 	j = 0;
+	while (i - 1 > 0 && ft_isalnum(argv[i - 1]))
+		i--;
 	while (i - 1 > 0 && ft_isspace(argv[i - 1]))
 		i--;
 	if (i >= 2 && ft_strncmp(&argv[i - 2], "<<", 2) == 0)
