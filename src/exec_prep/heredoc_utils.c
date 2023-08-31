@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:09:47 by avallet           #+#    #+#             */
-/*   Updated: 2023/08/29 10:29:29 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 09:40:07 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	loop_ft_here(int tmp_file_fd, char *limiter)
 			printf("line 1 delimited by end-of-file (wanted `%s')", limiter);
 			child_sigint_heredoc(0);
 		}
-		line = search_expansion_heredoc(line);
+		line = search_expansion_heredoc(line, limiter);
 		if (ft_strncmp(line, limiter, ft_strlen(limiter) + 1) == 0)
 		{
 			free(line);

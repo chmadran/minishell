@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 16:42:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 09:09:40 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 09:40:38 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@
 #include "exec.h"
 #include "utils.h"
 
-static	bool	limiter_of_heredoc(t_token *token, int i)
+bool	limiter_of_heredoc(char	*argv, int i)
 {
 	int		j;
 
 	j = 0;
-	while (i  - 1 > 0 && ft_isspace(token->data[i - 1]))
+	while (i  - 1 > 0 && ft_isspace(argv[i - 1]))
 		i--;
-if (i >= 2 && ft_strncmp(&token->data[i - 2], "<<", 2) == 0)
+if (i >= 2 && ft_strncmp(&argv[i - 2], "<<", 2) == 0)
 	return (true);
 return (false);
 }
@@ -44,7 +44,7 @@ static int	process_expansion_replace(char *substr_start, char *str,
 	name = extract_expansion_name(substr_start);
 	s_elt = fill_string(s_elt, name, substr_start, str);
 	value = NULL;
-	heredoc_limiter = limiter_of_heredoc(token, i);
+	heredoc_limiter = limiter_of_heredoc(token->data, i);
 	if (substr_start[1] == '?')
 		value = ft_itoa(g_master.exit_status);
 	else

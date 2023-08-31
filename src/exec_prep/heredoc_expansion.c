@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 18:53:07 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 09:29:46 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 09:42:35 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,20 @@ char	*erase_name_heredoc(char *str, char *name)
 }
 
 static char	*process_expansion_replace_heredoc(char *substr_start,
-	char *new_str, int i)
+	char *new_str, int i, char *limiter)
 {
 	char	*name;
 	char	*value;
 	char	*final_str;
+	int		heredoc_limiter;
 
 	(void)i;
 	value = NULL;
 	final_str = NULL;
+	heredoc_limiter = false;
+	(void)limiter;
+	//@@TODO = do a new function to check if new_Str == limiter b careful $ sign
+	//heredoc_limiter = limiter_of_heredoc_expansion(new_str, i, limiter);
 	if (is_valid_name(substr_start) == EXIT_FAILURE)
 		return (new_str);
 	name = extract_expansion_name(substr_start);
@@ -77,15 +82,17 @@ static char	*process_expansion_replace_heredoc(char *substr_start,
 		value = get_env_value(g_master.env_list, name, 1);
 	if (value)
 		final_str = set_newstr_hdoc(substr_start, name, value, new_str);
-	else
+	else if (heredoc_limiter == true)
 		final_str = ft_strdup(new_str);
+	else if (heredoc_limiter == false)
+		final_str = erase_name_heredoc(new_str, name);
 	free(name);
 	free(value);
 	free(new_str);
 	return (final_str);
 }
 
-char	*search_expansion_heredoc(char *arg)
+char	*search_expansion_heredoc(char *arg, char *limiter)
 {
 	int		i;
 	char	*new_str;
@@ -97,7 +104,7 @@ char	*search_expansion_heredoc(char *arg)
 		if (new_str[i] == '$' && !inside_single_quotes(new_str, i))
 		{
 			new_str = process_expansion_replace_heredoc(&new_str[i],
-					new_str, i);
+					new_str, i, limiter);
 			if (!new_str || !new_str[0])
 				return (NULL);
 		}
