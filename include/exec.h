@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 09:42:22 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 14:20:03 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,10 @@ bool			single_quotes(const char *line_read, size_t j);
 
 /* expansion_mem.c */
 
-int				erase_token_data(t_token *token, char *name, bool heredoc_limiter);
-int				replace_name(t_token *token, char *name, int i, bool heredoc_limiter);
+int				erase_token_data(t_token *token, char *name,
+					bool heredoc_limiter);
+int				replace_name(t_token *token, char *name, int i,
+					bool heredoc_limiter);
 void			free_string(t_string *s_elt, char *name, char *value);
 t_string		*fill_string(t_string *s_elt, char *name,
 					char *sb_start, char *str);
@@ -96,7 +98,8 @@ void			loop_ft_here(int tmp_file_fd, char *limiter);
 
 /* heredoc_expansion.c*/
 char			*search_expansion_heredoc(char *arg, char *limiter);
-char			*launch_replace_heredoc(char *arg, int i, char *str, char *limiter);
+char			*launch_replace_heredoc(char *arg, int i, char *str,
+					char *limiter);
 
 /* redir.c*/
 int				launch_redirection(t_exec *exec);
