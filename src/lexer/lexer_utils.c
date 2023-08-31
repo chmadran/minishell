@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 17:27:12 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/30 14:50:23 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 16:04:04 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,13 @@ int	is_clean(t_token **token_lst)
 				&& current->type > T_COMMAND) || (error != -1))
 		{
 			if (current->next->next && current->next->next->type > T_COMMAND)
-				type = *ops[current->next->next->type - 1];
-			else
+				type = *ops[0];
+			else if (*ops[current->type - 1])
 				type = *ops[current->type - 1];
+			else
+				type = *ops[0];
 			printf(ESTR_UNEXP, type);
-			g_master.exit_status = 2;
-			return (EXIT_FAILURE);
+			return (g_master.exit_status = 2, EXIT_FAILURE);
 		}
 		current = current->next;
 	}

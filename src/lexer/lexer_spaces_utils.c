@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 10:57:40 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 11:00:02 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 16:26:31 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	count_new_spaces(char *data, int len)
 	{
 		if (ft_strchr(ops, data[i]))
 		{
-			if (i > 0 && !ft_isspace(data[i - 1])
+			if (i > 0 && data[i - 1] && !ft_isspace(data[i - 1])
 				&& data[i - 1] != '<' && data[i - 1] != '>')
 				add_spaces++;
 			i++;
@@ -59,6 +59,8 @@ int	count_new_spaces(char *data, int len)
 				&& data[i] != '<' && data[i] != '>')
 				add_spaces++;
 		}
+		if (!data[i])
+			break ;
 		i++;
 	}
 	return (add_spaces + len);

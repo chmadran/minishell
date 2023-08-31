@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 16:28:02 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 17:24:45 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,7 @@ int	clean_argv(t_exec *exec)
 	free_double_ptr(exec->argv);
 	exec->argv = new_argv;
 	exec->argc = k;
+	if (!exec->argv[0])
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

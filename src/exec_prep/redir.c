@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/30 15:04:53 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 17:24:16 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,9 @@ int	launch_redirection(t_exec *exec)
 			dup_close_redir(redir);
 			return (EXIT_SUCCESS);
 		}
-		if (launch_open_dup(redir, exec) == EXIT_FAILURE)
+		if (launch_open_dup(redir, exec) == EXIT_FAILURE
+			|| clean_argv(exec) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
-		clean_argv(exec);
 		redir_count = count_redir(exec);
 	}
 	return (dup_close_redir(redir));

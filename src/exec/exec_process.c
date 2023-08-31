@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 13:52:21 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 16:49:02 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	child_process_execution(t_master *master, t_token *token, t_exec *exec,
 		dup2(g_master.tmp_fd, STDIN_FILENO);
 		fd_close(g_master.tmp_fd);
 		launch_dup_child_process(master, token, type);
-		if (launch_redirection(exec) == EXIT_FAILURE)
+		if (launch_redirection(g_master.exec) == EXIT_FAILURE)
 		{
 			g_master.exit_status = 1;
 			ft_free_child();
