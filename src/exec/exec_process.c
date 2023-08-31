@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 08:33:30 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 12:18:18 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	execve_execute_command(t_exec *exec, t_env *env_list,
 	perror("execve (execute_command)");
 }
 
-void	launch_dup_child_process(t_master *master, t_token *token)
+void	launch_dup_child_process(t_master *master, t_token *token,
+	t_builtin_type type)
 {
 	(void)master;
 	if (token->next && token->next->type == T_PIPE)
@@ -51,7 +52,7 @@ void	launch_dup_child_process(t_master *master, t_token *token)
 		dup2(g_master.pipefd[0], STDIN_FILENO);
 		close(g_master.pipefd[0]);
 	}
-	else if (g_master.first_cmd == true)
+	else if (g_master.first_cmd == true && type != T_OTHERS)
 	{
 		close(g_master.pipefd[0]);
 		dup2(g_master.pipefd[1], STDOUT_FILENO);
@@ -67,7 +68,7 @@ void	child_process_execution(t_master *master, t_token *token, t_exec *exec,
 	{
 		dup2(master->tmp_fd, STDIN_FILENO);
 		close(master->tmp_fd);
-		launch_dup_child_process(master, token);
+		launch_dup_child_process(master, token, type);
 		if (launch_redirection(exec) == EXIT_FAILURE)
 		{
 			g_master.exit_status = 1;
