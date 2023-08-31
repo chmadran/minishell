@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 18:53:07 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 15:11:34 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 15:13:40 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ char	*search_expansion_heredoc(char *arg, char *limiter)
 	new_str = ft_strdup(arg);
 	while (new_str[i])
 	{
-		if (new_str[i] == '$' && !inside_single_quotes(new_str, i) && new_str[i + 1])
+		if (new_str[i] == '$' && !inside_single_quotes(new_str, i)
+			&& new_str[i + 1])
 		{
 			new_str = process_expansion_replace_heredoc(&new_str[i],
 					new_str, i, limiter);
