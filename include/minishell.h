@@ -81,6 +81,8 @@ typedef struct s_string
 	char		*substr_start;
 	char		*name;
 	char		*str;
+	char		*new_str;
+	char		*value;
 }	t_string;
 
 typedef struct s_env

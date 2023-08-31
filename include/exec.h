@@ -71,8 +71,8 @@ int				erase_token_data(t_token *token, char *name,
 					bool heredoc_limiter);
 int				replace_name(t_token *token, char *name, int i,
 					bool heredoc_limiter);
-void			free_string(t_string *s_elt, char *name, char *value);
-t_string		*fill_string(t_string *s_elt, char *name,
+void			free_string(t_string *s_elt);
+t_string		*fill_string(t_string *s_elt,
 					char *sb_start, char *str);
 bool			limiter_of_heredoc(char *argv, int i);
 

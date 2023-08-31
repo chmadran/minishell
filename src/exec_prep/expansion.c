@@ -22,44 +22,40 @@ bool	limiter_of_heredoc(char	*argv, int i)
 	int		j;
 
 	j = 0;
-	while (i  - 1 > 0 && ft_isspace(argv[i - 1]))
+	while (i - 1 > 0 && ft_isspace(argv[i - 1]))
 		i--;
-if (i >= 2 && ft_strncmp(&argv[i - 2], "<<", 2) == 0)
-	return (true);
-return (false);
+	if (i >= 2 && ft_strncmp(&argv[i - 2], "<<", 2) == 0)
+		return (true);
+	return (false);
 }
 
 static int	process_expansion_replace(char *substr_start, char *str,
 	t_token *token, int i)
 {
 	bool				heredoc_limiter;
-	char				*name;
-	char				*value;
-	char				*new_str;
 	int					ret;
 	t_string			*s_elt;
 
 	ret = 0;
 	s_elt = malloc(sizeof(t_string));
-	name = extract_expansion_name(substr_start);
-	s_elt = fill_string(s_elt, name, substr_start, str);
-	value = NULL;
+	s_elt = fill_string(s_elt, substr_start, str);
+	s_elt->name = extract_expansion_name(substr_start);
 	heredoc_limiter = limiter_of_heredoc(token->data, i);
-	if (substr_start[1] == '?')
-		value = ft_itoa(g_master.exit_status);
+	if (s_elt->substr_start[1] == '?')
+		s_elt->value = ft_itoa(g_master.exit_status);
 	else
-		value = get_env_value(g_master.env_list, name, 1);
-	if (value)
+		s_elt->value = get_env_value(g_master.env_list, s_elt->name, 1);
+	if (s_elt->value)
 	{
-		new_str = create_new_string(s_elt, value, token);
+		s_elt->new_str = create_new_string(s_elt, s_elt->value, token);
 		free(token->data);
-		token->data = new_str;
+		token->data = s_elt->new_str;
 	}
 	else if (i == 0)
-		ret = erase_token_data(token, name, heredoc_limiter);
+		ret = erase_token_data(token, s_elt->name, heredoc_limiter);
 	else
-		ret = replace_name(token, name, i, heredoc_limiter);
-	free_string(s_elt, name, value);
+		ret = replace_name(token, s_elt->name, i, heredoc_limiter);
+	free_string(s_elt);
 	return (ret);
 }
 
