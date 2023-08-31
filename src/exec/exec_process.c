@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:18:49 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/30 18:43:45 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 08:26:40 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,22 @@ void	launch_dup_child_process(t_master *master, t_token *token)
 	{
 		close(g_master.pipefd[0]);
 		dup2(g_master.pipefd[1], STDOUT_FILENO);
+		g_master.fdout_commands = g_master.pipefd[1];
 		close(g_master.pipefd[1]);
 	}
-	else if (!g_master.first_cmd)
+	else if (g_master.first_cmd == false)
 	{
 		close(g_master.pipefd[1]);
 		dup2(g_master.pipefd[0], STDIN_FILENO);
+		g_master.fdout_commands = g_master.pipefd[0];
 		close(g_master.pipefd[0]);
+	}
+	else if (g_master.first_cmd == true)
+	{
+		close(g_master.pipefd[0]);
+		dup2(g_master.pipefd[1], STDOUT_FILENO);
+		g_master.fdout_commands = g_master.pipefd[1];
+		close(g_master.pipefd[1]);
 	}
 }
 
@@ -68,6 +77,7 @@ void	child_process_execution(t_master *master, t_token *token, t_exec *exec,
 			ft_free_child();
 			exit(g_master.exit_status);
 		}
+		g_master.fdout_commands = STDOUT_FILENO;
 		execve_execute_command(master->exec, master->env_list, type);
 		ft_free_child();
 		exit(master->exit_status);
