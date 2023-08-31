@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/30 14:50:01 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 09:09:18 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ char			*handle_unquoted_argument(char *s, char **arg);
 /* expansion.c & expansion_utils.c*/
 int				launch_expansion(void);
 char			*extract_expansion_name(char *str);
-// char			*create_new_string(char *substr_start, char *name, char *value,
-// 					char *str, t_token *token);
 char			*create_new_string(t_string *s_elt, char *value,
 					t_token *token);
 
@@ -69,8 +67,8 @@ bool			single_quotes(const char *line_read, size_t j);
 
 /* expansion_mem.c */
 
-void			erase_token_data(t_token *token, char *name);
-void			replace_name(t_token *token, char *name, int i);
+int				erase_token_data(t_token *token, char *name, bool heredoc_limiter);
+int				replace_name(t_token *token, char *name, int i, bool heredoc_limiter);
 void			free_string(t_string *s_elt, char *name, char *value);
 t_string		*fill_string(t_string *s_elt, char *name,
 					char *sb_start, char *str);

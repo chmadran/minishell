@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:24:34 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 15:25:38 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 09:08:58 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "exec.h"
 #include "utils.h"
 
-void	erase_token_data(t_token *token, char *name)
+int	erase_token_data(t_token *token, char *name, bool heredoc_limiter)
 {
 	int		j;
 	int		k;
@@ -25,6 +25,8 @@ void	erase_token_data(t_token *token, char *name)
 
 	j = 0;
 	k = 0;
+	if (heredoc_limiter == true)
+		return (EXIT_FAILURE);
 	new_arg = malloc(sizeof(char *) * (ft_strlen(token->data)
 				- ft_strlen(name) + 1));
 	while (token->data[j] && token->data[j] != ' ')
@@ -34,7 +36,7 @@ void	erase_token_data(t_token *token, char *name)
 		free(token->data);
 		free(new_arg);
 		token->data = NULL;
-		return ;
+		return (EXIT_SUCCESS);
 	}
 	j++;
 	while (token->data[j])
@@ -42,9 +44,10 @@ void	erase_token_data(t_token *token, char *name)
 	new_arg[k] = '\0';
 	free(token->data);
 	token->data = new_arg;
+	return (EXIT_SUCCESS);
 }
 
-void	replace_name(t_token *token, char *name, int i)
+int	replace_name(t_token *token, char *name, int i, bool heredoc_limiter)
 {
 	int		j;
 	int		k;
@@ -52,6 +55,8 @@ void	replace_name(t_token *token, char *name, int i)
 
 	j = 0;
 	k = 0;
+	if (heredoc_limiter == true)
+		return (EXIT_FAILURE);
 	new_arg = malloc(sizeof(char *) * (ft_strlen(token->data)
 				- ft_strlen(name) + 1));
 	if (i > 0)
@@ -65,6 +70,7 @@ void	replace_name(t_token *token, char *name, int i)
 		free(token->data);
 		token->data = new_arg;
 	}
+	return (EXIT_SUCCESS);
 }
 
 t_string	*fill_string(t_string *s_elt, char *name, char *sb_start, char *str)
