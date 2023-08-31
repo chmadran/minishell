@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 16:47:52 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 11:01:56 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 18:42:15 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,4 +100,46 @@ char	*add_spaces_after_pipe(char *data)
 	}
 	new_data[j] = '\0';
 	return (free(g_master.line_read), new_data);
+}
+
+int	quotes_op(char *str)
+{
+	int	i;
+	int	j;
+	int	count;
+
+	i = 0;
+	j = 0;
+	count = 0;
+	while (ft_strncmp(&str[i], "\'", 1) == 0 || ft_strncmp(&str[i], "\"", 1) == 0)
+		i++;
+	j = i;
+	while (str[i] && (str[i] == '>' || str[i] == '<'))
+	{
+		i++;
+		count++;
+	}
+	while (ft_strncmp(&str[i], "\'", 1) == 0 || ft_strncmp(&str[i], "\"", 1) == 0)
+		i++;
+	if (!str[i] || count > 2)
+	{
+		printf(ESTR_UNEXP, str[j]);
+		g_master.exit_status = 2;
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	is_only_spaces(char *line_read)
+{
+	int	i;
+
+	i = 0;
+	while (line_read[i])
+	{
+		if (!ft_isspace(line_read[i]))
+			return (EXIT_SUCCESS);
+		i++;
+	}
+	return (EXIT_FAILURE);
 }

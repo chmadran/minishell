@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 11:50:56 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 14:25:58 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 18:38:10 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	launch_heredoc(t_exec *exec, t_master *master)
 	{
 		heredoc_tkn = 1;
 		if (ft_exec_heredoc(exec, master) > 0)
-			return (EXIT_FAILURE);
+			return (free_executable(), EXIT_FAILURE);
 		clean_args(exec, redir);
 		redir = check_heredoc(exec->argv, &position);
 	}

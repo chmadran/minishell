@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 10:23:47 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/29 11:22:30 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 18:50:02 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	remove_tmpfile(void);
 /* other_utils.c */
 void	ft_free_child(void);
 void	ft_free_main(void);
+void	ft_free_lexer(void);
 void	child_sigint(int signal);
 void	fd_close(int fd);
 

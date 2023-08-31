@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:30:27 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 15:37:24 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 18:43:29 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,8 @@ char	*trim_spaces(const char *str, size_t start, size_t end);
 int		count_new_spaces(char *data, int len);
 char	*add_spaces_between_ops(char *data, int len, const char	*ops);
 char	*add_spaces_after_pipe(char *data);
+int		is_only_spaces(char *line_read);
+int		quotes_op(char *str);
 
 /* lexer_spaces_utils.c */
 int		count_new_spaces(char *data, int len);

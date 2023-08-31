@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 16:42:19 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 16:15:14 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 18:50:09 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,18 +88,19 @@ static void	ft_token_count(t_token **token_lst)
 	g_master.token_count = count;
 }
 
-static int	is_only_spaces(char *line_read)
+bool	is_only_two_quotes(t_token	*token_list)
 {
-	int	i;
-
-	i = 0;
-	while (line_read[i])
+	while (token_list)
 	{
-		if (!ft_isspace(line_read[i]))
-			return (EXIT_SUCCESS);
-		i++;
+		if (token_list->data)
+		{
+			if (ft_strcmp(token_list->data, "\"\"") == 0
+				|| ft_strcmp(token_list->data, "\'\'") == 0)
+				return (EXIT_FAILURE);
+		}
+		token_list = token_list->next;
 	}
-	return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 int	launch_lexer(char *line_read, t_token **token_list)
@@ -111,6 +112,8 @@ int	launch_lexer(char *line_read, t_token **token_list)
 	if ((ft_strlen(line_read) <= 2 && check_start(line_read))
 		|| unclosed_quotes(line_read))
 		return (EXIT_FAILURE);
+	if (quotes_op(line_read) == EXIT_FAILURE)
+		return (g_master.exit_status = 2, EXIT_FAILURE);
 	if (check_directory(line_read)
 		|| is_only_spaces(line_read) || end_op(line_read))
 		return (EXIT_FAILURE);
@@ -121,12 +124,8 @@ int	launch_lexer(char *line_read, t_token **token_list)
 	g_master.readline_av = ft_spe_split(g_master.line_read, ' ', 0, 0);
 	if (manage_token(line_read, token_list))
 		return (EXIT_FAILURE);
-	if ((is_heredoc_pipe(token_list)) || (is_clean(token_list)))
-	{
-		free_token_list(*token_list);
-		free_double_ptr(g_master.readline_av);
-		return (free(g_master.line_read), g_master.exit_status = 2, 1);
-	}
-	ft_token_count(token_list);
-	return (EXIT_SUCCESS);
+	if ((is_heredoc_pipe(token_list))
+		|| (is_clean(token_list)) || (is_only_two_quotes(*token_list)))
+		return (ft_free_lexer(), g_master.exit_status = 2, 1);
+	return (ft_token_count(token_list), EXIT_SUCCESS);
 }

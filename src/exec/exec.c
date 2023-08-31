@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:12:20 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 14:25:41 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 18:38:19 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static t_builtin_type	prepare_execution(t_master *master, t_token *token,
 	(void)exec;
 	(void)token;
 	g_master.exec = create_arguments(token);
-	if (!g_master.exec->argv[0])
+	if (!g_master.exec || !g_master.exec->argv[0])
 		return (T_ERROR);
 	return (find_arg_type(g_master.exec->argv[0]));
 }
@@ -68,11 +68,10 @@ static void	token_exec(t_master *master, t_token **token, t_exec *exec)
 	while (*token)
 	{
 		type = prepare_execution(master, *token, exec);
-		if (launch_heredoc(g_master.exec, master) == EXIT_FAILURE)
-		{
-			free_executable();
+		if (type == T_ERROR)
 			return ;
-		}
+		if (launch_heredoc(g_master.exec, master) == EXIT_FAILURE)
+			return ;
 		if (prepare_type_execution(master, type) == EXIT_FAILURE)
 		{
 			if ((*token)->next && (*token)->next->type == T_PIPE)
@@ -86,6 +85,7 @@ static void	token_exec(t_master *master, t_token **token, t_exec *exec)
 		}
 		execute_proc(master, token, exec, type);
 	}
+	return ;
 }
 
 void	launch_execution(t_master *master)
