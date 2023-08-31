@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:06:41 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 14:20:03 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 14:24:41 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char			*search_pathname_command(char *command);
 
 /*exec_utils.c*/
 
-void			wait_all_processes(t_master *master);
+void			wait_all_processes(void);
 void			init_pids(void);
 int				prep_command_or_error(t_exec *exec, t_builtin_type type);
 

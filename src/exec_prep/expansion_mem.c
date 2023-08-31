@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:24:34 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 09:08:58 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 14:24:29 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,8 @@ int	erase_token_data(t_token *token, char *name, bool heredoc_limiter)
 	if (!token->data[j])
 	{
 		free(token->data);
-		free(new_arg);
 		token->data = NULL;
-		return (EXIT_SUCCESS);
+		return (free(new_arg), EXIT_SUCCESS);
 	}
 	j++;
 	while (token->data[j])
