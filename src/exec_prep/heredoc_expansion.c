@@ -6,7 +6,7 @@
 /*   By: chmadran <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 18:53:07 by chmadran          #+#    #+#             */
-/*   Updated: 2023/08/31 14:54:08 by chmadran         ###   ########.fr       */
+/*   Updated: 2023/08/31 14:23:04 by chmadran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ static char	*process_expansion_replace_heredoc(char *substr_start,
 	(void)i;
 	value = NULL;
 	final_str = NULL;
-	if (ft_strcmp(new_str, limiter) == 0)
-		heredoc_limiter = true;
+	heredoc_limiter = false;
+	(void)limiter;
 	if (is_valid_name(substr_start) == EXIT_FAILURE)
 		return (new_str);
 	name = extract_expansion_name(substr_start);
@@ -96,8 +96,7 @@ char	*search_expansion_heredoc(char *arg, char *limiter)
 	new_str = ft_strdup(arg);
 	while (new_str[i])
 	{
-		if (new_str[i] == '$' && !inside_single_quotes(new_str, i)
-			&& new_str[i + 1])
+		if (new_str[i] == '$' && !inside_single_quotes(new_str, i))
 		{
 			new_str = process_expansion_replace_heredoc(&new_str[i],
 					new_str, i, limiter);
