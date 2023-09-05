@@ -94,6 +94,8 @@ OBJ_FILES is another variable that will store a list of object file paths. It us
 
 <h2>Step by Step </h2>
 
+ONe thing to note, this is not the final version and all functions using malloc are not protected. You should protect any function that uses malloc.
+
 <details>
 <summary><h3>Part 0: THE ENVIRONMENT</h3></summary>
 
